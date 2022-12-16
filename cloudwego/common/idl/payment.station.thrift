@@ -1,26 +1,6 @@
 include "base.thrift"
-namespace go station.payment
-
-enum EventType{
-    none,
-    interactGift,
-    orderApple,
-    orderWX,
-    orderAlipay,
-    orderDouyin,
-}
-
-enum BizType{
-    none,
-    live,
-    recharge
-}
-
-enum AssetType{
-    none,
-    goldCoin,
-    diamond
-}
+include "payment.base.thrift"
+namespace go payment.station
 
 struct BizAssetChangesReq{
     1: required list<BizEventAssetChange> bizAssetChanges,
@@ -29,9 +9,9 @@ struct BizAssetChangesReq{
 struct BizEventAssetChange{
     1: required string eventId,
     2: required i64 opUserId,
-    3: required EventType eventType,
+    3: required payment.base.EventType eventType,
     4: required i64 bizId,
-    5: required BizType bizType,
+    5: required payment.base.BizType bizType,
     6: required string objId,
     7: required UserAssetChangeInfo opUserAssetChange,
     8: required UserAssetChangeInfo toUserAssetChange,
@@ -39,25 +19,22 @@ struct BizEventAssetChange{
 
 struct UserAssetChangeInfo{
     1: required i64 userId,
-    2: required AssetType assetType,
+    2: required payment.base.AssetType assetType,
     3: required i32 incr,
 }
 
 struct BizAssetChangesResp{
     1: required list<BizEventAssetChangerRes> bizAssetChangeResList,
-    2: required i64 bizId,
-    255: base.BaseResp baseResp,
+    255: required base.BaseResp baseResp,
 }
 
 struct BizEventAssetChangerRes{
     1: required string eventId,
     2: required bool changeRes,
     3: required string failMsg,
-    4: required UserAsset opUserAsset,
+    4: required payment.base.UserAsset opUserAsset,
 }
 
-struct UserAsset{
-    1: required i64 userId,
-    2: required AssetType assetType,
-    3: required i32 assetCn,
+service PaymentService{
+    BizAssetChangesResp ChangeAsset(1: BizAssetChangesReq req)(api.post = '/payment/changeassets', api.param = 'true', api.serializer = 'json')
 }
