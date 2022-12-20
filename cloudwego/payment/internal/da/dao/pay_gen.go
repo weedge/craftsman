@@ -17,26 +17,26 @@ import (
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:               db,
-		UserAssert:       newUserAssert(db, opts...),
-		UserAssertRecord: newUserAssertRecord(db, opts...),
+		db:              db,
+		UserAsset:       newUserAsset(db, opts...),
+		UserAssetRecord: newUserAssetRecord(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	UserAssert       userAssert
-	UserAssertRecord userAssertRecord
+	UserAsset       userAsset
+	UserAssetRecord userAssetRecord
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:               db,
-		UserAssert:       q.UserAssert.clone(db),
-		UserAssertRecord: q.UserAssertRecord.clone(db),
+		db:              db,
+		UserAsset:       q.UserAsset.clone(db),
+		UserAssetRecord: q.UserAssetRecord.clone(db),
 	}
 }
 
@@ -50,21 +50,21 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:               db,
-		UserAssert:       q.UserAssert.replaceDB(db),
-		UserAssertRecord: q.UserAssertRecord.replaceDB(db),
+		db:              db,
+		UserAsset:       q.UserAsset.replaceDB(db),
+		UserAssetRecord: q.UserAssetRecord.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	UserAssert       *userAssertDo
-	UserAssertRecord *userAssertRecordDo
+	UserAsset       *userAssetDo
+	UserAssetRecord *userAssetRecordDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		UserAssert:       q.UserAssert.WithContext(ctx),
-		UserAssertRecord: q.UserAssertRecord.WithContext(ctx),
+		UserAsset:       q.UserAsset.WithContext(ctx),
+		UserAssetRecord: q.UserAssetRecord.WithContext(ctx),
 	}
 }
 

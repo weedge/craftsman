@@ -19,6 +19,8 @@ import (
 	"strings"
 
 	"github.com/cloudwego/kitex/pkg/klog"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 type Level string
@@ -53,5 +55,24 @@ func (level Level) KitexLogLevel() klog.Level {
 		return klog.LevelFatal
 	default:
 		return klog.LevelTrace
+	}
+}
+
+// ZapLogLevel return zap log level
+func (level Level) ZapLogLevel() zapcore.Level {
+	l := Level(strings.ToLower(string(level)))
+	switch l {
+	case LevelTrace, LevelDebug:
+		return zapcore.DebugLevel
+	case LevelInfo:
+		return zapcore.InfoLevel
+	case LevelNotice, LevelWarn:
+		return zapcore.WarnLevel
+	case LevelError:
+		return zapcore.ErrorLevel
+	case LevelFatal:
+		return zapcore.FatalLevel
+	default:
+		return zap.DebugLevel
 	}
 }

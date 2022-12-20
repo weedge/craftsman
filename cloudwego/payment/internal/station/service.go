@@ -8,7 +8,8 @@ import (
 	"go.opentelemetry.io/otel/baggage"
 )
 
-type impl struct{}
+type impl struct {
+}
 
 func New() station.PaymentService {
 	return &impl{}

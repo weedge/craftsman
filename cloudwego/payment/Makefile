@@ -24,7 +24,7 @@ help:
 
 .PHONY: mysql-dump-table
 mysql-dump-table:
-	@mysqldump -u$(MYSQL_USER) -p$(MYSQL_PASSWD) -h$(MYSQL_HOST) -P$(MYSQL_PORT) -d $(MYSQL_DB) >> ./data/$(MYSQL_DB)-mysql$(MYSQL_VER)-innodb.sql
+	@mysqldump -u$(MYSQL_USER) -p$(MYSQL_PASSWD) -h$(MYSQL_HOST) -P$(MYSQL_PORT) -d $(MYSQL_DB) > ./data/$(MYSQL_DB)-mysql$(MYSQL_VER)-innodb.sql
 
 .PHONY: gorm-gen
 gorm-gen:

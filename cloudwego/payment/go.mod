@@ -5,11 +5,14 @@ go 1.19
 require (
 	github.com/cloudwego/kitex v0.4.4
 	github.com/kitex-contrib/obs-opentelemetry v0.1.0
-	github.com/kitex-contrib/obs-opentelemetry/logging/zap v0.0.0-20221109071748-a433b0b57972
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.14.0
-	github.com/weedge/craftsman/cloudwego/common v0.0.0-20221216155710-b65d4f8b5254
+	github.com/weedge/craftsman/cloudwego/common v0.0.0-20221220110835-524bfda8e0e3
+	github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm v0.0.0-20221220110835-524bfda8e0e3
+	github.com/weedge/craftsman/cloudwego/kitex-contrib/obs-opentelemetry/logging/zap v0.0.0-20221220110835-524bfda8e0e3
 	go.opentelemetry.io/otel v1.11.2
+	go.uber.org/zap v1.24.0
+	gorm.io/driver/mysql v1.4.3
 	gorm.io/gen v0.3.18
 	gorm.io/gorm v1.24.2
 	gorm.io/plugin/dbresolver v1.4.0
@@ -60,13 +63,12 @@ require (
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.9.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.9.0 // indirect
 	go.opentelemetry.io/otel/metric v0.31.0 // indirect
-	go.opentelemetry.io/otel/sdk v1.9.0 // indirect
+	go.opentelemetry.io/otel/sdk v1.11.2 // indirect
 	go.opentelemetry.io/otel/sdk/metric v0.31.0 // indirect
 	go.opentelemetry.io/otel/trace v1.11.2 // indirect
 	go.opentelemetry.io/proto/otlp v0.18.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
-	go.uber.org/zap v1.23.0 // indirect
 	golang.org/x/arch v0.0.0-20220722155209-00200b7164a7 // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
 	golang.org/x/net v0.0.0-20221014081412-f15817d10f9b // indirect
@@ -81,10 +83,13 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/datatypes v1.0.7 // indirect
-	gorm.io/driver/mysql v1.4.3 // indirect
 	gorm.io/hints v1.1.0 // indirect
 )
 
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
 //replace github.com/weedge/craftsman/cloudwego/common => ../common
+
+//replace github.com/weedge/craftsman/cloudwego/kitex-contrib/obs-opentelemetry/logging/zap => ../kitex-contrib/obs-opentelemetry/logging/zap
+
+//replace github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm => ../kitex-contrib/gorm
