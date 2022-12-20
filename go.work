@@ -1,3 +1,8 @@
 go 1.19
 
-use ./cloudwego/common
+use (
+	cloudwego/common
+	cloudwego/payment
+	cloudwego/kitex-contrib/obs-opentelemetry/logging/zap
+	cloudwego/kitex-contrib/gorm
+)
