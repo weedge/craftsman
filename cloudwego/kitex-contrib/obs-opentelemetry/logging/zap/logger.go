@@ -263,7 +263,7 @@ func (l *Logger) SetOutput(writer io.Writer) {
 	l.l = log
 }
 
-func (l *Logger) CtxKVLog(ctx context.Context, level int, format string, kvs ...interface{}) {
+func (l *Logger) CtxKVLog(ctx context.Context, level klog.Level, format string, kvs ...interface{}) {
 	if len(kvs) == 0 || len(kvs)%2 != 0 {
 		l.Warn(fmt.Sprint("Keyvalues must appear in pairs:", kvs))
 		return
@@ -282,7 +282,7 @@ func (l *Logger) CtxKVLog(ctx context.Context, level int, format string, kvs ...
 		fields = append(fields, zap.Any(fmt.Sprint(kvs[i]), kvs[i+1]))
 	}
 
-	switch klog.Level(level) {
+	switch level {
 	case klog.LevelDebug, klog.LevelTrace:
 		zlevel = zap.DebugLevel
 		zl.Debug(format, fields...)
@@ -306,7 +306,7 @@ func (l *Logger) CtxKVLog(ctx context.Context, level int, format string, kvs ...
 	msg := getMessage(format, kvs)
 
 	if !span.IsRecording() {
-		l.Logf(klog.Level(level), format, kvs...)
+		l.Logf(level, format, kvs...)
 		return
 	}
 	attrs := []attribute.KeyValue{
