@@ -22,6 +22,8 @@ import (
 	"io"
 	"log"
 	"sync"
+
+	"github.com/cloudwego/kitex/pkg/klog"
 )
 
 // DefaultLogger is default logger.
@@ -29,7 +31,7 @@ var DefaultLogger = NewStdLogger(log.Writer())
 
 type IkvLogger interface {
 	// CtxKVLog  kvs must be kv pairs k,v , k,v ...
-	CtxKVLog(ctx context.Context, level int, format string, kvs ...interface{})
+	CtxKVLog(ctx context.Context, level klog.Level, format string, kvs ...interface{})
 }
 
 func Map2KvPairs(mapData map[string]interface{}) (kvs []interface{}) {
@@ -60,7 +62,7 @@ func NewStdLogger(w io.Writer) IkvLogger {
 }
 
 // Log print the kv pairs log.
-func (l *stdLogger) CtxKVLog(ctx context.Context, level int, format string, kvs ...interface{}) {
+func (l *stdLogger) CtxKVLog(ctx context.Context, level klog.Level, format string, kvs ...interface{}) {
 	if len(kvs) == 0 {
 		return
 	}
@@ -69,7 +71,7 @@ func (l *stdLogger) CtxKVLog(ctx context.Context, level int, format string, kvs 
 		kvs = append(kvs, "KEYVALS UNPAIRED")
 	}
 	buf := l.pool.Get().(*bytes.Buffer)
-	buf.WriteString(Level(level).toString())
+	buf.WriteString(Level(level).ToString())
 	for i := 0; i < len(kvs); i += 2 {
 		_, _ = fmt.Fprintf(buf, " %s=%v", kvs[i], kvs[i+1])
 	}

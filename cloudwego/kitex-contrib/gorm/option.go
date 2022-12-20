@@ -2,6 +2,8 @@ package gorm
 
 import (
 	"time"
+
+	"github.com/cloudwego/kitex/pkg/klog"
 )
 
 type Option interface {
@@ -19,7 +21,7 @@ type config struct {
 	// slowThreshold slow sql exec time threshold
 	slowThreshold time.Duration
 	// traceLogLevel just for gorm trace log map kitex log level to print
-	traceLogLevel int
+	traceLogLevel klog.Level
 }
 
 // defaultConfig default config
@@ -27,7 +29,7 @@ func defaultConfig() *config {
 	return &config{
 		kvLogger:      DefaultLogger,
 		slowThreshold: 200 * time.Millisecond,
-		traceLogLevel: int(Debug),
+		traceLogLevel: klog.Level(Debug),
 	}
 }
 
@@ -46,7 +48,7 @@ func WithSlowThreshold(slowThreshold time.Duration) Option {
 }
 
 // WithTraceLogLevel just for gorm trace log map kitex log level to print
-func WithTraceLogLevel(traceLogLevel int) Option {
+func WithTraceLogLevel(traceLogLevel klog.Level) Option {
 	return option(func(cfg *config) {
 		cfg.traceLogLevel = traceLogLevel
 	})

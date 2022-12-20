@@ -15,7 +15,11 @@
 
 package gorm
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/cloudwego/kitex/pkg/klog"
+)
 
 type Level int
 
@@ -25,7 +29,7 @@ const (
 	Info
 	Warn
 	Err
-	Sqltrace
+	Sqltrace Level = Level(klog.LevelWarn)
 )
 
 var levelName = []string{
@@ -36,7 +40,7 @@ var levelName = []string{
 	Sqltrace: "[SQLTRACE]",
 }
 
-func (lv Level) toString() string {
+func (lv Level) ToString() string {
 	if lv >= Debug && lv <= Sqltrace {
 		return levelName[lv]
 	}
