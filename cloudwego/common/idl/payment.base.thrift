@@ -24,5 +24,5 @@ enum AssetType{
 struct UserAsset{
     1: required i64 userId,
     2: required AssetType assetType,
-    3: required i32 assetCn,
+    3: required i64 assetCn,
 }

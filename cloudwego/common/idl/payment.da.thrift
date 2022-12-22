@@ -2,15 +2,15 @@ include "base.thrift"
 include "payment.base.thrift"
 namespace go payment.da
 
-struct GetAssetReq{
+struct GetAssetsReq{
     1: list<i64> userIds(api.query = 'userIds'),
 }
 
-struct GetAssetResp{
-    1: list<payment.base.UserAsset> userAsset,
+struct GetAssetsResp{
+    1: list<payment.base.UserAsset> userAssets,
     255: required base.BaseResp baseResp,
 }
 
 service PaymentService{
-    GetAssetResp GetAsset(1: GetAssetReq req)(api.get = '/payment/getassets', api.param = 'true') 
+    GetAssetsResp GetAssets(1: GetAssetsReq req)(api.get = '/payment/getassets', api.param = 'true') 
 }

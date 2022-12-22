@@ -191,10 +191,8 @@ func TestZapOption(t *testing.T) {
 
 	logger.Debug("this is a debug log")
 	assert.False(t, strings.Contains(buf.String(), "this is a debug log"))
-	println(buf.String())
 
 	logger.Error("this is a warn log")
 	// test caller in log result
 	assert.True(t, strings.Contains(buf.String(), "caller"))
-	println(buf.String())
 }

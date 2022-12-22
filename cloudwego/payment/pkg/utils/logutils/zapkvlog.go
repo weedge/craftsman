@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm"
 	kitexZap "github.com/weedge/craftsman/cloudwego/kitex-contrib/obs-opentelemetry/logging/zap"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -47,7 +48,12 @@ func ZapOptions(meta map[string]interface{}) (opts []zap.Option) {
 	return
 }
 
-func NewkitexZapLogger(level Level, meta map[string]interface{}) (logger klog.FullLogger) {
+type IKitexZapKVLogger interface {
+	klog.FullLogger
+	gorm.IkvLogger
+}
+
+func NewkitexZapKVLogger(level Level, meta map[string]interface{}) (logger IKitexZapKVLogger) {
 	logger = kitexZap.NewLogger(
 		kitexZap.WithCoreEnc(ZapEncoder()),
 		kitexZap.WithCoreWs(ZapWriteSyncer()),

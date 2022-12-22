@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/cloudwego/kitex v0.4.4
+	github.com/google/wire v0.5.0
 	github.com/kitex-contrib/obs-opentelemetry v0.1.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.14.0
@@ -88,7 +89,7 @@ require (
 
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
-//replace github.com/weedge/craftsman/cloudwego/common => ../common
+replace github.com/weedge/craftsman/cloudwego/common => ../common
 
 //replace github.com/weedge/craftsman/cloudwego/kitex-contrib/obs-opentelemetry/logging/zap => ../kitex-contrib/obs-opentelemetry/logging/zap
 

@@ -168,7 +168,7 @@ func (p *AssetType) Value() (driver.Value, error) {
 type UserAsset struct {
 	UserId    int64     `thrift:"userId,1,required" json:"userId"`
 	AssetType AssetType `thrift:"assetType,2,required" json:"assetType"`
-	AssetCn   int32     `thrift:"assetCn,3,required" json:"assetCn"`
+	AssetCn   int64     `thrift:"assetCn,3,required" json:"assetCn"`
 }
 
 func NewUserAsset() *UserAsset {
@@ -183,7 +183,7 @@ func (p *UserAsset) GetAssetType() (v AssetType) {
 	return p.AssetType
 }
 
-func (p *UserAsset) GetAssetCn() (v int32) {
+func (p *UserAsset) GetAssetCn() (v int64) {
 	return p.AssetCn
 }
 func (p *UserAsset) SetUserId(val int64) {
@@ -192,7 +192,7 @@ func (p *UserAsset) SetUserId(val int64) {
 func (p *UserAsset) SetAssetType(val AssetType) {
 	p.AssetType = val
 }
-func (p *UserAsset) SetAssetCn(val int32) {
+func (p *UserAsset) SetAssetCn(val int64) {
 	p.AssetCn = val
 }
 
@@ -247,7 +247,7 @@ func (p *UserAsset) Read(iprot thrift.TProtocol) (err error) {
 				}
 			}
 		case 3:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -322,7 +322,7 @@ func (p *UserAsset) ReadField2(iprot thrift.TProtocol) error {
 }
 
 func (p *UserAsset) ReadField3(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadI32(); err != nil {
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
 		p.AssetCn = v
@@ -402,10 +402,10 @@ WriteFieldEndError:
 }
 
 func (p *UserAsset) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("assetCn", thrift.I32, 3); err != nil {
+	if err = oprot.WriteFieldBegin("assetCn", thrift.I64, 3); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.AssetCn); err != nil {
+	if err := oprot.WriteI64(p.AssetCn); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -457,7 +457,7 @@ func (p *UserAsset) Field2DeepEqual(src AssetType) bool {
 	}
 	return true
 }
-func (p *UserAsset) Field3DeepEqual(src int32) bool {
+func (p *UserAsset) Field3DeepEqual(src int64) bool {
 
 	if p.AssetCn != src {
 		return false

@@ -11,7 +11,7 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	GetAsset(ctx context.Context, req *da.GetAssetReq, callOptions ...callopt.Option) (r *da.GetAssetResp, err error)
+	GetAssets(ctx context.Context, req *da.GetAssetsReq, callOptions ...callopt.Option) (r *da.GetAssetsResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -43,7 +43,7 @@ type kPaymentServiceClient struct {
 	*kClient
 }
 
-func (p *kPaymentServiceClient) GetAsset(ctx context.Context, req *da.GetAssetReq, callOptions ...callopt.Option) (r *da.GetAssetResp, err error) {
+func (p *kPaymentServiceClient) GetAssets(ctx context.Context, req *da.GetAssetsReq, callOptions ...callopt.Option) (r *da.GetAssetsResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.GetAsset(ctx, req)
+	return p.kClient.GetAssets(ctx, req)
 }

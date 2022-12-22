@@ -10,26 +10,26 @@ import (
 	base0 "github.com/weedge/craftsman/cloudwego/common/kitex_gen/payment/base"
 )
 
-type GetAssetReq struct {
+type GetAssetsReq struct {
 	UserIds []int64 `thrift:"userIds,1" json:"userIds"`
 }
 
-func NewGetAssetReq() *GetAssetReq {
-	return &GetAssetReq{}
+func NewGetAssetsReq() *GetAssetsReq {
+	return &GetAssetsReq{}
 }
 
-func (p *GetAssetReq) GetUserIds() (v []int64) {
+func (p *GetAssetsReq) GetUserIds() (v []int64) {
 	return p.UserIds
 }
-func (p *GetAssetReq) SetUserIds(val []int64) {
+func (p *GetAssetsReq) SetUserIds(val []int64) {
 	p.UserIds = val
 }
 
-var fieldIDToName_GetAssetReq = map[int16]string{
+var fieldIDToName_GetAssetsReq = map[int16]string{
 	1: "userIds",
 }
 
-func (p *GetAssetReq) Read(iprot thrift.TProtocol) (err error) {
+func (p *GetAssetsReq) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -78,7 +78,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetAssetReq[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetAssetsReq[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -88,7 +88,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *GetAssetReq) ReadField1(iprot thrift.TProtocol) error {
+func (p *GetAssetsReq) ReadField1(iprot thrift.TProtocol) error {
 	_, size, err := iprot.ReadListBegin()
 	if err != nil {
 		return err
@@ -110,9 +110,9 @@ func (p *GetAssetReq) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *GetAssetReq) Write(oprot thrift.TProtocol) (err error) {
+func (p *GetAssetsReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("GetAssetReq"); err != nil {
+	if err = oprot.WriteStructBegin("GetAssetsReq"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -139,7 +139,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *GetAssetReq) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *GetAssetsReq) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("userIds", thrift.LIST, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -164,14 +164,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *GetAssetReq) String() string {
+func (p *GetAssetsReq) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("GetAssetReq(%+v)", *p)
+	return fmt.Sprintf("GetAssetsReq(%+v)", *p)
 }
 
-func (p *GetAssetReq) DeepEqual(ano *GetAssetReq) bool {
+func (p *GetAssetsReq) DeepEqual(ano *GetAssetsReq) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -183,7 +183,7 @@ func (p *GetAssetReq) DeepEqual(ano *GetAssetReq) bool {
 	return true
 }
 
-func (p *GetAssetReq) Field1DeepEqual(src []int64) bool {
+func (p *GetAssetsReq) Field1DeepEqual(src []int64) bool {
 
 	if len(p.UserIds) != len(src) {
 		return false
@@ -197,44 +197,44 @@ func (p *GetAssetReq) Field1DeepEqual(src []int64) bool {
 	return true
 }
 
-type GetAssetResp struct {
-	UserAsset []*base0.UserAsset `thrift:"userAsset,1" json:"userAsset"`
-	BaseResp  *base.BaseResp     `thrift:"baseResp,255,required" json:"baseResp"`
+type GetAssetsResp struct {
+	UserAssets []*base0.UserAsset `thrift:"userAssets,1" json:"userAssets"`
+	BaseResp   *base.BaseResp     `thrift:"baseResp,255,required" json:"baseResp"`
 }
 
-func NewGetAssetResp() *GetAssetResp {
-	return &GetAssetResp{}
+func NewGetAssetsResp() *GetAssetsResp {
+	return &GetAssetsResp{}
 }
 
-func (p *GetAssetResp) GetUserAsset() (v []*base0.UserAsset) {
-	return p.UserAsset
+func (p *GetAssetsResp) GetUserAssets() (v []*base0.UserAsset) {
+	return p.UserAssets
 }
 
-var GetAssetResp_BaseResp_DEFAULT *base.BaseResp
+var GetAssetsResp_BaseResp_DEFAULT *base.BaseResp
 
-func (p *GetAssetResp) GetBaseResp() (v *base.BaseResp) {
+func (p *GetAssetsResp) GetBaseResp() (v *base.BaseResp) {
 	if !p.IsSetBaseResp() {
-		return GetAssetResp_BaseResp_DEFAULT
+		return GetAssetsResp_BaseResp_DEFAULT
 	}
 	return p.BaseResp
 }
-func (p *GetAssetResp) SetUserAsset(val []*base0.UserAsset) {
-	p.UserAsset = val
+func (p *GetAssetsResp) SetUserAssets(val []*base0.UserAsset) {
+	p.UserAssets = val
 }
-func (p *GetAssetResp) SetBaseResp(val *base.BaseResp) {
+func (p *GetAssetsResp) SetBaseResp(val *base.BaseResp) {
 	p.BaseResp = val
 }
 
-var fieldIDToName_GetAssetResp = map[int16]string{
-	1:   "userAsset",
+var fieldIDToName_GetAssetsResp = map[int16]string{
+	1:   "userAssets",
 	255: "baseResp",
 }
 
-func (p *GetAssetResp) IsSetBaseResp() bool {
+func (p *GetAssetsResp) IsSetBaseResp() bool {
 	return p.BaseResp != nil
 }
 
-func (p *GetAssetResp) Read(iprot thrift.TProtocol) (err error) {
+func (p *GetAssetsResp) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -299,7 +299,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetAssetResp[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetAssetsResp[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -308,22 +308,22 @@ ReadFieldEndError:
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 RequiredFieldNotSetError:
-	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_GetAssetResp[fieldId]))
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_GetAssetsResp[fieldId]))
 }
 
-func (p *GetAssetResp) ReadField1(iprot thrift.TProtocol) error {
+func (p *GetAssetsResp) ReadField1(iprot thrift.TProtocol) error {
 	_, size, err := iprot.ReadListBegin()
 	if err != nil {
 		return err
 	}
-	p.UserAsset = make([]*base0.UserAsset, 0, size)
+	p.UserAssets = make([]*base0.UserAsset, 0, size)
 	for i := 0; i < size; i++ {
 		_elem := base0.NewUserAsset()
 		if err := _elem.Read(iprot); err != nil {
 			return err
 		}
 
-		p.UserAsset = append(p.UserAsset, _elem)
+		p.UserAssets = append(p.UserAssets, _elem)
 	}
 	if err := iprot.ReadListEnd(); err != nil {
 		return err
@@ -331,7 +331,7 @@ func (p *GetAssetResp) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *GetAssetResp) ReadField255(iprot thrift.TProtocol) error {
+func (p *GetAssetsResp) ReadField255(iprot thrift.TProtocol) error {
 	p.BaseResp = base.NewBaseResp()
 	if err := p.BaseResp.Read(iprot); err != nil {
 		return err
@@ -339,9 +339,9 @@ func (p *GetAssetResp) ReadField255(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *GetAssetResp) Write(oprot thrift.TProtocol) (err error) {
+func (p *GetAssetsResp) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("GetAssetResp"); err != nil {
+	if err = oprot.WriteStructBegin("GetAssetsResp"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -372,14 +372,14 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *GetAssetResp) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("userAsset", thrift.LIST, 1); err != nil {
+func (p *GetAssetsResp) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("userAssets", thrift.LIST, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteListBegin(thrift.STRUCT, len(p.UserAsset)); err != nil {
+	if err := oprot.WriteListBegin(thrift.STRUCT, len(p.UserAssets)); err != nil {
 		return err
 	}
-	for _, v := range p.UserAsset {
+	for _, v := range p.UserAssets {
 		if err := v.Write(oprot); err != nil {
 			return err
 		}
@@ -397,7 +397,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *GetAssetResp) writeField255(oprot thrift.TProtocol) (err error) {
+func (p *GetAssetsResp) writeField255(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("baseResp", thrift.STRUCT, 255); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -414,20 +414,20 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 255 end error: ", p), err)
 }
 
-func (p *GetAssetResp) String() string {
+func (p *GetAssetsResp) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("GetAssetResp(%+v)", *p)
+	return fmt.Sprintf("GetAssetsResp(%+v)", *p)
 }
 
-func (p *GetAssetResp) DeepEqual(ano *GetAssetResp) bool {
+func (p *GetAssetsResp) DeepEqual(ano *GetAssetsResp) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.UserAsset) {
+	if !p.Field1DeepEqual(ano.UserAssets) {
 		return false
 	}
 	if !p.Field255DeepEqual(ano.BaseResp) {
@@ -436,12 +436,12 @@ func (p *GetAssetResp) DeepEqual(ano *GetAssetResp) bool {
 	return true
 }
 
-func (p *GetAssetResp) Field1DeepEqual(src []*base0.UserAsset) bool {
+func (p *GetAssetsResp) Field1DeepEqual(src []*base0.UserAsset) bool {
 
-	if len(p.UserAsset) != len(src) {
+	if len(p.UserAssets) != len(src) {
 		return false
 	}
-	for i, v := range p.UserAsset {
+	for i, v := range p.UserAssets {
 		_src := src[i]
 		if !v.DeepEqual(_src) {
 			return false
@@ -449,7 +449,7 @@ func (p *GetAssetResp) Field1DeepEqual(src []*base0.UserAsset) bool {
 	}
 	return true
 }
-func (p *GetAssetResp) Field255DeepEqual(src *base.BaseResp) bool {
+func (p *GetAssetsResp) Field255DeepEqual(src *base.BaseResp) bool {
 
 	if !p.BaseResp.DeepEqual(src) {
 		return false
@@ -458,7 +458,7 @@ func (p *GetAssetResp) Field255DeepEqual(src *base.BaseResp) bool {
 }
 
 type PaymentService interface {
-	GetAsset(ctx context.Context, req *GetAssetReq) (r *GetAssetResp, err error)
+	GetAssets(ctx context.Context, req *GetAssetsReq) (r *GetAssetsResp, err error)
 }
 
 type PaymentServiceClient struct {
@@ -487,11 +487,11 @@ func (p *PaymentServiceClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *PaymentServiceClient) GetAsset(ctx context.Context, req *GetAssetReq) (r *GetAssetResp, err error) {
-	var _args PaymentServiceGetAssetArgs
+func (p *PaymentServiceClient) GetAssets(ctx context.Context, req *GetAssetsReq) (r *GetAssetsResp, err error) {
+	var _args PaymentServiceGetAssetsArgs
 	_args.Req = req
-	var _result PaymentServiceGetAssetResult
-	if err = p.Client_().Call(ctx, "GetAsset", &_args, &_result); err != nil {
+	var _result PaymentServiceGetAssetsResult
+	if err = p.Client_().Call(ctx, "GetAssets", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -517,7 +517,7 @@ func (p *PaymentServiceProcessor) ProcessorMap() map[string]thrift.TProcessorFun
 
 func NewPaymentServiceProcessor(handler PaymentService) *PaymentServiceProcessor {
 	self := &PaymentServiceProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
-	self.AddToProcessorMap("GetAsset", &paymentServiceProcessorGetAsset{handler: handler})
+	self.AddToProcessorMap("GetAssets", &paymentServiceProcessorGetAssets{handler: handler})
 	return self
 }
 func (p *PaymentServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -538,16 +538,16 @@ func (p *PaymentServiceProcessor) Process(ctx context.Context, iprot, oprot thri
 	return false, x
 }
 
-type paymentServiceProcessorGetAsset struct {
+type paymentServiceProcessorGetAssets struct {
 	handler PaymentService
 }
 
-func (p *paymentServiceProcessorGetAsset) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := PaymentServiceGetAssetArgs{}
+func (p *paymentServiceProcessorGetAssets) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := PaymentServiceGetAssetsArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("GetAsset", thrift.EXCEPTION, seqId)
+		oprot.WriteMessageBegin("GetAssets", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -556,11 +556,11 @@ func (p *paymentServiceProcessorGetAsset) Process(ctx context.Context, seqId int
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := PaymentServiceGetAssetResult{}
-	var retval *GetAssetResp
-	if retval, err2 = p.handler.GetAsset(ctx, args.Req); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetAsset: "+err2.Error())
-		oprot.WriteMessageBegin("GetAsset", thrift.EXCEPTION, seqId)
+	result := PaymentServiceGetAssetsResult{}
+	var retval *GetAssetsResp
+	if retval, err2 = p.handler.GetAssets(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetAssets: "+err2.Error())
+		oprot.WriteMessageBegin("GetAssets", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -568,7 +568,7 @@ func (p *paymentServiceProcessorGetAsset) Process(ctx context.Context, seqId int
 	} else {
 		result.Success = retval
 	}
-	if err2 = oprot.WriteMessageBegin("GetAsset", thrift.REPLY, seqId); err2 != nil {
+	if err2 = oprot.WriteMessageBegin("GetAssets", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -586,35 +586,35 @@ func (p *paymentServiceProcessorGetAsset) Process(ctx context.Context, seqId int
 	return true, err
 }
 
-type PaymentServiceGetAssetArgs struct {
-	Req *GetAssetReq `thrift:"req,1" json:"req"`
+type PaymentServiceGetAssetsArgs struct {
+	Req *GetAssetsReq `thrift:"req,1" json:"req"`
 }
 
-func NewPaymentServiceGetAssetArgs() *PaymentServiceGetAssetArgs {
-	return &PaymentServiceGetAssetArgs{}
+func NewPaymentServiceGetAssetsArgs() *PaymentServiceGetAssetsArgs {
+	return &PaymentServiceGetAssetsArgs{}
 }
 
-var PaymentServiceGetAssetArgs_Req_DEFAULT *GetAssetReq
+var PaymentServiceGetAssetsArgs_Req_DEFAULT *GetAssetsReq
 
-func (p *PaymentServiceGetAssetArgs) GetReq() (v *GetAssetReq) {
+func (p *PaymentServiceGetAssetsArgs) GetReq() (v *GetAssetsReq) {
 	if !p.IsSetReq() {
-		return PaymentServiceGetAssetArgs_Req_DEFAULT
+		return PaymentServiceGetAssetsArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *PaymentServiceGetAssetArgs) SetReq(val *GetAssetReq) {
+func (p *PaymentServiceGetAssetsArgs) SetReq(val *GetAssetsReq) {
 	p.Req = val
 }
 
-var fieldIDToName_PaymentServiceGetAssetArgs = map[int16]string{
+var fieldIDToName_PaymentServiceGetAssetsArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *PaymentServiceGetAssetArgs) IsSetReq() bool {
+func (p *PaymentServiceGetAssetsArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *PaymentServiceGetAssetArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *PaymentServiceGetAssetsArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -663,7 +663,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_PaymentServiceGetAssetArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_PaymentServiceGetAssetsArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -673,17 +673,17 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *PaymentServiceGetAssetArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewGetAssetReq()
+func (p *PaymentServiceGetAssetsArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = NewGetAssetsReq()
 	if err := p.Req.Read(iprot); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *PaymentServiceGetAssetArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *PaymentServiceGetAssetsArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("GetAsset_args"); err != nil {
+	if err = oprot.WriteStructBegin("GetAssets_args"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -710,7 +710,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *PaymentServiceGetAssetArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *PaymentServiceGetAssetsArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -727,14 +727,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *PaymentServiceGetAssetArgs) String() string {
+func (p *PaymentServiceGetAssetsArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("PaymentServiceGetAssetArgs(%+v)", *p)
+	return fmt.Sprintf("PaymentServiceGetAssetsArgs(%+v)", *p)
 }
 
-func (p *PaymentServiceGetAssetArgs) DeepEqual(ano *PaymentServiceGetAssetArgs) bool {
+func (p *PaymentServiceGetAssetsArgs) DeepEqual(ano *PaymentServiceGetAssetsArgs) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -746,7 +746,7 @@ func (p *PaymentServiceGetAssetArgs) DeepEqual(ano *PaymentServiceGetAssetArgs) 
 	return true
 }
 
-func (p *PaymentServiceGetAssetArgs) Field1DeepEqual(src *GetAssetReq) bool {
+func (p *PaymentServiceGetAssetsArgs) Field1DeepEqual(src *GetAssetsReq) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -754,35 +754,35 @@ func (p *PaymentServiceGetAssetArgs) Field1DeepEqual(src *GetAssetReq) bool {
 	return true
 }
 
-type PaymentServiceGetAssetResult struct {
-	Success *GetAssetResp `thrift:"success,0,optional" json:"success,omitempty"`
+type PaymentServiceGetAssetsResult struct {
+	Success *GetAssetsResp `thrift:"success,0,optional" json:"success,omitempty"`
 }
 
-func NewPaymentServiceGetAssetResult() *PaymentServiceGetAssetResult {
-	return &PaymentServiceGetAssetResult{}
+func NewPaymentServiceGetAssetsResult() *PaymentServiceGetAssetsResult {
+	return &PaymentServiceGetAssetsResult{}
 }
 
-var PaymentServiceGetAssetResult_Success_DEFAULT *GetAssetResp
+var PaymentServiceGetAssetsResult_Success_DEFAULT *GetAssetsResp
 
-func (p *PaymentServiceGetAssetResult) GetSuccess() (v *GetAssetResp) {
+func (p *PaymentServiceGetAssetsResult) GetSuccess() (v *GetAssetsResp) {
 	if !p.IsSetSuccess() {
-		return PaymentServiceGetAssetResult_Success_DEFAULT
+		return PaymentServiceGetAssetsResult_Success_DEFAULT
 	}
 	return p.Success
 }
-func (p *PaymentServiceGetAssetResult) SetSuccess(x interface{}) {
-	p.Success = x.(*GetAssetResp)
+func (p *PaymentServiceGetAssetsResult) SetSuccess(x interface{}) {
+	p.Success = x.(*GetAssetsResp)
 }
 
-var fieldIDToName_PaymentServiceGetAssetResult = map[int16]string{
+var fieldIDToName_PaymentServiceGetAssetsResult = map[int16]string{
 	0: "success",
 }
 
-func (p *PaymentServiceGetAssetResult) IsSetSuccess() bool {
+func (p *PaymentServiceGetAssetsResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *PaymentServiceGetAssetResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *PaymentServiceGetAssetsResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -831,7 +831,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_PaymentServiceGetAssetResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_PaymentServiceGetAssetsResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -841,17 +841,17 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *PaymentServiceGetAssetResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = NewGetAssetResp()
+func (p *PaymentServiceGetAssetsResult) ReadField0(iprot thrift.TProtocol) error {
+	p.Success = NewGetAssetsResp()
 	if err := p.Success.Read(iprot); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *PaymentServiceGetAssetResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *PaymentServiceGetAssetsResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("GetAsset_result"); err != nil {
+	if err = oprot.WriteStructBegin("GetAssets_result"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -878,7 +878,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *PaymentServiceGetAssetResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *PaymentServiceGetAssetsResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -897,14 +897,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *PaymentServiceGetAssetResult) String() string {
+func (p *PaymentServiceGetAssetsResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("PaymentServiceGetAssetResult(%+v)", *p)
+	return fmt.Sprintf("PaymentServiceGetAssetsResult(%+v)", *p)
 }
 
-func (p *PaymentServiceGetAssetResult) DeepEqual(ano *PaymentServiceGetAssetResult) bool {
+func (p *PaymentServiceGetAssetsResult) DeepEqual(ano *PaymentServiceGetAssetsResult) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -916,7 +916,7 @@ func (p *PaymentServiceGetAssetResult) DeepEqual(ano *PaymentServiceGetAssetResu
 	return true
 }
 
-func (p *PaymentServiceGetAssetResult) Field0DeepEqual(src *GetAssetResp) bool {
+func (p *PaymentServiceGetAssetsResult) Field0DeepEqual(src *GetAssetsResp) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false

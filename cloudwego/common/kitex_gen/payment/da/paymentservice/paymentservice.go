@@ -19,7 +19,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "PaymentService"
 	handlerType := (*da.PaymentService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"GetAsset": kitex.NewMethodInfo(getAssetHandler, newPaymentServiceGetAssetArgs, newPaymentServiceGetAssetResult, false),
+		"GetAssets": kitex.NewMethodInfo(getAssetsHandler, newPaymentServiceGetAssetsArgs, newPaymentServiceGetAssetsResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "da",
@@ -35,22 +35,22 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	return svcInfo
 }
 
-func getAssetHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*da.PaymentServiceGetAssetArgs)
-	realResult := result.(*da.PaymentServiceGetAssetResult)
-	success, err := handler.(da.PaymentService).GetAsset(ctx, realArg.Req)
+func getAssetsHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*da.PaymentServiceGetAssetsArgs)
+	realResult := result.(*da.PaymentServiceGetAssetsResult)
+	success, err := handler.(da.PaymentService).GetAssets(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newPaymentServiceGetAssetArgs() interface{} {
-	return da.NewPaymentServiceGetAssetArgs()
+func newPaymentServiceGetAssetsArgs() interface{} {
+	return da.NewPaymentServiceGetAssetsArgs()
 }
 
-func newPaymentServiceGetAssetResult() interface{} {
-	return da.NewPaymentServiceGetAssetResult()
+func newPaymentServiceGetAssetsResult() interface{} {
+	return da.NewPaymentServiceGetAssetsResult()
 }
 
 type kClient struct {
@@ -63,11 +63,11 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) GetAsset(ctx context.Context, req *da.GetAssetReq) (r *da.GetAssetResp, err error) {
-	var _args da.PaymentServiceGetAssetArgs
+func (p *kClient) GetAssets(ctx context.Context, req *da.GetAssetsReq) (r *da.GetAssetsResp, err error) {
+	var _args da.PaymentServiceGetAssetsArgs
 	_args.Req = req
-	var _result da.PaymentServiceGetAssetResult
-	if err = p.c.Call(ctx, "GetAsset", &_args, &_result); err != nil {
+	var _result da.PaymentServiceGetAssetsResult
+	if err = p.c.Call(ctx, "GetAssets", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

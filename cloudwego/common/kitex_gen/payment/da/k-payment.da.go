@@ -27,7 +27,7 @@ var (
 	_ = base0.KitexUnusedProtection
 )
 
-func (p *GetAssetReq) FastRead(buf []byte) (int, error) {
+func (p *GetAssetsReq) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
 	var l int
@@ -89,7 +89,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetAssetReq[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetAssetsReq[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
@@ -98,7 +98,7 @@ ReadStructEndError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *GetAssetReq) FastReadField1(buf []byte) (int, error) {
+func (p *GetAssetsReq) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
 	_, size, l, err := bthrift.Binary.ReadListBegin(buf[offset:])
@@ -129,13 +129,13 @@ func (p *GetAssetReq) FastReadField1(buf []byte) (int, error) {
 }
 
 // for compatibility
-func (p *GetAssetReq) FastWrite(buf []byte) int {
+func (p *GetAssetsReq) FastWrite(buf []byte) int {
 	return 0
 }
 
-func (p *GetAssetReq) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *GetAssetsReq) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "GetAssetReq")
+	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "GetAssetsReq")
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
 	}
@@ -144,9 +144,9 @@ func (p *GetAssetReq) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWri
 	return offset
 }
 
-func (p *GetAssetReq) BLength() int {
+func (p *GetAssetsReq) BLength() int {
 	l := 0
-	l += bthrift.Binary.StructBeginLength("GetAssetReq")
+	l += bthrift.Binary.StructBeginLength("GetAssetsReq")
 	if p != nil {
 		l += p.field1Length()
 	}
@@ -155,7 +155,7 @@ func (p *GetAssetReq) BLength() int {
 	return l
 }
 
-func (p *GetAssetReq) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *GetAssetsReq) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "userIds", thrift.LIST, 1)
 	listBeginOffset := offset
@@ -172,7 +172,7 @@ func (p *GetAssetReq) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWri
 	return offset
 }
 
-func (p *GetAssetReq) field1Length() int {
+func (p *GetAssetsReq) field1Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("userIds", thrift.LIST, 1)
 	l += bthrift.Binary.ListBeginLength(thrift.I64, len(p.UserIds))
@@ -183,7 +183,7 @@ func (p *GetAssetReq) field1Length() int {
 	return l
 }
 
-func (p *GetAssetResp) FastRead(buf []byte) (int, error) {
+func (p *GetAssetsResp) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
 	var l int
@@ -265,7 +265,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetAssetResp[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetAssetsResp[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
@@ -273,10 +273,10 @@ ReadFieldEndError:
 ReadStructEndError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 RequiredFieldNotSetError:
-	return offset, thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_GetAssetResp[fieldId]))
+	return offset, thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_GetAssetsResp[fieldId]))
 }
 
-func (p *GetAssetResp) FastReadField1(buf []byte) (int, error) {
+func (p *GetAssetsResp) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
 	_, size, l, err := bthrift.Binary.ReadListBegin(buf[offset:])
@@ -284,7 +284,7 @@ func (p *GetAssetResp) FastReadField1(buf []byte) (int, error) {
 	if err != nil {
 		return offset, err
 	}
-	p.UserAsset = make([]*base0.UserAsset, 0, size)
+	p.UserAssets = make([]*base0.UserAsset, 0, size)
 	for i := 0; i < size; i++ {
 		_elem := base0.NewUserAsset()
 		if l, err := _elem.FastRead(buf[offset:]); err != nil {
@@ -293,7 +293,7 @@ func (p *GetAssetResp) FastReadField1(buf []byte) (int, error) {
 			offset += l
 		}
 
-		p.UserAsset = append(p.UserAsset, _elem)
+		p.UserAssets = append(p.UserAssets, _elem)
 	}
 	if l, err := bthrift.Binary.ReadListEnd(buf[offset:]); err != nil {
 		return offset, err
@@ -303,7 +303,7 @@ func (p *GetAssetResp) FastReadField1(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *GetAssetResp) FastReadField255(buf []byte) (int, error) {
+func (p *GetAssetsResp) FastReadField255(buf []byte) (int, error) {
 	offset := 0
 
 	tmp := base.NewBaseResp()
@@ -317,13 +317,13 @@ func (p *GetAssetResp) FastReadField255(buf []byte) (int, error) {
 }
 
 // for compatibility
-func (p *GetAssetResp) FastWrite(buf []byte) int {
+func (p *GetAssetsResp) FastWrite(buf []byte) int {
 	return 0
 }
 
-func (p *GetAssetResp) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *GetAssetsResp) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "GetAssetResp")
+	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "GetAssetsResp")
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
 		offset += p.fastWriteField255(buf[offset:], binaryWriter)
@@ -333,9 +333,9 @@ func (p *GetAssetResp) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWr
 	return offset
 }
 
-func (p *GetAssetResp) BLength() int {
+func (p *GetAssetsResp) BLength() int {
 	l := 0
-	l += bthrift.Binary.StructBeginLength("GetAssetResp")
+	l += bthrift.Binary.StructBeginLength("GetAssetsResp")
 	if p != nil {
 		l += p.field1Length()
 		l += p.field255Length()
@@ -345,13 +345,13 @@ func (p *GetAssetResp) BLength() int {
 	return l
 }
 
-func (p *GetAssetResp) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *GetAssetsResp) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "userAsset", thrift.LIST, 1)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "userAssets", thrift.LIST, 1)
 	listBeginOffset := offset
 	offset += bthrift.Binary.ListBeginLength(thrift.STRUCT, 0)
 	var length int
-	for _, v := range p.UserAsset {
+	for _, v := range p.UserAssets {
 		length++
 		offset += v.FastWriteNocopy(buf[offset:], binaryWriter)
 	}
@@ -361,7 +361,7 @@ func (p *GetAssetResp) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWr
 	return offset
 }
 
-func (p *GetAssetResp) fastWriteField255(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *GetAssetsResp) fastWriteField255(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "baseResp", thrift.STRUCT, 255)
 	offset += p.BaseResp.FastWriteNocopy(buf[offset:], binaryWriter)
@@ -369,11 +369,11 @@ func (p *GetAssetResp) fastWriteField255(buf []byte, binaryWriter bthrift.Binary
 	return offset
 }
 
-func (p *GetAssetResp) field1Length() int {
+func (p *GetAssetsResp) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("userAsset", thrift.LIST, 1)
-	l += bthrift.Binary.ListBeginLength(thrift.STRUCT, len(p.UserAsset))
-	for _, v := range p.UserAsset {
+	l += bthrift.Binary.FieldBeginLength("userAssets", thrift.LIST, 1)
+	l += bthrift.Binary.ListBeginLength(thrift.STRUCT, len(p.UserAssets))
+	for _, v := range p.UserAssets {
 		l += v.BLength()
 	}
 	l += bthrift.Binary.ListEndLength()
@@ -381,7 +381,7 @@ func (p *GetAssetResp) field1Length() int {
 	return l
 }
 
-func (p *GetAssetResp) field255Length() int {
+func (p *GetAssetsResp) field255Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("baseResp", thrift.STRUCT, 255)
 	l += p.BaseResp.BLength()
@@ -389,7 +389,7 @@ func (p *GetAssetResp) field255Length() int {
 	return l
 }
 
-func (p *PaymentServiceGetAssetArgs) FastRead(buf []byte) (int, error) {
+func (p *PaymentServiceGetAssetsArgs) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
 	var l int
@@ -451,7 +451,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_PaymentServiceGetAssetArgs[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_PaymentServiceGetAssetsArgs[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
@@ -460,10 +460,10 @@ ReadStructEndError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *PaymentServiceGetAssetArgs) FastReadField1(buf []byte) (int, error) {
+func (p *PaymentServiceGetAssetsArgs) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := NewGetAssetReq()
+	tmp := NewGetAssetsReq()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
@@ -474,13 +474,13 @@ func (p *PaymentServiceGetAssetArgs) FastReadField1(buf []byte) (int, error) {
 }
 
 // for compatibility
-func (p *PaymentServiceGetAssetArgs) FastWrite(buf []byte) int {
+func (p *PaymentServiceGetAssetsArgs) FastWrite(buf []byte) int {
 	return 0
 }
 
-func (p *PaymentServiceGetAssetArgs) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *PaymentServiceGetAssetsArgs) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "GetAsset_args")
+	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "GetAssets_args")
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
 	}
@@ -489,9 +489,9 @@ func (p *PaymentServiceGetAssetArgs) FastWriteNocopy(buf []byte, binaryWriter bt
 	return offset
 }
 
-func (p *PaymentServiceGetAssetArgs) BLength() int {
+func (p *PaymentServiceGetAssetsArgs) BLength() int {
 	l := 0
-	l += bthrift.Binary.StructBeginLength("GetAsset_args")
+	l += bthrift.Binary.StructBeginLength("GetAssets_args")
 	if p != nil {
 		l += p.field1Length()
 	}
@@ -500,7 +500,7 @@ func (p *PaymentServiceGetAssetArgs) BLength() int {
 	return l
 }
 
-func (p *PaymentServiceGetAssetArgs) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *PaymentServiceGetAssetsArgs) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "req", thrift.STRUCT, 1)
 	offset += p.Req.FastWriteNocopy(buf[offset:], binaryWriter)
@@ -508,7 +508,7 @@ func (p *PaymentServiceGetAssetArgs) fastWriteField1(buf []byte, binaryWriter bt
 	return offset
 }
 
-func (p *PaymentServiceGetAssetArgs) field1Length() int {
+func (p *PaymentServiceGetAssetsArgs) field1Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("req", thrift.STRUCT, 1)
 	l += p.Req.BLength()
@@ -516,7 +516,7 @@ func (p *PaymentServiceGetAssetArgs) field1Length() int {
 	return l
 }
 
-func (p *PaymentServiceGetAssetResult) FastRead(buf []byte) (int, error) {
+func (p *PaymentServiceGetAssetsResult) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
 	var l int
@@ -578,7 +578,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_PaymentServiceGetAssetResult[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_PaymentServiceGetAssetsResult[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
@@ -587,10 +587,10 @@ ReadStructEndError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *PaymentServiceGetAssetResult) FastReadField0(buf []byte) (int, error) {
+func (p *PaymentServiceGetAssetsResult) FastReadField0(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := NewGetAssetResp()
+	tmp := NewGetAssetsResp()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
@@ -601,13 +601,13 @@ func (p *PaymentServiceGetAssetResult) FastReadField0(buf []byte) (int, error) {
 }
 
 // for compatibility
-func (p *PaymentServiceGetAssetResult) FastWrite(buf []byte) int {
+func (p *PaymentServiceGetAssetsResult) FastWrite(buf []byte) int {
 	return 0
 }
 
-func (p *PaymentServiceGetAssetResult) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *PaymentServiceGetAssetsResult) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "GetAsset_result")
+	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "GetAssets_result")
 	if p != nil {
 		offset += p.fastWriteField0(buf[offset:], binaryWriter)
 	}
@@ -616,9 +616,9 @@ func (p *PaymentServiceGetAssetResult) FastWriteNocopy(buf []byte, binaryWriter 
 	return offset
 }
 
-func (p *PaymentServiceGetAssetResult) BLength() int {
+func (p *PaymentServiceGetAssetsResult) BLength() int {
 	l := 0
-	l += bthrift.Binary.StructBeginLength("GetAsset_result")
+	l += bthrift.Binary.StructBeginLength("GetAssets_result")
 	if p != nil {
 		l += p.field0Length()
 	}
@@ -627,7 +627,7 @@ func (p *PaymentServiceGetAssetResult) BLength() int {
 	return l
 }
 
-func (p *PaymentServiceGetAssetResult) fastWriteField0(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *PaymentServiceGetAssetsResult) fastWriteField0(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	if p.IsSetSuccess() {
 		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "success", thrift.STRUCT, 0)
@@ -637,7 +637,7 @@ func (p *PaymentServiceGetAssetResult) fastWriteField0(buf []byte, binaryWriter 
 	return offset
 }
 
-func (p *PaymentServiceGetAssetResult) field0Length() int {
+func (p *PaymentServiceGetAssetsResult) field0Length() int {
 	l := 0
 	if p.IsSetSuccess() {
 		l += bthrift.Binary.FieldBeginLength("success", thrift.STRUCT, 0)
@@ -647,10 +647,10 @@ func (p *PaymentServiceGetAssetResult) field0Length() int {
 	return l
 }
 
-func (p *PaymentServiceGetAssetArgs) GetFirstArgument() interface{} {
+func (p *PaymentServiceGetAssetsArgs) GetFirstArgument() interface{} {
 	return p.Req
 }
 
-func (p *PaymentServiceGetAssetResult) GetResult() interface{} {
+func (p *PaymentServiceGetAssetsResult) GetResult() interface{} {
 	return p.Success
 }

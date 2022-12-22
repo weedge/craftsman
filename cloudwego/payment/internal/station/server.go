@@ -41,7 +41,7 @@ func DefaultServerOptions() *ServerOptions {
 
 // Run kitex server
 func (s *Server) Run(ctx context.Context) (err error) {
-	klog.SetLogger(logutils.NewkitexZapLogger(s.opts.LogLevel, s.opts.LogMeta))
+	klog.SetLogger(logutils.NewkitexZapKVLogger(s.opts.LogLevel, s.opts.LogMeta))
 	klog.SetLevel(s.opts.LogLevel.KitexLogLevel())
 
 	tracingProvider := provider.NewOpenTelemetryProvider(

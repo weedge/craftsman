@@ -17,9 +17,9 @@ import (
 )
 
 type Server struct {
-	opts        *ServerOptions
-	svc         da.PaymentService
-	kitexLogger klog.FullLogger
+	opts          *ServerOptions
+	svc           da.PaymentService
+	kitexKVLogger logutils.IKitexZapKVLogger
 }
 
 type ServerOptions struct {
@@ -41,7 +41,7 @@ func DefaultServerOptions() *ServerOptions {
 
 // Run reviews server
 func (s *Server) Run(ctx context.Context) error {
-	klog.SetLogger(s.kitexLogger)
+	klog.SetLogger(s.kitexKVLogger)
 	klog.SetLevel(s.opts.LogLevel.KitexLogLevel())
 
 	tracingProvider := provider.NewOpenTelemetryProvider(

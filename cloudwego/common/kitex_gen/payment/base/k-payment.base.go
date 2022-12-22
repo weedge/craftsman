@@ -79,7 +79,7 @@ func (p *UserAsset) FastRead(buf []byte) (int, error) {
 				}
 			}
 		case 3:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.I64 {
 				l, err = p.FastReadField3(buf[offset:])
 				offset += l
 				if err != nil {
@@ -175,7 +175,7 @@ func (p *UserAsset) FastReadField2(buf []byte) (int, error) {
 func (p *UserAsset) FastReadField3(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadI32(buf[offset:]); err != nil {
+	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
@@ -237,8 +237,8 @@ func (p *UserAsset) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWrite
 
 func (p *UserAsset) fastWriteField3(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "assetCn", thrift.I32, 3)
-	offset += bthrift.Binary.WriteI32(buf[offset:], p.AssetCn)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "assetCn", thrift.I64, 3)
+	offset += bthrift.Binary.WriteI64(buf[offset:], p.AssetCn)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -264,8 +264,8 @@ func (p *UserAsset) field2Length() int {
 
 func (p *UserAsset) field3Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("assetCn", thrift.I32, 3)
-	l += bthrift.Binary.I32Length(p.AssetCn)
+	l += bthrift.Binary.FieldBeginLength("assetCn", thrift.I64, 3)
+	l += bthrift.Binary.I64Length(p.AssetCn)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l

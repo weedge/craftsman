@@ -14,6 +14,7 @@ const (
 	Err_GateWayBadRequest     Err = 100000
 	Err_InteractionBadRequest Err = 10000
 	Err_PaymentBadRequest     Err = 20000
+	Err_PaymentDbInteralError Err = 20001
 	Err_IMBadRequest          Err = 30000
 )
 
@@ -25,6 +26,8 @@ func (p Err) String() string {
 		return "InteractionBadRequest"
 	case Err_PaymentBadRequest:
 		return "PaymentBadRequest"
+	case Err_PaymentDbInteralError:
+		return "PaymentDbInteralError"
 	case Err_IMBadRequest:
 		return "IMBadRequest"
 	}
@@ -39,6 +42,8 @@ func ErrFromString(s string) (Err, error) {
 		return Err_InteractionBadRequest, nil
 	case "PaymentBadRequest":
 		return Err_PaymentBadRequest, nil
+	case "PaymentDbInteralError":
+		return Err_PaymentDbInteralError, nil
 	case "IMBadRequest":
 		return Err_IMBadRequest, nil
 	}
