@@ -19,9 +19,11 @@ GORM_GEN_OUTPATH ?= ./internal/da/dao
 
 .PHONY: help
 help:
-	@echo "help:\n"
-	@echo "use [ make gorm-gen ] cmd to generate da dao,model\n"
-	@echo "use [ make mysql-dump-table] cmd to dump create table sql\n"
+	@echo "help:"
+	@echo "use [ make gorm-gen ] cmd to generate da dao,model"
+	@echo "use [ make wire-gen ] cmd to generate server by using injector"
+	@echo "use [ make mysql-dump-table] cmd to dump create table sql"
+	@echo "use [ make build] cmd to exec go build on local"
 
 .PHONY: mysql-dump-table
 mysql-dump-table:
@@ -48,7 +50,7 @@ wire-gen:
 
 
 
-# from caicloud
+# change from caicloud
 # Module name.
 NAME := payment
 # Project main package location.
@@ -67,7 +69,8 @@ BUILDDATE    ?= $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 VERSION      ?= latest
 appVersion   ?= $(VERSION)
 
-.PHONY: build-local
+.PHONY: build build-local
+build: build-local
 build-local:
 	@go build -v -o $(OUTPUT_DIR)/$(NAME)                                  \
 	  -ldflags "-s -w -X $(GOCOMMON)/version.module=$(NAME)                \
@@ -76,4 +79,4 @@ build-local:
 	    -X $(GOCOMMON)/version.gitCommit=$(GITCOMMIT)                      \
 	    -X $(GOCOMMON)/version.gitTreeState=$(GITTREESTATE)                \
 	    -X $(GOCOMMON)/version.buildDate=$(BUILDDATE)"                     \
-	  $(CMD_DIR);
+	  $(CMD_DIR) && chmod +x $(OUTPUT_DIR)/$(NAME);

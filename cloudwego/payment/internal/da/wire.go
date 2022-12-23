@@ -24,7 +24,6 @@ func NewServer(ctx context.Context) (*Server, error) {
 
 		logutils.NewkitexZapKVLogger,
 		wire.Bind(new(gorm.IkvLogger), new(logutils.IKitexZapKVLogger)),
-
 		injectors.InitMysqlDBClient,
 		NewSvc,
 

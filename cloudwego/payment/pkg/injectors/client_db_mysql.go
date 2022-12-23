@@ -14,8 +14,8 @@ type MysqlDBClientOptions struct {
 	Name                 string         `mapstructure:"name"`
 	DbEngine             string         `mapstructure:"dbEngine"`
 	DSN                  string         `mapstructure:"dsn"`
-	MaxIdleConns         int            `mapstructure:"maxidleconns"`
-	MaxOpenConns         int            `mapstructure:"maxopenconns"`
+	MaxIdleConns         int            `mapstructure:"maxIdleConns"`
+	MaxOpenConns         int            `mapstructure:"maxOpenConns"`
 	ConnMaxLifeTime      time.Duration  `mapstructure:"connMaxLifeTime"`
 	SlowSqlTimeThreshold time.Duration  `mapstructure:"slowSqlTimeThreshold"`
 	TraceLogLevel        logutils.Level `mapstructure:"traceLogLevel"`
@@ -23,12 +23,14 @@ type MysqlDBClientOptions struct {
 
 func DefaultMysqlDBClientOptions() *MysqlDBClientOptions {
 	return &MysqlDBClientOptions{
-		Name:            "default",
-		DbEngine:        "mysql-innodb",
-		DSN:             "",
-		MaxIdleConns:    10,
-		MaxOpenConns:    1000,
-		ConnMaxLifeTime: 3600 * time.Second,
+		Name:                 "default",
+		DbEngine:             "mysql-innodb",
+		DSN:                  "",
+		MaxIdleConns:         10,
+		MaxOpenConns:         1000,
+		ConnMaxLifeTime:      3600 * time.Second,
+		SlowSqlTimeThreshold: 200 * time.Millisecond,
+		TraceLogLevel:        logutils.LevelTrace,
 	}
 }
 

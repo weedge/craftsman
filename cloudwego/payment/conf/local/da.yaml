@@ -1,0 +1,17 @@
+server:
+  addr: 0.0.0.0:8003
+  logLevel: debug
+  projectName: payment
+  logMeta:
+    str: t1
+    int: 123
+    float: 1.23
+mysqlDBClient:
+  name: pay
+  dbEngine: mysql8-innodb
+  dsn: root:123@tcp(127.0.0.1:3306)/pay?charset=utf8mb4&parseTime=True&loc=Local
+  maxIdleConns: 100
+  maxOpenConns: 1000
+  connMaxLifeTime: 3600000000000
+  slowSqlTimeThreshold: 200000000
+  traceLogLevel: debug

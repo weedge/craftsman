@@ -6,12 +6,13 @@ require (
 	github.com/cloudwego/kitex v0.4.4
 	github.com/google/wire v0.5.0
 	github.com/kitex-contrib/obs-opentelemetry v0.1.0
+	github.com/spf13/cobra v1.6.1
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.14.0
-	github.com/weedge/craftsman/cloudwego/common v0.0.0-20221220110835-524bfda8e0e3
+	github.com/weedge/craftsman/cloudwego/common v0.0.0-20221222163618-b39534d1822c
 	github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm v0.0.0-20221220110835-524bfda8e0e3
-	github.com/weedge/craftsman/cloudwego/kitex-contrib/obs-opentelemetry/logging/zap v0.0.0-20221220110835-524bfda8e0e3
-	go.opentelemetry.io/otel v1.11.2
+	github.com/weedge/craftsman/cloudwego/kitex-contrib/obs-opentelemetry/logging/zap v0.0.0-20221223095825-c813970f6b4f
+	go.opentelemetry.io/otel v1.11.1
 	go.uber.org/zap v1.24.0
 	gorm.io/driver/mysql v1.4.3
 	gorm.io/gen v0.3.18
@@ -22,7 +23,7 @@ require (
 require (
 	github.com/apache/thrift v0.13.0 // indirect
 	github.com/bytedance/gopkg v0.0.0-20220531084716-665b4f21126f // indirect
-	github.com/cenkalti/backoff/v4 v4.1.3 // indirect
+	github.com/cenkalti/backoff/v4 v4.2.0 // indirect
 	github.com/chenzhuoyu/iasm v0.0.0-20220818063314-28c361dae733 // indirect
 	github.com/choleraehyq/pid v0.0.15 // indirect
 	github.com/cloudwego/fastpb v0.0.3 // indirect
@@ -37,6 +38,7 @@ require (
 	github.com/google/pprof v0.0.0-20220608213341-c488b8fa1db3 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/jhump/protoreflect v1.8.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
@@ -58,18 +60,18 @@ require (
 	go.opentelemetry.io/contrib/instrumentation/runtime v0.32.0 // indirect
 	go.opentelemetry.io/contrib/propagators/b3 v1.9.0 // indirect
 	go.opentelemetry.io/contrib/propagators/ot v1.9.0 // indirect
-	go.opentelemetry.io/otel/exporters/otlp/internal/retry v1.9.0 // indirect
+	go.opentelemetry.io/otel/exporters/otlp/internal/retry v1.11.2 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlpmetric v0.31.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc v0.31.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.9.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.9.0 // indirect
 	go.opentelemetry.io/otel/metric v0.31.0 // indirect
-	go.opentelemetry.io/otel/sdk v1.11.2 // indirect
+	go.opentelemetry.io/otel/sdk v1.11.1 // indirect
 	go.opentelemetry.io/otel/sdk/metric v0.31.0 // indirect
-	go.opentelemetry.io/otel/trace v1.11.2 // indirect
-	go.opentelemetry.io/proto/otlp v0.18.0 // indirect
-	go.uber.org/atomic v1.9.0 // indirect
-	go.uber.org/multierr v1.8.0 // indirect
+	go.opentelemetry.io/otel/trace v1.11.1 // indirect
+	go.opentelemetry.io/proto/otlp v0.19.0 // indirect
+	go.uber.org/atomic v1.10.0 // indirect
+	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/arch v0.0.0-20220722155209-00200b7164a7 // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
 	golang.org/x/net v0.0.0-20221014081412-f15817d10f9b // indirect
@@ -78,7 +80,7 @@ require (
 	golang.org/x/text v0.4.0 // indirect
 	golang.org/x/tools v0.1.12 // indirect
 	google.golang.org/genproto v0.0.0-20221024183307-1bc688fe9f3e // indirect
-	google.golang.org/grpc v1.50.1 // indirect
+	google.golang.org/grpc v1.51.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
@@ -89,7 +91,7 @@ require (
 
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
-replace github.com/weedge/craftsman/cloudwego/common => ../common
+//replace github.com/weedge/craftsman/cloudwego/common => ../common
 
 //replace github.com/weedge/craftsman/cloudwego/kitex-contrib/obs-opentelemetry/logging/zap => ../kitex-contrib/obs-opentelemetry/logging/zap
 

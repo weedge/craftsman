@@ -1,6 +1,7 @@
 package da
 
 import (
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/configparser"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/injectors"
 )
@@ -31,6 +32,8 @@ func Configure(configProvider configparser.Provider) (*Options, error) {
 	if err = cp.UnmarshalExact(opt); err != nil {
 		return nil, err
 	}
+
+	klog.Infof("server: %+v, mysqlDBClient: %+v", opt.Server, opt.MysqlDBClient)
 
 	return opt, nil
 }

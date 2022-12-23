@@ -43,6 +43,7 @@ func ZapOptions(meta map[string]interface{}) (opts []zap.Option) {
 	}
 	opts = append(opts, zap.Fields(fields...))
 	opts = append(opts, zap.AddCaller())
+	opts = append(opts, zap.AddCallerSkip(3))
 	opts = append(opts, zap.Development())
 
 	return
