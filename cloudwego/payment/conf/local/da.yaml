@@ -6,6 +6,7 @@ server:
     str: t1
     int: 123
     float: 1.23
+  oltpCollectorGrpcEndpoint: 0.0.0.0:4317
 mysqlDBClient:
   name: pay
   dbEngine: mysql8-innodb

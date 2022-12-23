@@ -23,19 +23,21 @@ type Server struct {
 }
 
 type ServerOptions struct {
-	Addr        string                 `mapstructure:"addr"`
-	LogLevel    logutils.Level         `mapstructure:"logLevel"`
-	ProjectName string                 `mapstructure:"projectName"`
-	LogMeta     map[string]interface{} `mapstructure:"logMeta"`
+	Addr                      string                 `mapstructure:"addr"`
+	LogLevel                  logutils.Level         `mapstructure:"logLevel"`
+	ProjectName               string                 `mapstructure:"projectName"`
+	LogMeta                   map[string]interface{} `mapstructure:"logMeta"`
+	OltpGrpcCollectorEndpoint string                 `mapstructure:"oltpCollectorGrpcEndpoint"`
 }
 
 // DefaultServerOptions default opts
 func DefaultServerOptions() *ServerOptions {
 	return &ServerOptions{
-		Addr:        ":8003",
-		LogLevel:    logutils.LevelDebug,
-		ProjectName: constants.ProjectName,
-		LogMeta:     map[string]interface{}{},
+		Addr:                      ":8003",
+		LogLevel:                  logutils.LevelDebug,
+		ProjectName:               constants.ProjectName,
+		LogMeta:                   map[string]interface{}{},
+		OltpGrpcCollectorEndpoint: ":4317",
 	}
 }
 
@@ -45,6 +47,9 @@ func (s *Server) Run(ctx context.Context) error {
 	klog.SetLevel(s.opts.LogLevel.KitexLogLevel())
 
 	tracingProvider := provider.NewOpenTelemetryProvider(
+		provider.WithExportEndpoint(s.opts.OltpGrpcCollectorEndpoint),
+		provider.WithEnableMetrics(true),
+		provider.WithEnableTracing(true),
 		provider.WithServiceName(strings.Join([]string{s.opts.ProjectName, commonConstants.MisDaServiceName}, ".")),
 		provider.WithInsecure(),
 	)
