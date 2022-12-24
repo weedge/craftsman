@@ -35,6 +35,7 @@ const (
 	LogTypeMqConsumer = "consumer" // mq consumer
 	LogTypeModule     = "module"   // dependent resource module (db,cache)
 	LogTypeHttpReq    = "httpreq"  // dependent http resource access lay request/response
+	LogTypeRpc        = "rpc"      // dependent rpc resource access lay
 	LogTypeJob        = "job"      // cron job
 )
 
@@ -43,16 +44,14 @@ const ()
 
 // access resource proto
 const (
-	ProtoKey       = "PROTO"
-	ProtoKeyHttp   = "http"
-	ProtoKeyGRPC   = "grpc"
-	ProtoKeyThrift = "thrift"
-	ProtoKeyDubbo  = "dubbo"
-	ProtoKeyRPCX   = "rpcx"
-	ProtoKeyRedis  = "redis"
-	ProtoKeyMongo  = "mongo"
-	ProtoKeyPgSql  = "pgsql"
-	ProtoKeyMySql  = "mysql"
+	ProtoKey          = "PROTO"
+	ProtoKeyHttp      = "http"
+	ProtoKeyGRPC      = "grpc"
+	ProtoKeyThriftRPC = "thrift"
+	ProtoKeyRedis     = "redis"
+	ProtoKeyMongo     = "mongo"
+	ProtoKeyPgSql     = "pgsql"
+	ProtoKeyMySql     = "mysql"
 )
 
 // cost
