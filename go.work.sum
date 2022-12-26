@@ -51,6 +51,7 @@ cloud.google.com/go/videointelligence v1.7.0/go.mod h1:k8pI/1wAhjznARtVT9U1llUaF
 cloud.google.com/go/vision/v2 v2.3.0/go.mod h1:UO61abBx9QRMFkNBbf1D8B1LXdS2cGiiCRx0vSpZoUo=
 cloud.google.com/go/webrisk v1.5.0/go.mod h1:iPG6fr52Tv7sGk0H6qUFzmL3HHZev1htXuWDEEsqMTg=
 cloud.google.com/go/workflows v1.7.0/go.mod h1:JhSrZuVZWuiDfKEFxU0/F1PQjmpnpcoISEXH2bcHC3M=
+github.com/cespare/xxhash v1.1.0 h1:a6HrQnmkObjyL+Gs60czilIUGqrzKutQD6XZog3p+ko=
 github.com/grpc-ecosystem/grpc-gateway v1.16.0 h1:gmcG1KaJ57LophUzW0Hy8NmPhnMZb4M0+kPpLofRdBo=
 github.com/weedge/craftsman/cloudwego/common v0.0.0-20221213175820-d0a4d460e70d/go.mod h1:He2Fdj987z+4nwv/BPiZ2O9eQZzBBGBL+r3N70pTHkw=
 github.com/weedge/craftsman/cloudwego/common v0.0.0-20221216155710-b65d4f8b5254/go.mod h1:FJ6AYfg5dYhGCyckmzOsKwENJkvmgXdUu1tW+J49JJY=
