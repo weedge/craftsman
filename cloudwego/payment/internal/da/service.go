@@ -8,17 +8,17 @@ import (
 	"github.com/weedge/craftsman/cloudwego/common/kitex_gen/common"
 	base0 "github.com/weedge/craftsman/cloudwego/common/kitex_gen/payment/base"
 	"github.com/weedge/craftsman/cloudwego/common/kitex_gen/payment/da"
-	"github.com/weedge/craftsman/cloudwego/payment/internal/da/dao"
+	"github.com/weedge/craftsman/cloudwego/payment/internal/da/domain"
 	"go.opentelemetry.io/otel/baggage"
 	"gorm.io/gorm"
 )
 
 type impl struct {
-	dbClient *gorm.DB
+	userAssetRepos domain.IUserAssetRepository
 }
 
-func NewSvc(dbClient *gorm.DB) da.PaymentService {
-	return &impl{dbClient: dbClient}
+func NewSvc(userAssetRepos domain.IUserAssetRepository) da.PaymentService {
+	return &impl{userAssetRepos: userAssetRepos}
 }
 
 func (i *impl) GetAssets(ctx context.Context, req *da.GetAssetsReq) (resp *da.GetAssetsResp, err error) {
@@ -27,8 +27,7 @@ func (i *impl) GetAssets(ctx context.Context, req *da.GetAssetsReq) (resp *da.Ge
 
 	resp = &da.GetAssetsResp{UserAssets: []*base0.UserAsset{}, BaseResp: &base.BaseResp{}}
 
-	userAssetDao := dao.Use(i.dbClient).UserAsset
-	items, err := userAssetDao.WithContext(ctx).Where(userAssetDao.UserID.In(req.UserIds...)).Find()
+	items, err := i.userAssetRepos.GetUserAssets(ctx, req.UserIds)
 	if err != nil && gorm.ErrRecordNotFound != err {
 		klog.CtxErrorf(ctx, "GetAssets err:%s", err.Error())
 		resp.BaseResp.SetErrCode(int64(common.Err_PaymentDbInteralError))

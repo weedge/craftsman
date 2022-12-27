@@ -8,6 +8,8 @@ package da
 
 import (
 	"context"
+	"github.com/weedge/craftsman/cloudwego/payment/internal/da/consumer"
+	"github.com/weedge/craftsman/cloudwego/payment/internal/da/repository/mysql"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/configparser"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/injectors"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/utils/logutils"
@@ -31,11 +33,16 @@ func NewServer(ctx context.Context) (*Server, error) {
 	if err != nil {
 		return nil, err
 	}
-	paymentService := NewSvc(db)
+	iUserAssetRepository := mysql.NewUserAssetRepository(db)
+	paymentService := NewSvc(iUserAssetRepository)
+	v2 := options.RmqConsumers
+	v3 := consumer.Init(v2)
 	server := &Server{
-		opts:          serverOptions,
-		svc:           paymentService,
-		kitexKVLogger: iKitexZapKVLogger,
+		opts:                serverOptions,
+		svc:                 paymentService,
+		kitexKVLogger:       iKitexZapKVLogger,
+		rmqConsumerOpts:     v2,
+		mapSubscribeHandler: v3,
 	}
 	return server, nil
 }

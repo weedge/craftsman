@@ -112,7 +112,7 @@ type RedisClientOptions struct {
 
 func DefaultRedisClientOptions() *RedisClientOptions {
 	return &RedisClientOptions{
-		Addr: "",
+		Addr: "localhost:6379",
 		RedisClientCommonOptions: RedisClientCommonOptions{
 			Password: "",
 			Username: "",

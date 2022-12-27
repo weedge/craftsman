@@ -13,13 +13,16 @@ import (
 	"github.com/weedge/craftsman/cloudwego/common/kitex_gen/payment/da/paymentservice"
 	commonConstants "github.com/weedge/craftsman/cloudwego/common/pkg/constants"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/constants"
+	"github.com/weedge/craftsman/cloudwego/payment/pkg/subscriber"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/utils/logutils"
 )
 
 type Server struct {
-	opts          *ServerOptions
-	svc           da.PaymentService
-	kitexKVLogger logutils.IKitexZapKVLogger
+	opts                *ServerOptions
+	svc                 da.PaymentService
+	kitexKVLogger       logutils.IKitexZapKVLogger
+	rmqConsumerOpts     map[string]*subscriber.RmqPushConsumerOptions
+	mapSubscribeHandler map[string]subscriber.IRocketMQConsumerSubscribeHandler
 }
 
 type ServerOptions struct {
@@ -45,6 +48,9 @@ func DefaultServerOptions() *ServerOptions {
 func (s *Server) Run(ctx context.Context) error {
 	klog.SetLogger(s.kitexKVLogger)
 	klog.SetLevel(s.opts.LogLevel.KitexLogLevel())
+
+	subscriber.InitPushConsumerSubscribes(s.rmqConsumerOpts, s.mapSubscribeHandler)
+	defer subscriber.Close()
 
 	tracingProvider := provider.NewOpenTelemetryProvider(
 		provider.WithExportEndpoint(s.opts.OltpGrpcCollectorEndpoint),

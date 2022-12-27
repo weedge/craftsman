@@ -7,5 +7,5 @@ import (
 )
 
 type IUserAssetRepository interface {
-	GetUserAssets(ctx context.Context, userIds []int64) ([]model.UserAsset, error)
+	GetUserAssets(ctx context.Context, userIds []int64) ([]*model.UserAsset, error)
 }

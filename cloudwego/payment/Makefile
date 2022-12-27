@@ -42,6 +42,7 @@ gorm-gen:
 		-fieldWithTypeTag true 				\
 
 
+# guides https://github.com/google/wire/blob/main/docs/guide.md
 .PHONY: wire-gen
 wire-gen:
 	@go install github.com/google/wire/cmd/wire@latest
