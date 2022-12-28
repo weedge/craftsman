@@ -17,9 +17,7 @@ const (
 	XRequestId           = "X-Request-ID"
 	CurrentUserId        = "Current-User-Id"
 
-	XB3ZipKinOpenTraceId = "x-b3-traceid"       // open tracing id for B3 ZipKin https://github.com/openzipkin/b3-propagation
-	XRequestRunPath      = "x-request-run-path" // for coreDNS https://{git branch}.develop.com, default master branch as base
-	TraceId              = "trace-id"           //the same to x-request-id  as trace log id
+	XB3ZipKinOpenTraceId = "x-b3-traceid" // open tracing id for B3 ZipKin https://github.com/openzipkin/b3-propagation
 )
 
 // mq property key
