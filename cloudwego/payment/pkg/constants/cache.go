@@ -9,6 +9,14 @@ const (
 	RedisClientTypeReplica = 1
 	RedisClientTypeCluster = 2
 )
+
+const (
+	RedisLuaAssetChangeResCodeSuccess  = 1
+	RedisLuaAssetChangeResCodeNoDone   = 0
+	RedisLuaAssetChangeResCodeNoExists = -1
+	RedisLuaAssetChangeResCodeNoEnough = -2
+)
+
 const (
 	RedisKeyPrefixUserAssetInfo     = "I.asset."
 	RedisKeyPrefixGiftInfo          = "I.gift."
@@ -31,11 +39,11 @@ const (
 	MaxRetries = 1000
 )
 const (
-	TimeOutSetAssetFromCB = 3 * time.Second
+	TimeOutSetAssetFromCB = 1 * time.Second
 )
 
-func GetUserAssetInfoKey(userId int64) string {
-	return fmt.Sprintf("%s{%d}", RedisKeyPrefixUserAssetInfo, userId)
+func GetUserAssetInfoKey(userId int64, assetType string) string {
+	return fmt.Sprintf("%s{%d}.{%s}", RedisKeyPrefixUserAssetInfo, userId, assetType)
 }
 func GetGiftInfoKey(giftId int64) string {
 	return fmt.Sprintf("%s{%d}", RedisKeyPrefixGiftInfo, giftId)

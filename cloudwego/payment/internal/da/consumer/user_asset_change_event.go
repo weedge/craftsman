@@ -9,13 +9,13 @@ import (
 	"github.com/bytedance/sonic"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/weedge/craftsman/cloudwego/common/kitex_gen/payment/station"
-	"github.com/weedge/craftsman/cloudwego/payment/internal/da/usecase"
+	"github.com/weedge/craftsman/cloudwego/payment/internal/da/domain"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/subscriber"
 )
 
 type UserAssetChangeEvent struct {
 	opt                   *subscriber.RmqPushConsumerOptions
-	userAssetEventUseCase *usecase.UserAssetEventUseCase
+	userAssetEventUseCase domain.IUserAssetEventUseCase
 }
 
 func (m *UserAssetChangeEvent) SubMsgsHandle(ctx context.Context, msgs ...*primitive.MessageExt) (res consumer.ConsumeResult, err error) {
@@ -34,6 +34,7 @@ func (m *UserAssetChangeEvent) SubMsgsHandle(ctx context.Context, msgs ...*primi
 			err = sonic.Unmarshal(msg.Body, event)
 			if err != nil {
 				klog.CtxErrorf(ctx, "json decode err: %s", err.Error())
+				return consumer.ConsumeSuccess, nil
 			}
 			err = m.userAssetEventUseCase.ChangeUsersAssetTx(ctx, event)
 

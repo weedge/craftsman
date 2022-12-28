@@ -5,7 +5,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/weedge/craftsman/cloudwego/payment/internal/da"
-	"github.com/weedge/craftsman/cloudwego/payment/pkg/subscriber"
 )
 
 func NewCommand() *cobra.Command {
@@ -15,8 +14,6 @@ func NewCommand() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx, cancel := context.WithCancel(context.Background())
 			defer cancel()
-
-			defer subscriber.Close()
 
 			server, err := da.NewServer(ctx)
 			if err != nil {
