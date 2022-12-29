@@ -10,6 +10,7 @@ enum Err{
 	// payment [20000 - 30000)
     PaymentBadRequest = 20000,
     PaymentDbInteralError = 20001,
+    PaymentStationInteralError = 20002,
 
 	// im [30000 - 40000)
     IMBadRequest = 30000,
