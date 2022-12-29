@@ -52,11 +52,13 @@ cloud.google.com/go/vision/v2 v2.3.0/go.mod h1:UO61abBx9QRMFkNBbf1D8B1LXdS2cGiiC
 cloud.google.com/go/webrisk v1.5.0/go.mod h1:iPG6fr52Tv7sGk0H6qUFzmL3HHZev1htXuWDEEsqMTg=
 cloud.google.com/go/workflows v1.7.0/go.mod h1:JhSrZuVZWuiDfKEFxU0/F1PQjmpnpcoISEXH2bcHC3M=
 github.com/cespare/xxhash v1.1.0 h1:a6HrQnmkObjyL+Gs60czilIUGqrzKutQD6XZog3p+ko=
+github.com/google/go-cmp v0.5.9/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
 github.com/grpc-ecosystem/grpc-gateway v1.16.0 h1:gmcG1KaJ57LophUzW0Hy8NmPhnMZb4M0+kPpLofRdBo=
-github.com/satori/go.uuid v1.2.0 h1:0uYX9dsZ2yD7q2RtLRtPSdGDWzjeM3TbMJP9utgA0ww=
+github.com/onsi/ginkgo/v2 v2.1.4 h1:GNapqRSid3zijZ9H77KrgVG4/8KqiyRsxcSxe+7ApXY=
 github.com/weedge/craftsman/cloudwego/common v0.0.0-20221213175820-d0a4d460e70d/go.mod h1:He2Fdj987z+4nwv/BPiZ2O9eQZzBBGBL+r3N70pTHkw=
 github.com/weedge/craftsman/cloudwego/common v0.0.0-20221216155710-b65d4f8b5254/go.mod h1:FJ6AYfg5dYhGCyckmzOsKwENJkvmgXdUu1tW+J49JJY=
 github.com/weedge/craftsman/cloudwego/common v0.0.0-20221220110835-524bfda8e0e3/go.mod h1:FJ6AYfg5dYhGCyckmzOsKwENJkvmgXdUu1tW+J49JJY=
+github.com/weedge/craftsman/cloudwego/common v0.0.0-20221222163618-b39534d1822c/go.mod h1:FJ6AYfg5dYhGCyckmzOsKwENJkvmgXdUu1tW+J49JJY=
 github.com/weedge/craftsman/cloudwego/kitex-contrib/obs-opentelemetry/logging/zap v0.0.0-20221220110835-524bfda8e0e3/go.mod h1:kEcVAesML80e/RBiXKOthCEYhrZqjieJAc8x0ehSszg=
 go.opentelemetry.io/otel/exporters/otlp/otlpmetric v0.30.0 h1:Os0ds8fJp2AUa9DNraFWIycgUzevz47i6UvnSh+8LQ0=
 go.opentelemetry.io/otel/exporters/otlp/otlpmetric v0.34.0 h1:kpskzLZ60cJ48SJ4uxWa6waBL+4kSV6nVK8rP+QM8Wg=

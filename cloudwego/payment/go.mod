@@ -122,6 +122,8 @@ require (
 
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
+replace go.opentelemetry.io/otel => go.opentelemetry.io/otel v1.11.1
+
 //replace github.com/weedge/craftsman/cloudwego/common => ../common
 
 //replace github.com/weedge/craftsman/cloudwego/kitex-contrib/obs-opentelemetry/logging/zap => ../kitex-contrib/obs-opentelemetry/logging/zap
