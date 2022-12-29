@@ -11,8 +11,8 @@ const (
 )
 
 const (
-	RedisLuaAssetChangeResCodeSuccess  = 1
-	RedisLuaAssetChangeResCodeNoDone   = 0
+	RedisLuaAssetChangeResCodeSuccess  = 0
+	RedisLuaAssetChangeResCodeNoDone   = -3
 	RedisLuaAssetChangeResCodeNoExists = -1
 	RedisLuaAssetChangeResCodeNoEnough = -2
 )

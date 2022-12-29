@@ -71,6 +71,7 @@ func InitPushConsumerSubscribes(opts map[string]*RmqPushConsumerOptions, mapSubs
 }
 
 func initPushConsumerSubscribe(opt *RmqPushConsumerOptions, handler IRocketMQConsumerSubscribeHandler) (c rocketmq.PushConsumer, err error) {
+	//todo: add otel tracing
 
 	traceCfg := &primitive.TraceConfig{
 		Access:    primitive.Local,

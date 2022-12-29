@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/bytedance/sonic"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/go-redis/redis/v8"
 	"github.com/weedge/craftsman/cloudwego/common/kitex_gen/payment/base"
 	"github.com/weedge/craftsman/cloudwego/common/kitex_gen/payment/station"
@@ -23,28 +24,40 @@ func NewUserAssetEventRepository(redisClient redis.UniversalClient, cb domain.IU
 	return &UserAssetEventRepository{redisClient: redisClient, cb: cb, changeAssetTxMethod: method}
 }
 
-func (m *UserAssetEventRepository) UserAssetChangeTx(ctx context.Context, eventId string, changeInfo *station.UserAssetChangeInfo, handle domain.AssetIncrHandler) error {
+func (m *UserAssetEventRepository) UserAssetChangeTx(ctx context.Context, eventId string, changeInfo *station.UserAssetChangeInfo, handle domain.AssetIncrHandler) (userAsset *base.UserAsset, err error) {
+	var assetCn int64
 	switch strings.ToLower(m.changeAssetTxMethod) {
 	case "cas":
-		m.watchUserAssetChangeTx(ctx, eventId, changeInfo, handle)
+		assetCn, err = m.watchUserAssetChangeTx(ctx, eventId, changeInfo, handle)
 	case "lua":
-		m.userAssetChangeLuaAtomicTx(ctx, eventId, changeInfo, handle)
+		assetCn, err = m.userAssetChangeLuaAtomicTx(ctx, eventId, changeInfo, handle)
 	default:
-		m.userAssetChangeLuaAtomicTx(ctx, eventId, changeInfo, handle)
+		assetCn, err = m.userAssetChangeLuaAtomicTx(ctx, eventId, changeInfo, handle)
+	}
+	if err != nil {
+		klog.CtxErrorf(ctx, "%s UserAssetChangeTx err:%s", m.changeAssetTxMethod, err.Error())
+		return
 	}
 
-	return nil
+	userAsset = &base.UserAsset{
+		UserId:    changeInfo.UserId,
+		AssetType: changeInfo.AssetType,
+		AssetCn:   assetCn,
+	}
+
+	return
 }
 
-func (m *UserAssetEventRepository) watchUserAssetChangeTx(ctx context.Context, eventId string, changeInfo *station.UserAssetChangeInfo, handle domain.AssetIncrHandler) error {
+func (m *UserAssetEventRepository) watchUserAssetChangeTx(ctx context.Context, eventId string, changeInfo *station.UserAssetChangeInfo, handle domain.AssetIncrHandler) (int64, error) {
 	key := constants.GetUserAssetInfoKey(changeInfo.UserId, changeInfo.AssetType.String())
 	eventMsgKey := constants.GetUserAssetEventMsgKey(changeInfo.UserId, eventId)
 
 	err := m.cb.SetAsset(ctx, changeInfo.UserId, changeInfo.AssetType)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
+	var assertCn int64
 	// Transactional function.
 	txf := func(tx *redis.Tx) error {
 		// Get the current value or zero.
@@ -75,7 +88,13 @@ func (m *UserAssetEventRepository) watchUserAssetChangeTx(ctx context.Context, e
 			pipe.Set(ctx, eventMsgKey, 1, constants.RedisKeyExpireUserAssetInfo)
 			return nil
 		})
-		return err
+		if err != nil {
+			return err
+		}
+
+		assertCn = assetObj.AssetCn
+
+		return nil
 	}
 
 	// Retry if the key has been changed.
@@ -83,7 +102,7 @@ func (m *UserAssetEventRepository) watchUserAssetChangeTx(ctx context.Context, e
 		err := m.redisClient.Watch(ctx, txf, key)
 		if err == nil {
 			// Success.
-			return nil
+			return assertCn, nil
 		}
 		if err == redis.TxFailedErr {
 			//println(key, err.Error())
@@ -92,46 +111,60 @@ func (m *UserAssetEventRepository) watchUserAssetChangeTx(ctx context.Context, e
 		}
 
 		// Return any other error.
-		return err
+		return 0, err
 	}
 
-	return domain.ErrorWatchAssetCasLoopMaxRetry
+	return 0, domain.ErrorWatchAssetCasLoopMaxRetry
 }
 
-func (m *UserAssetEventRepository) userAssetChangeLuaAtomicTx(ctx context.Context, eventId string, changeInfo *station.UserAssetChangeInfo, handle domain.AssetIncrHandler) error {
+func (m *UserAssetEventRepository) userAssetChangeLuaAtomicTx(ctx context.Context, eventId string, changeInfo *station.UserAssetChangeInfo, handle domain.AssetIncrHandler) (int64, error) {
 	key := constants.GetUserAssetInfoKey(changeInfo.UserId, changeInfo.AssetType.String())
 	eventMsgKey := constants.GetUserAssetEventMsgKey(changeInfo.UserId, eventId)
 
 	val, err := m.redisClient.Eval(ctx, assetStringChangeLua, []string{key, eventMsgKey},
 		handle(ctx), constants.RedisKeyExpireUserAssetInfo.Seconds(), constants.RedisKeyExpireAssetEventMsg.Seconds()).Result()
 	if err != nil {
-		return err
+		return 0, err
 	}
-	if val == constants.RedisLuaAssetChangeResCodeSuccess {
-		return nil
+	if val.(int64) >= constants.RedisLuaAssetChangeResCodeSuccess {
+		return val.(int64), nil
 	}
 	if val == constants.RedisLuaAssetChangeResCodeNoEnough {
-		return domain.ErrorNoEnoughAsset
+		return 0, domain.ErrorNoEnoughAsset
 	}
 
 	if val == constants.RedisLuaAssetChangeResCodeNoExists {
 		err = m.cb.SetAsset(ctx, changeInfo.UserId, changeInfo.AssetType)
 		if err != nil {
-			return err
+			return 0, err
 		}
 
 		val, err = m.redisClient.Eval(ctx, assetStringChangeLua, []string{key, eventMsgKey},
 			handle(ctx), constants.RedisKeyExpireUserAssetInfo.Seconds(), constants.RedisKeyExpireAssetEventMsg.Seconds()).Result()
 		if err != nil {
-			return err
+			return 0, err
 		}
-		if val == constants.RedisLuaAssetChangeResCodeSuccess {
-			return nil
+		if val.(int64) >= constants.RedisLuaAssetChangeResCodeSuccess {
+			return val.(int64), nil
 		}
 		if val == constants.RedisLuaAssetChangeResCodeNoEnough {
-			return domain.ErrorNoEnoughAsset
+			return 0, domain.ErrorNoEnoughAsset
 		}
 	}
 
-	return nil
+	return 0, nil
+}
+
+func (m *UserAssetEventRepository) GetUserAssetEventMsg(ctx context.Context, userId int64, eventId string) (res int, err error) {
+	eventMsgKey := constants.GetUserAssetEventMsgKey(userId, eventId)
+	res, eventErr := m.redisClient.Get(ctx, eventMsgKey).Int()
+
+	if eventErr != nil && eventErr != redis.Nil {
+		klog.CtxErrorf(ctx, "GetUserAssetEventMsg key:%s err:%s", eventMsgKey, err.Error())
+		err = domain.ErrorInternalRedis
+		return
+	}
+	klog.CtxInfof(ctx, "GetUserAssetEventMsg key:%s res:%s ok", eventMsgKey, res)
+
+	return
 }
