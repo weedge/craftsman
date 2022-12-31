@@ -48,6 +48,13 @@ func DefaultRmqPushConsumerOptions() *RmqPushConsumerOptions {
 }
 
 type IRocketMQConsumerSubscribeHandler interface {
+
+	// SubMsgsHandle sub some msg to consume
+	// maybe u can concurency batch do to improve throughput rate,
+	// with min(ConsumeMessageBatchMaxSize,PullBatchSize)>1;
+	// but batch done to return commit status
+	// so pelease Idempotent consume every msg
+	// notice: PullBatchSize/min(ConsumeMessageBatchMaxSize,PullBatchSize) subscribes are concurency
 	SubMsgsHandle(ctx context.Context, msgs ...*primitive.MessageExt) (consumer.ConsumeResult, error)
 }
 
@@ -55,6 +62,7 @@ var (
 	gMapPushConsumer = map[string]rocketmq.PushConsumer{}
 )
 
+// InitPushConsumerSubscribes support msg tag subscribe
 func InitPushConsumerSubscribes(opts map[string]*RmqPushConsumerOptions, mapSubscribeHandler map[string]IRocketMQConsumerSubscribeHandler) {
 	rlog.SetLogLevel("error")
 	primitive.PanicHandler = func(i interface{}) { klog.Errorf("[panic] %v", i) }
@@ -80,6 +88,7 @@ func initPushConsumerSubscribe(opt *RmqPushConsumerOptions, handler IRocketMQCon
 	}
 	c, err = rocketmq.NewPushConsumer(
 		consumer.WithGroupName(opt.GroupName),
+		consumer.WithConsumerModel(consumer.Clustering),
 		consumer.WithNsResolver(primitive.NewPassthroughResolver(opt.NameSrvs)),
 		consumer.WithRetry(opt.PullRetryCn),
 		consumer.WithTrace(traceCfg),

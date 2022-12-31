@@ -27,9 +27,9 @@ func NewUserAssetEventRepository(redisClient redis.UniversalClient, cb domain.IU
 func (m *UserAssetEventRepository) UserAssetChangeTx(ctx context.Context, eventId string, changeInfo *station.UserAssetChangeInfo, handle domain.AssetIncrHandler) (userAsset *base.UserAsset, err error) {
 	var assetCn int64
 	switch strings.ToLower(m.changeAssetTxMethod) {
-	case "cas":
+	case constants.UserAssetTxMethodCas:
 		assetCn, err = m.watchUserAssetChangeTx(ctx, eventId, changeInfo, handle)
-	case "lua":
+	case constants.UserAssetTxMethodLua:
 		assetCn, err = m.userAssetChangeLuaAtomicTx(ctx, eventId, changeInfo, handle)
 	default:
 		assetCn, err = m.userAssetChangeLuaAtomicTx(ctx, eventId, changeInfo, handle)

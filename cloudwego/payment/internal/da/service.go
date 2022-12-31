@@ -17,7 +17,7 @@ type impl struct {
 	userAssetRepos domain.IUserAssetRepository
 }
 
-func NewSvc(userAssetRepos domain.IUserAssetRepository) da.PaymentService {
+func NewService(userAssetRepos domain.IUserAssetRepository) da.PaymentService {
 	return &impl{userAssetRepos: userAssetRepos}
 }
 

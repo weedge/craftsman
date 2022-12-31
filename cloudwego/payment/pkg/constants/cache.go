@@ -57,6 +57,12 @@ func GetRoomInfoKey(roomId int64) string {
 func GetUserAssetInfoLockKey(userId int64, tag string) string {
 	return fmt.Sprintf("%s{%d}.%s", RedisKeyPrefixUserAssetInfoLock, userId, tag)
 }
-func GetUserAssetEventMsgKey(opUserId int64, eventId string) string {
-	return fmt.Sprintf("%s{%d}.%s", RedisKeyPrefixAssetEventMsg, opUserId, eventId)
+func GetUserAssetEventMsgKey(userId int64, eventId string) string {
+	return fmt.Sprintf("%s{%d}.%s", RedisKeyPrefixAssetEventMsg, userId, eventId)
 }
+
+const (
+	UserAssetTxMethodCas         = "cas"
+	UserAssetTxMethodLua         = "lua"
+	UserAssetTxMethodFunctionLua = "function-lua"
+)

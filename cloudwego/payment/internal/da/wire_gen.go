@@ -10,6 +10,7 @@ import (
 	"context"
 	"github.com/weedge/craftsman/cloudwego/payment/internal/da/consumer"
 	"github.com/weedge/craftsman/cloudwego/payment/internal/da/repository/mysql"
+	"github.com/weedge/craftsman/cloudwego/payment/internal/da/usecase"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/configparser"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/injectors"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/utils/logutils"
@@ -17,7 +18,7 @@ import (
 
 // Injectors from wire.go:
 
-// NewServer build server with wire
+// NewServer build server with wire, dependency obj inject, so init random
 func NewServer(ctx context.Context) (*Server, error) {
 	provider := configparser.Default()
 	options, err := Configure(provider)
@@ -34,9 +35,12 @@ func NewServer(ctx context.Context) (*Server, error) {
 		return nil, err
 	}
 	iUserAssetRepository := mysql.NewUserAssetRepository(db)
-	paymentService := NewSvc(iUserAssetRepository)
+	paymentService := NewService(iUserAssetRepository)
 	v2 := options.RmqConsumers
-	v3 := consumer.Init(v2)
+	iUserAssetEventRepository := mysql.NewUserAssetEventRepository(db)
+	iUserAssetRecordRepository := mysql.NewUserAssetRecordRepository(db)
+	iUserAssetEventUseCase := usecase.NewUserAssetEventUseCase(iUserAssetEventRepository, iUserAssetRecordRepository)
+	v3 := consumer.RegisterUserAssetEvent(v2, iUserAssetEventUseCase)
 	server := &Server{
 		opts:                serverOptions,
 		svc:                 paymentService,

@@ -16,7 +16,7 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.14.0
 	github.com/stretchr/testify v1.8.1
-	github.com/weedge/craftsman/cloudwego/common v0.0.0-20221229162940-f287eab4fdfd
+	github.com/weedge/craftsman/cloudwego/common v0.0.0-20221231141216-126df205f853
 	github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm v0.0.0-20221220110835-524bfda8e0e3
 	github.com/weedge/craftsman/cloudwego/kitex-contrib/obs-opentelemetry/logging/zap v0.0.0-20221223095825-c813970f6b4f
 	go.opentelemetry.io/otel v1.11.2
@@ -82,7 +82,6 @@ require (
 	github.com/spf13/afero v1.9.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
-	github.com/stathat/consistent v1.0.0 // indirect
 	github.com/stretchr/objx v0.5.0 // indirect
 	github.com/subosito/gotenv v1.4.1 // indirect
 	github.com/tidwall/gjson v1.13.0 // indirect
@@ -118,11 +117,16 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/datatypes v1.0.7 // indirect
 	gorm.io/hints v1.1.0 // indirect
+	stathat.com/c/consistent v1.0.0 // indirect
 )
 
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
 replace go.opentelemetry.io/otel => go.opentelemetry.io/otel v1.11.1
+
+replace github.com/apache/rocketmq-client-go/v2 => github.com/weedge/rocketmq-client-go/v2 v2.1.1-rc2.0.20221231031917-a5a28b2a124e
+
+//replace github.com/apache/rocketmq-client-go/v2 => github.com/weedge/rocketmq-client-go v1.2.4
 
 //replace github.com/weedge/craftsman/cloudwego/common => ../common
 

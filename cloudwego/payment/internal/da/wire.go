@@ -9,13 +9,14 @@ import (
 	"github.com/google/wire"
 	"github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm"
 	"github.com/weedge/craftsman/cloudwego/payment/internal/da/consumer"
-	"github.com/weedge/craftsman/cloudwego/payment/internal/da/repository/mysql"
+	"github.com/weedge/craftsman/cloudwego/payment/internal/da/repository"
+	"github.com/weedge/craftsman/cloudwego/payment/internal/da/usecase"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/configparser"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/injectors"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/utils/logutils"
 )
 
-// NewServer build server with wire
+// NewServer build server with wire, dependency obj inject, so init random
 func NewServer(ctx context.Context) (*Server, error) {
 	panic(wire.Build(
 		configparser.Default,
@@ -29,9 +30,11 @@ func NewServer(ctx context.Context) (*Server, error) {
 		injectors.InitMysqlDBClient,
 
 		//mysql.NewUserAssetRepository,
-		mysql.RepositorySet,
-		NewSvc,
-		consumer.Init,
+		repository.ProviderSet,
+		NewService,
+
+		usecase.ProviderSet,
+		consumer.RegisterUserAssetEvent,
 
 		wire.Struct(new(Server), "*"),
 	))

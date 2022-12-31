@@ -5,15 +5,14 @@ import (
 
 	"github.com/weedge/craftsman/cloudwego/common/kitex_gen/payment/station"
 	"github.com/weedge/craftsman/cloudwego/payment/internal/da/domain"
-	"github.com/weedge/craftsman/cloudwego/payment/internal/da/repository/mysql"
 )
 
 type UserAssetEventUseCase struct {
-	userAssetEventRepos  *mysql.UserAssetEventRepository
-	userAssetRecordRepos *mysql.UserAssetRecordRepository
+	userAssetEventRepos  domain.IUserAssetEventRepository
+	userAssetRecordRepos domain.IUserAssetRecordRepository
 }
 
-func NewUserAssetEventUseCase(userAssetEventRepos *mysql.UserAssetEventRepository, userAssetRecordRepos *mysql.UserAssetRecordRepository) domain.IUserAssetEventUseCase {
+func NewUserAssetEventUseCase(userAssetEventRepos domain.IUserAssetEventRepository, userAssetRecordRepos domain.IUserAssetRecordRepository) domain.IUserAssetEventUseCase {
 
 	return &UserAssetEventUseCase{
 		userAssetEventRepos:  userAssetEventRepos,

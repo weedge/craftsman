@@ -2,16 +2,28 @@ package station
 
 import (
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/configparser"
+	"github.com/weedge/craftsman/cloudwego/payment/pkg/constants"
+	"github.com/weedge/craftsman/cloudwego/payment/pkg/injectors"
 )
 
 type Options struct {
-	Server *ServerOptions `mapstructure:"server"`
+	Server                   *ServerOptions                       `mapstructure:"server"`
+	RedisClusterClient       *injectors.RedisClusterClientOptions `mapstructure:"redisClusterClient"`
+	AssetChangeEventProducer *injectors.RmqProducerClientOptions  `mapstructure:"assetChangeEventProducer"`
+	PaymentDaClient          *injectors.PaymentDaClientOptions    `mapstruct:"paymentDaClient"`
+
+	UserAssetTxMethod string `mapstructure:"userAssetTxMethod"`
 }
 
 // DefaultOptions default opts
 func DefaultOptions() *Options {
 	return &Options{
-		Server: DefaultServerOptions(),
+		Server:                   DefaultServerOptions(),
+		RedisClusterClient:       injectors.DefaultRedisClusterClientOptions(),
+		AssetChangeEventProducer: injectors.DefaultRmqProducerClientOptions(),
+		PaymentDaClient:          injectors.DefaultPaymentDaClientOptions(),
+
+		UserAssetTxMethod: constants.UserAssetTxMethodLua,
 	}
 }
 

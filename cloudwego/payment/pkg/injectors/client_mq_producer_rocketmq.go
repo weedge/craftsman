@@ -26,6 +26,8 @@ func DefaultRmqProducerClientOptions() *RmqProducerClientOptions {
 
 func InitRmqTransactionProducerClient(opts *RmqProducerClientOptions, listener primitive.TransactionListener) (p rocketmq.TransactionProducer, err error) {
 	rlog.SetLogLevel("error")
+	primitive.PanicHandler = func(i interface{}) { klog.Errorf("[panic] %v", i) }
+
 	namesrvs := opts.NameSrvs
 	groupName := opts.GroupName
 	traceCfg := &primitive.TraceConfig{

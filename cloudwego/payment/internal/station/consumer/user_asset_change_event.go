@@ -8,7 +8,8 @@ import (
 	"github.com/bytedance/sonic"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/weedge/craftsman/cloudwego/common/kitex_gen/payment/station"
-	"github.com/weedge/craftsman/cloudwego/payment/internal/da/domain"
+	"github.com/weedge/craftsman/cloudwego/payment/internal/station/domain"
+	"github.com/weedge/craftsman/cloudwego/payment/pkg/constants"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/containers"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/subscriber"
 )
@@ -39,8 +40,11 @@ func (m *UserAssetChangeEvent) SubMsgsHandle(ctx context.Context, msgs ...*primi
 			continue
 		}
 
-		// change user asset
-		err = m.userAssetEventUseCase.ChangeUsersAssetTx(ctx, event)
+		// consume user asset change event
+		_, err := m.userAssetEventUseCase.UserAssetChangeTx(ctx, constants.OpUserTypePassive, event, func(ctx context.Context) (incrAssetCn int64) {
+			incrAssetCn = int64(event.ToUserAssetChange.Incr)
+			return
+		})
 		if err != nil {
 			mapTxErr.Add(msg.MsgId, err)
 			continue

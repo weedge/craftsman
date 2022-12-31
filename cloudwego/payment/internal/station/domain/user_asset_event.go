@@ -15,5 +15,5 @@ type IUserAssetEventRepository interface {
 }
 
 type IUserAssetEventUseCase interface {
-	UserAssetChangeTx(ctx context.Context, event *station.BizEventAssetChange, handle AssetIncrHandler) (*base.UserAsset, error)
+	UserAssetChangeTx(ctx context.Context, opUserType int, event *station.BizEventAssetChange, handle AssetIncrHandler) (*base.UserAsset, error)
 }

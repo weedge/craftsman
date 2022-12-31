@@ -1,17 +1,33 @@
 package consumer
 
 import (
+	"github.com/weedge/craftsman/cloudwego/payment/internal/da/domain"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/constants"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/subscriber"
 )
 
-// Init register event handler
-func Init(opts map[string]*subscriber.RmqPushConsumerOptions) (mapSubscribeHandler map[string]subscriber.IRocketMQConsumerSubscribeHandler) {
+// Register event handler
+func RegisterUserAssetEvent(opts map[string]*subscriber.RmqPushConsumerOptions, userAssetEventUseCase domain.IUserAssetEventUseCase) (mapSubscribeHandler map[string]subscriber.IRocketMQConsumerSubscribeHandler) {
 	return map[string]subscriber.IRocketMQConsumerSubscribeHandler{
-		constants.SendGiftConsumerEventName:    &UserAssetChangeEvent{opt: opts[constants.SendGiftConsumerEventName]},
-		constants.OrderAppleConsumerEventName:  &UserAssetChangeEvent{opt: opts[constants.SendGiftConsumerEventName]},
-		constants.OrderAlipayConsumerEventName: &UserAssetChangeEvent{opt: opts[constants.SendGiftConsumerEventName]},
-		constants.OrderWXConsumerEventName:     &UserAssetChangeEvent{opt: opts[constants.SendGiftConsumerEventName]},
-		constants.OrderDouyinConsumerEventName: &UserAssetChangeEvent{opt: opts[constants.SendGiftConsumerEventName]},
+		constants.SendGiftConsumerEventName: &UserAssetChangeEvent{
+			opt:                   opts[constants.SendGiftConsumerEventName],
+			userAssetEventUseCase: userAssetEventUseCase,
+		},
+		constants.OrderAppleConsumerEventName: &UserAssetChangeEvent{
+			opt:                   opts[constants.OrderAppleConsumerEventName],
+			userAssetEventUseCase: userAssetEventUseCase,
+		},
+		constants.OrderAlipayConsumerEventName: &UserAssetChangeEvent{
+			opt:                   opts[constants.OrderAlipayConsumerEventName],
+			userAssetEventUseCase: userAssetEventUseCase,
+		},
+		constants.OrderWXConsumerEventName: &UserAssetChangeEvent{
+			opt:                   opts[constants.OrderWXConsumerEventName],
+			userAssetEventUseCase: userAssetEventUseCase,
+		},
+		constants.OrderDouyinConsumerEventName: &UserAssetChangeEvent{
+			opt:                   opts[constants.OrderDouyinConsumerEventName],
+			userAssetEventUseCase: userAssetEventUseCase,
+		},
 	}
 }

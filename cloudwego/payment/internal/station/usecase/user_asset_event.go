@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 
+	"github.com/apache/rocketmq-client-go/v2/primitive"
 	"github.com/weedge/craftsman/cloudwego/common/kitex_gen/payment/base"
 	"github.com/weedge/craftsman/cloudwego/common/kitex_gen/payment/station"
 	"github.com/weedge/craftsman/cloudwego/payment/internal/station/domain"
@@ -12,20 +13,18 @@ import (
 type UserAssetEventUseCase struct {
 	userAssetEventMsgRepos   domain.IUserAssetEventMsgRepository
 	userAssetEventRepository domain.IUserAssetEventRepository
-	opUserType               int
 }
 
-func NewUserAssetEventUseCase(userAssetEventMsgRepos domain.IUserAssetEventMsgRepository, userAssetEventRepository domain.IUserAssetEventRepository, opUserType int) domain.IUserAssetEventUseCase {
+func NewUserAssetEventUseCase(userAssetEventMsgRepos domain.IUserAssetEventMsgRepository, userAssetEventRepository domain.IUserAssetEventRepository) domain.IUserAssetEventUseCase {
 	return &UserAssetEventUseCase{
 		userAssetEventMsgRepos:   userAssetEventMsgRepos,
 		userAssetEventRepository: userAssetEventRepository,
-		opUserType:               opUserType,
 	}
 }
 
-func (m *UserAssetEventUseCase) UserAssetChangeTx(ctx context.Context, event *station.BizEventAssetChange, handle domain.AssetIncrHandler) (userAsset *base.UserAsset, err error) {
+func (m *UserAssetEventUseCase) UserAssetChangeTx(ctx context.Context, opUserType int, event *station.BizEventAssetChange, handle domain.AssetIncrHandler) (userAsset *base.UserAsset, err error) {
 	changeInfo := event.OpUserAssetChange
-	if m.opUserType == constants.OpUserTypePassive {
+	if opUserType == constants.OpUserTypePassive {
 		changeInfo = event.ToUserAssetChange
 	}
 
@@ -40,12 +39,14 @@ func (m *UserAssetEventUseCase) UserAssetChangeTx(ctx context.Context, event *st
 		return
 	}
 
-	err = m.userAssetEventMsgRepos.SendUserAssetChangeMsgTx(ctx, event)
-	if err != nil {
-		return
-	}
+	err = m.userAssetEventMsgRepos.SendUserAssetChangeMsgTx(ctx, constants.TopicUserAssetChange, event.EventType.String(), event, func(ctx context.Context) primitive.LocalTransactionState {
+		userAsset, err = m.userAssetEventRepository.UserAssetChangeTx(ctx, event.EventId, changeInfo, handle)
+		if err != nil {
+			return primitive.RollbackMessageState
+		}
 
-	userAsset, err = m.userAssetEventRepository.UserAssetChangeTx(ctx, event.EventId, changeInfo, handle)
+		return primitive.CommitMessageState
+	})
 	if err != nil {
 		return
 	}

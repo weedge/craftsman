@@ -17,35 +17,41 @@ import (
 )
 
 type Server struct {
-	opts *ServerOptions
-	svc  station.PaymentService
+	opts          *ServerOptions
+	svc           station.PaymentService
+	kitexKVLogger logutils.IKitexZapKVLogger
 }
 
 // ServerOptions server options
 type ServerOptions struct {
-	Addr        string                 `mapstructure:"addr"`
-	LogLevel    logutils.Level         `mapstructure:"logLevel"`
-	ProjectName string                 `mapstructure:"projectName"`
-	LogMeta     map[string]interface{} `mapstructure:"logMeta"`
+	Addr                      string                 `mapstructure:"addr"`
+	LogLevel                  logutils.Level         `mapstructure:"logLevel"`
+	ProjectName               string                 `mapstructure:"projectName"`
+	LogMeta                   map[string]interface{} `mapstructure:"logMeta"`
+	OltpGrpcCollectorEndpoint string                 `mapstructure:"oltpCollectorGrpcEndpoint"`
 }
 
 // DefaultServerOptions default opts
 func DefaultServerOptions() *ServerOptions {
 	return &ServerOptions{
-		Addr:        ":8002",
-		LogLevel:    logutils.LevelDebug,
-		ProjectName: constants.ProjectName,
-		LogMeta:     map[string]interface{}{},
+		Addr:                      ":8002",
+		LogLevel:                  logutils.LevelDebug,
+		ProjectName:               constants.ProjectName,
+		LogMeta:                   map[string]interface{}{},
+		OltpGrpcCollectorEndpoint: ":4317",
 	}
 }
 
 // Run kitex server
 func (s *Server) Run(ctx context.Context) (err error) {
-	klog.SetLogger(logutils.NewkitexZapKVLogger(s.opts.LogLevel, s.opts.LogMeta))
+	klog.SetLogger(s.kitexKVLogger)
 	klog.SetLevel(s.opts.LogLevel.KitexLogLevel())
 
 	tracingProvider := provider.NewOpenTelemetryProvider(
-		provider.WithServiceName(strings.Join([]string{s.opts.ProjectName, commonConstants.StationServiceName}, ".")),
+		provider.WithExportEndpoint(s.opts.OltpGrpcCollectorEndpoint),
+		provider.WithEnableMetrics(true),
+		provider.WithEnableTracing(true),
+		provider.WithServiceName(strings.Join([]string{s.opts.ProjectName, commonConstants.MisDaServiceName}, ".")),
 		provider.WithInsecure(),
 	)
 	defer func(ctx context.Context, p provider.OtelProvider) {
