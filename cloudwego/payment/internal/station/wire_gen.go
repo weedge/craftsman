@@ -9,6 +9,7 @@ package station
 import (
 	"context"
 	redis2 "github.com/go-redis/redis/v8"
+	"github.com/weedge/craftsman/cloudwego/payment/internal/station/consumer"
 	"github.com/weedge/craftsman/cloudwego/payment/internal/station/repository/redis"
 	"github.com/weedge/craftsman/cloudwego/payment/internal/station/repository/rmq"
 	"github.com/weedge/craftsman/cloudwego/payment/internal/station/usecase"
@@ -54,10 +55,14 @@ func NewServer(ctx context.Context) (*Server, error) {
 	level := serverOptions.LogLevel
 	v2 := serverOptions.LogMeta
 	iKitexZapKVLogger := logutils.NewkitexZapKVLogger(level, v2)
+	v3 := options.RmqConsumers
+	v4 := consumer.RegisterUserAssetEvent(v3, iUserAssetEventUseCase)
 	server := &Server{
-		opts:          serverOptions,
-		svc:           paymentService,
-		kitexKVLogger: iKitexZapKVLogger,
+		opts:                serverOptions,
+		svc:                 paymentService,
+		kitexKVLogger:       iKitexZapKVLogger,
+		rmqConsumerOpts:     v3,
+		mapSubscribeHandler: v4,
 	}
 	return server, nil
 }

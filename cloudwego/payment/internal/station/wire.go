@@ -9,6 +9,7 @@ import (
 	"github.com/apache/rocketmq-client-go/v2/primitive"
 	"github.com/go-redis/redis/v8"
 	"github.com/google/wire"
+	"github.com/weedge/craftsman/cloudwego/payment/internal/station/consumer"
 	"github.com/weedge/craftsman/cloudwego/payment/internal/station/domain"
 	"github.com/weedge/craftsman/cloudwego/payment/internal/station/repository"
 	"github.com/weedge/craftsman/cloudwego/payment/internal/station/usecase"
@@ -29,6 +30,7 @@ func NewServer(ctx context.Context) (*Server, error) {
 			"RedisClusterClient",
 			"PaymentDaClient",
 			"UserAssetTxMethod",
+			"RmqConsumers",
 		),
 		wire.FieldsOf(new(*ServerOptions), "LogLevel", "LogMeta"),
 
@@ -45,6 +47,7 @@ func NewServer(ctx context.Context) (*Server, error) {
 		repository.ProviderSet,
 		usecase.ProviderSet,
 		NewService,
+		consumer.RegisterUserAssetEvent,
 
 		wire.Struct(new(Server), "*"),
 	))

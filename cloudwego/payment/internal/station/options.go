@@ -4,6 +4,7 @@ import (
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/configparser"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/constants"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/injectors"
+	"github.com/weedge/craftsman/cloudwego/payment/pkg/subscriber"
 )
 
 type Options struct {
@@ -13,6 +14,8 @@ type Options struct {
 	PaymentDaClient          *injectors.PaymentDaClientOptions    `mapstruct:"paymentDaClient"`
 
 	UserAssetTxMethod string `mapstructure:"userAssetTxMethod"`
+
+	RmqConsumers map[string]*subscriber.RmqPushConsumerOptions `mapstructure:"rmqConsumers"`
 }
 
 // DefaultOptions default opts
