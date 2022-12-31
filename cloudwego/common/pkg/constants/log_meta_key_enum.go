@@ -22,7 +22,9 @@ const (
 
 // mq property key
 const (
-	MqTraceIdKey = "mq_trace_id"
+	MqTraceIdKey   = "mq_trace_id"
+	MqSpanIdKey    = "mq_sapn_id"
+	MqTraceSpanKey = "mq_trace_span"
 )
 
 // log type
