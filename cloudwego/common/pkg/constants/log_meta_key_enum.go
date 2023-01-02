@@ -18,6 +18,8 @@ const (
 	CurrentUserId        = "Current-User-Id"
 
 	XB3ZipKinOpenTraceId = "x-b3-traceid" // open tracing id for B3 ZipKin https://github.com/openzipkin/b3-propagation
+
+	XOpenApiAccessToken = "x-access-token"
 )
 
 // mq property key

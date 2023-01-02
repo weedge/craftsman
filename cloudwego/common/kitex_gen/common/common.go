@@ -11,18 +11,30 @@ import (
 type Err int64
 
 const (
-	Err_GateWayBadRequest          Err = 100000
-	Err_InteractionBadRequest      Err = 10000
-	Err_PaymentBadRequest          Err = 20000
-	Err_PaymentDbInteralError      Err = 20001
-	Err_PaymentStationInteralError Err = 20002
-	Err_IMBadRequest               Err = 30000
+	Err_GateWayBadRequest           Err = 100000
+	Err_GateWayMethodNotFound       Err = 100001
+	Err_GateWayHttpNewRequestError  Err = 100002
+	Err_GateWayServerHandlerError   Err = 100003
+	Err_GateWayServerInnerCallError Err = 100004
+	Err_InteractionBadRequest       Err = 10000
+	Err_PaymentBadRequest           Err = 20000
+	Err_PaymentDbInteralError       Err = 20001
+	Err_PaymentStationInteralError  Err = 20002
+	Err_IMBadRequest                Err = 30000
 )
 
 func (p Err) String() string {
 	switch p {
 	case Err_GateWayBadRequest:
 		return "GateWayBadRequest"
+	case Err_GateWayMethodNotFound:
+		return "GateWayMethodNotFound"
+	case Err_GateWayHttpNewRequestError:
+		return "GateWayHttpNewRequestError"
+	case Err_GateWayServerHandlerError:
+		return "GateWayServerHandlerError"
+	case Err_GateWayServerInnerCallError:
+		return "GateWayServerInnerCallError"
 	case Err_InteractionBadRequest:
 		return "InteractionBadRequest"
 	case Err_PaymentBadRequest:
@@ -41,6 +53,14 @@ func ErrFromString(s string) (Err, error) {
 	switch s {
 	case "GateWayBadRequest":
 		return Err_GateWayBadRequest, nil
+	case "GateWayMethodNotFound":
+		return Err_GateWayMethodNotFound, nil
+	case "GateWayHttpNewRequestError":
+		return Err_GateWayHttpNewRequestError, nil
+	case "GateWayServerHandlerError":
+		return Err_GateWayServerHandlerError, nil
+	case "GateWayServerInnerCallError":
+		return Err_GateWayServerInnerCallError, nil
 	case "InteractionBadRequest":
 		return Err_InteractionBadRequest, nil
 	case "PaymentBadRequest":

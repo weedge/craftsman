@@ -2,9 +2,14 @@ package constants
 
 const (
 	// UIGateWayServiceName ui/us gateway service for json dsl, graphql, json hal, sql92 etc
-	UIGateWayServiceName = "uigw"
+	UIGateWayServiceName = "gw"
 	// StationServiceName station service
 	StationServiceName = "station"
 	// MisDaServiceName mis da service
-	MisDaServiceName = "misda"
+	MisDaServiceName = "da"
+)
+
+const (
+	IdlFileSuffixThrift   = "thirft"
+	IdlFileSuffixProtobuf = "pb"
 )
