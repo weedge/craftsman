@@ -12,7 +12,7 @@ type UserAssetEventMsg struct {
 }
 
 type IUserAssetEventMsgRepository interface {
-	SendUserAssetChangeMsgTx(ctx context.Context, topicName, tagName string, eventMsg *station.BizEventAssetChange, handler primitive.TxHandler) error
+	SendUserAssetChangeMsgTx(ctx context.Context, topicName, tagName string, userId int64, eventMsg *station.BizEventAssetChange, handler primitive.TxHandler) error
 }
 
 type IUserAssetEventMsgListener interface {

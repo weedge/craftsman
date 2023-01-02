@@ -39,7 +39,7 @@ func (m *UserAssetEventUseCase) UserAssetChangeTx(ctx context.Context, opUserTyp
 		return
 	}
 
-	err = m.userAssetEventMsgRepos.SendUserAssetChangeMsgTx(ctx, constants.TopicUserAssetChange, event.EventType.String(), event, func(ctx context.Context) primitive.LocalTransactionState {
+	err = m.userAssetEventMsgRepos.SendUserAssetChangeMsgTx(ctx, constants.TopicUserAssetChange, event.EventType.String(), changeInfo.UserId, event, func(ctx context.Context) primitive.LocalTransactionState {
 		userAsset, err = m.userAssetEventRepository.UserAssetChangeTx(ctx, event.EventId, changeInfo, handle)
 		if err != nil {
 			return primitive.RollbackMessageState

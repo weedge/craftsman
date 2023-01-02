@@ -5,6 +5,7 @@ import (
 	"net"
 	"strings"
 
+	"github.com/apache/rocketmq-client-go/v2"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/server"
 	"github.com/kitex-contrib/obs-opentelemetry/provider"
@@ -23,6 +24,7 @@ type Server struct {
 	kitexKVLogger       logutils.IKitexZapKVLogger
 	rmqConsumerOpts     map[string]*subscriber.RmqPushConsumerOptions
 	mapSubscribeHandler map[string]subscriber.IRocketMQConsumerSubscribeHandler
+	txProducer          rocketmq.TransactionProducer
 }
 
 // ServerOptions server options
@@ -53,16 +55,16 @@ func (s *Server) Run(ctx context.Context) (err error) {
 	subscriber.InitPushConsumerSubscribes(s.rmqConsumerOpts, s.mapSubscribeHandler)
 	defer subscriber.Close()
 
+	defer s.txProducer.Shutdown()
+
 	tracingProvider := provider.NewOpenTelemetryProvider(
 		provider.WithExportEndpoint(s.opts.OltpGrpcCollectorEndpoint),
 		provider.WithEnableMetrics(true),
 		provider.WithEnableTracing(true),
-		provider.WithServiceName(strings.Join([]string{s.opts.ProjectName, commonConstants.MisDaServiceName}, ".")),
+		provider.WithServiceName(strings.Join([]string{s.opts.ProjectName, commonConstants.StationServiceName}, ".")),
 		provider.WithInsecure(),
 	)
-	defer func(ctx context.Context, p provider.OtelProvider) {
-		_ = p.Shutdown(ctx)
-	}(ctx, tracingProvider)
+	defer tracingProvider.Shutdown(ctx)
 
 	// for service eg: k8s service
 	addr, err := net.ResolveTCPAddr("tcp", s.opts.Addr)

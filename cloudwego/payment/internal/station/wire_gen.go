@@ -63,6 +63,7 @@ func NewServer(ctx context.Context) (*Server, error) {
 		kitexKVLogger:       iKitexZapKVLogger,
 		rmqConsumerOpts:     v3,
 		mapSubscribeHandler: v4,
+		txProducer:          transactionProducer,
 	}
 	return server, nil
 }

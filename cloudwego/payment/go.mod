@@ -5,18 +5,21 @@ go 1.19
 require (
 	github.com/apache/rocketmq-client-go/v2 v2.1.1
 	github.com/bytedance/sonic v1.6.0
+	github.com/cloudwego/hertz v0.4.2
 	github.com/cloudwego/kitex v0.4.4
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-redsync/redsync/v4 v4.7.1
 	github.com/golang/mock v1.6.0
 	github.com/google/wire v0.5.0
+	github.com/hertz-contrib/obs-opentelemetry/provider v0.1.1
+	github.com/hertz-contrib/obs-opentelemetry/tracing v0.1.1
 	github.com/kitex-contrib/obs-opentelemetry v0.1.0
 	github.com/kitex-contrib/xds v0.1.0
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.14.0
 	github.com/stretchr/testify v1.8.1
-	github.com/weedge/craftsman/cloudwego/common v0.0.0-20221231141216-126df205f853
+	github.com/weedge/craftsman/cloudwego/common v0.0.0-20230102161201-f9ed41a0d94c
 	github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm v0.0.0-20221220110835-524bfda8e0e3
 	github.com/weedge/craftsman/cloudwego/kitex-contrib/obs-opentelemetry/logging/zap v0.0.0-20221223095825-c813970f6b4f
 	go.opentelemetry.io/otel v1.11.2
@@ -32,7 +35,8 @@ require (
 
 require (
 	github.com/apache/thrift v0.13.0 // indirect
-	github.com/bytedance/gopkg v0.0.0-20220531084716-665b4f21126f // indirect
+	github.com/bytedance/go-tagexpr/v2 v2.9.2 // indirect
+	github.com/bytedance/gopkg v0.0.0-20220623074550-9d6d3df70991 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.0 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
@@ -59,6 +63,8 @@ require (
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/henrylee2cn/ameda v1.4.10 // indirect
+	github.com/henrylee2cn/goutil v0.0.0-20210127050712-89660552f6f8 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/jhump/protoreflect v1.8.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
@@ -71,6 +77,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
+	github.com/nyaruka/phonenumbers v1.0.55 // indirect
 	github.com/oleiade/lane v1.0.1 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect

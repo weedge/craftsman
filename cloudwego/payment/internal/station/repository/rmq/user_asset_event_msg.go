@@ -2,6 +2,7 @@ package rmq
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/apache/rocketmq-client-go/v2"
 	"github.com/apache/rocketmq-client-go/v2/primitive"
@@ -26,7 +27,7 @@ func NewUserAssetEventMsg(txRmqProducerClient rocketmq.TransactionProducer, user
 	}
 }
 
-func (m *UserAssetEventMsg) SendUserAssetChangeMsgTx(ctx context.Context, topicName, tagName string, event *station.BizEventAssetChange, handler primitive.TxHandler) (err error) {
+func (m *UserAssetEventMsg) SendUserAssetChangeMsgTx(ctx context.Context, topicName, tagName string, userId int64, event *station.BizEventAssetChange, handler primitive.TxHandler) (err error) {
 	rawMsg, err := sonic.Marshal(event)
 	if err != nil {
 		klog.CtxErrorf(ctx, "json Marshal err:%s", err.Error())
@@ -41,7 +42,7 @@ func (m *UserAssetEventMsg) SendUserAssetChangeMsgTx(ctx context.Context, topicN
 	msg.WithKeys([]string{event.EventId})
 	msg.WithProperties(map[string]string{
 		"eventId":                event.EventId,
-		"userId":                 "",
+		"userId":                 strconv.FormatInt(userId, 10),
 		"eventType":              event.EventType.String(),
 		constants.MqTraceSpanKey: utils.SliceByteToString(spanBytes),
 	})
