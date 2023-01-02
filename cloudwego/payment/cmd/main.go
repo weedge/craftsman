@@ -7,6 +7,7 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/spf13/cobra"
 	"github.com/weedge/craftsman/cloudwego/payment/cmd/da"
+	"github.com/weedge/craftsman/cloudwego/payment/cmd/gw"
 	"github.com/weedge/craftsman/cloudwego/payment/cmd/station"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/configparser"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/version"
@@ -25,6 +26,7 @@ func main() {
 	rootCmd.AddCommand(
 		da.NewCommand(),
 		station.NewCommand(),
+		gw.NewCommand(),
 	)
 
 	configparser.Flags(rootCmd.PersistentFlags())
