@@ -6,7 +6,6 @@ import (
 
 var gSvcMap = map[string]genericclient.Client{}
 
-func InitSvcGenericClientMap(svcMap map[string]genericclient.Client) error {
+func InitSvcGenericClientMap(svcMap map[string]genericclient.Client) {
 	gSvcMap = svcMap
-	return nil
 }

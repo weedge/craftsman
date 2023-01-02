@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/google/wire"
-	"github.com/weedge/craftsman/cloudwego/payment/internal/gw/handler"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/configparser"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/injectors"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/utils/logutils"
@@ -24,7 +23,6 @@ func NewServer(ctx context.Context) (*Server, error) {
 		logutils.NewkitexZapKVLogger,
 
 		injectors.InitHttpThriftGenericClients,
-		handler.InitSvcGenericClientMap,
 
 		wire.Struct(new(Server), "*"),
 	))

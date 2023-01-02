@@ -5,10 +5,12 @@ import (
 	"strings"
 
 	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/kitex/client/genericclient"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/hertz-contrib/obs-opentelemetry/provider"
 	"github.com/hertz-contrib/obs-opentelemetry/tracing"
 	commonConstants "github.com/weedge/craftsman/cloudwego/common/pkg/constants"
+	"github.com/weedge/craftsman/cloudwego/payment/internal/gw/handler"
 	"github.com/weedge/craftsman/cloudwego/payment/internal/gw/router"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/constants"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/utils/logutils"
@@ -17,6 +19,7 @@ import (
 type Server struct {
 	opts          *ServerOptions
 	kitexKVLogger logutils.IKitexZapKVLogger
+	mpCli         map[string]genericclient.Client
 }
 
 // ServerOptions server options
@@ -43,6 +46,7 @@ func DefaultServerOptions() *ServerOptions {
 func (s *Server) Run(ctx context.Context) error {
 	klog.SetLogger(s.kitexKVLogger)
 	klog.SetLevel(s.opts.LogLevel.KitexLogLevel())
+	handler.InitSvcGenericClientMap(s.mpCli)
 
 	p := provider.NewOpenTelemetryProvider(
 		provider.WithExportEndpoint(s.opts.OltpGrpcCollectorEndpoint),
