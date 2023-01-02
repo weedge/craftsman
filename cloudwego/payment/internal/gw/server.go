@@ -26,7 +26,6 @@ type ServerOptions struct {
 	ProjectName               string                 `mapstructure:"projectName"`
 	LogMeta                   map[string]interface{} `mapstructure:"logMeta"`
 	OltpGrpcCollectorEndpoint string                 `mapstructure:"oltpCollectorGrpcEndpoint"`
-	IdlDirPath                string                 `mapstructure:"idlDirPath"`
 }
 
 // DefaultServerOptions default opts
@@ -37,7 +36,6 @@ func DefaultServerOptions() *ServerOptions {
 		ProjectName:               constants.ProjectName,
 		LogMeta:                   map[string]interface{}{},
 		OltpGrpcCollectorEndpoint: ":4317",
-		IdlDirPath:                "./idl/",
 	}
 }
 
@@ -61,7 +59,7 @@ func (s *Server) Run(ctx context.Context) error {
 	)
 	h.Use(tracing.ServerMiddleware(cfg))
 
-	router.SetupRoutes(h, s.opts.IdlDirPath)
+	router.SetupRoutes(h)
 
 	h.Spin()
 

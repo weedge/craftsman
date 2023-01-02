@@ -7,13 +7,14 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	commonConstants "github.com/weedge/craftsman/cloudwego/common/pkg/constants"
+	"github.com/weedge/craftsman/cloudwego/payment/internal/gw/handler"
 	"github.com/weedge/craftsman/cloudwego/payment/internal/gw/middleware"
 )
 
-func SetupRoutes(h *server.Hertz, idlPath string) {
+func SetupRoutes(h *server.Hertz) {
 	SetupProbeRoutes(h)
 
-	SetupHttpThriftGenericRoutes(h, idlPath)
+	SetupHttpThriftGenericRoutes(h)
 }
 
 func SetupProbeRoutes(h *server.Hertz) {
@@ -29,7 +30,7 @@ func SetupProbeRoutes(h *server.Hertz) {
 }
 
 // SetupHttpThriftGenericRoutes
-func SetupHttpThriftGenericRoutes(h *server.Hertz, idlPath string) {
+func SetupHttpThriftGenericRoutes(h *server.Hertz) {
 	passGroup := h.Group("/openapi").Use(middleware.OpenApiAuth())
-
+	passGroup.POST("/:svc", handler.OpenApiHandle)
 }

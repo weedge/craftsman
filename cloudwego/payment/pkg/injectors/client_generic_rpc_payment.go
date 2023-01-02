@@ -13,13 +13,20 @@ import (
 )
 
 type HttpThriftGenericClientOpts struct {
-	IdlDirPath string `mapstructure:"idlDirPath"`
-	Endpoint   string `mapstructure:"endpoint"`
+	IdlDirPath string            `mapstructure:"idlDirPath"`
+	Endpoints  map[string]string `mapstructure:"endpoint"`
+}
+
+func DefaultHttpThriftGenericClientOpts() *HttpThriftGenericClientOpts {
+	return &HttpThriftGenericClientOpts{
+		IdlDirPath: "./idl/",
+		Endpoints:  map[string]string{},
+	}
 }
 
 // InitHttpThriftGenericClients client need thrift idl provider
-func InitHttpThriftGenericClients(opts HttpThriftGenericClientOpts) (mapGenericClient map[string]genericclient.Client) {
-	mapGenericClient = map[string]genericclient.Client{}
+func InitHttpThriftGenericClients(opts *HttpThriftGenericClientOpts) map[string]genericclient.Client {
+	mapGenericClient := map[string]genericclient.Client{}
 
 	// idl dir , don't have sub dir
 	files, err := os.ReadDir(opts.IdlDirPath)
@@ -58,7 +65,7 @@ func InitHttpThriftGenericClients(opts HttpThriftGenericClientOpts) (mapGenericC
 		genericClient, err := genericclient.NewClient(
 			svcName,
 			httpThriftGeneric,
-			client.WithHostPorts(opts.Endpoint),
+			client.WithHostPorts(opts.Endpoints[svcName]),
 		)
 		if err != nil {
 			klog.Errorf("genericclient.NewClient %s err: %s", svcName, err.Error())
@@ -68,7 +75,7 @@ func InitHttpThriftGenericClients(opts HttpThriftGenericClientOpts) (mapGenericC
 		mapGenericClient[svcName] = genericClient
 	}
 
-	return
+	return mapGenericClient
 }
 
 // InitHttpThriftGenericClients client,server need thrift idl provider
