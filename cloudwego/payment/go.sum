@@ -514,8 +514,8 @@ github.com/weedge/craftsman/cloudwego/common v0.0.0-20230102161201-f9ed41a0d94c 
 github.com/weedge/craftsman/cloudwego/common v0.0.0-20230102161201-f9ed41a0d94c/go.mod h1:BWVSTzgHhIxKLDw5bjdw+5BoIf0awVcxTzz0ImtxyRE=
 github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm v0.0.0-20221220110835-524bfda8e0e3 h1:acff6Mk0U1HvsWH5erTzjAz2appljAZpbtqtjWgxTU8=
 github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm v0.0.0-20221220110835-524bfda8e0e3/go.mod h1:xXv/Xr4tar1HFLknOzXU/oJdWGHm2iIHtE88IrCPilg=
-github.com/weedge/obs-opentelemetry/logging/zap v0.0.0-20230103104022-559f3d50b5d3 h1:xLy7nhdi2XEP5CxMmA12xtPUS11UAP7jbYh0kU8Gqyk=
-github.com/weedge/obs-opentelemetry/logging/zap v0.0.0-20230103104022-559f3d50b5d3/go.mod h1:a/Ui0T3Gp68UxkShcgT6KHV/IuO3Xuva0keie4w2eg4=
+github.com/weedge/obs-opentelemetry/logging/zap v0.0.0-20230103132641-adc417fa319c h1:NSzu7Z3lMB43safTsCPiLPyIAI0c23sHMt6XtxYJ4s8=
+github.com/weedge/obs-opentelemetry/logging/zap v0.0.0-20230103132641-adc417fa319c/go.mod h1:a/Ui0T3Gp68UxkShcgT6KHV/IuO3Xuva0keie4w2eg4=
 github.com/weedge/rocketmq-client-go/v2 v2.1.1-rc2.0.20221231031917-a5a28b2a124e h1:IjkKS+Wne40bP9wQUGz3l3t4/oUZxL7LoW9vWBzlJiU=
 github.com/weedge/rocketmq-client-go/v2 v2.1.1-rc2.0.20221231031917-a5a28b2a124e/go.mod h1:ULlseViDhIbOHo+h81Q6OBAwSCY89yWbUbZQ5HlgsV8=
 github.com/yuin/goldmark v1.1.25/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=

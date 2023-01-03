@@ -133,7 +133,7 @@ replace go.opentelemetry.io/otel => go.opentelemetry.io/otel v1.11.1
 
 replace github.com/apache/rocketmq-client-go/v2 => github.com/weedge/rocketmq-client-go/v2 v2.1.1-rc2.0.20221231031917-a5a28b2a124e
 
-replace github.com/kitex-contrib/obs-opentelemetry/logging/zap => github.com/weedge/obs-opentelemetry/logging/zap v0.0.0-20230103104022-559f3d50b5d3
+replace github.com/kitex-contrib/obs-opentelemetry/logging/zap => github.com/weedge/obs-opentelemetry/logging/zap v0.0.0-20230103132641-adc417fa319c
 
 //replace github.com/weedge/craftsman/cloudwego/common => ../common
 
