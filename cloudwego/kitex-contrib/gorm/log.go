@@ -80,5 +80,5 @@ func (m *gormLogger) Trace(ctx context.Context, begin time.Time, fc func() (sql 
 		msg = "slow sql, please check sql wheather using index"
 	}
 
-	m.kvLogger.CtxKVLog(ctx, m.traceLogLevel, fmt.Sprint(levelName[Sqltrace], msg), Map2KvPairs(traceMeta))
+	m.kvLogger.CtxKVLog(ctx, m.traceLogLevel, fmt.Sprint(levelName[Sqltrace], msg), Map2KvPairs(traceMeta)...)
 }
