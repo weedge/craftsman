@@ -15,7 +15,7 @@
 # vendor/
 
 # IDE config
-.vscode
+# .vscode
 .idea
 
 */vendor
