@@ -2,11 +2,8 @@ server:
   addr: 0.0.0.0:8003
   logLevel: debug
   projectName: payment
-  logMeta:
-    str: t1
-    int: 123
-    float: 1.23
   oltpCollectorGrpcEndpoint: 0.0.0.0:4317
+
 mysqlDBClient:
   name: pay
   dbEngine: mysql8-innodb
@@ -16,3 +13,18 @@ mysqlDBClient:
   connMaxLifeTime: 3600000000000
   slowSqlTimeThreshold: 200000000
   traceLogLevel: debug
+
+rmqConsumers:
+  sendGiftAssetChange:
+    name: sendGiftAssetChange
+    nameSrvs:
+      - 127.0.0.1:9876
+    groupName: C_GID_GIFT_ASSET_CHANGE
+    topicName: TOPIC_ASSET_CHANGE_EVENT
+    tag: interactGift
+    pullRetryCn: 2
+    logicMaxRetryCn: 0
+    maxReconsumeTimes: 20
+    pullBatchSize: 1
+    consumeMessageBatchMaxSize: 1
+    delayLevel: -1

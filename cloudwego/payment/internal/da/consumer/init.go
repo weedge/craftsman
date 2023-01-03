@@ -1,6 +1,8 @@
 package consumer
 
 import (
+	"strings"
+
 	"github.com/weedge/craftsman/cloudwego/payment/internal/da/domain"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/constants"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/subscriber"
@@ -10,23 +12,23 @@ import (
 func RegisterUserAssetEvent(opts map[string]*subscriber.RmqPushConsumerOptions, userAssetEventUseCase domain.IUserAssetEventUseCase) (mapSubscribeHandler map[string]subscriber.IRocketMQConsumerSubscribeHandler) {
 	return map[string]subscriber.IRocketMQConsumerSubscribeHandler{
 		constants.SendGiftConsumerEventName: &UserAssetChangeEvent{
-			opt:                   opts[constants.SendGiftConsumerEventName],
+			opt:                   opts[strings.ToLower(constants.SendGiftConsumerEventName)],
 			userAssetEventUseCase: userAssetEventUseCase,
 		},
 		constants.OrderAppleConsumerEventName: &UserAssetChangeEvent{
-			opt:                   opts[constants.OrderAppleConsumerEventName],
+			opt:                   opts[strings.ToLower(constants.OrderAppleConsumerEventName)],
 			userAssetEventUseCase: userAssetEventUseCase,
 		},
 		constants.OrderAlipayConsumerEventName: &UserAssetChangeEvent{
-			opt:                   opts[constants.OrderAlipayConsumerEventName],
+			opt:                   opts[strings.ToLower(constants.OrderAlipayConsumerEventName)],
 			userAssetEventUseCase: userAssetEventUseCase,
 		},
 		constants.OrderWXConsumerEventName: &UserAssetChangeEvent{
-			opt:                   opts[constants.OrderWXConsumerEventName],
+			opt:                   opts[strings.ToLower(constants.OrderWXConsumerEventName)],
 			userAssetEventUseCase: userAssetEventUseCase,
 		},
 		constants.OrderDouyinConsumerEventName: &UserAssetChangeEvent{
-			opt:                   opts[constants.OrderDouyinConsumerEventName],
+			opt:                   opts[strings.ToLower(constants.OrderDouyinConsumerEventName)],
 			userAssetEventUseCase: userAssetEventUseCase,
 		},
 	}

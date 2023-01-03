@@ -21,6 +21,9 @@ func NewUserAssetEventUseCase(userAssetEventRepos domain.IUserAssetEventReposito
 }
 
 func (m *UserAssetEventUseCase) ChangeUsersAssetTx(ctx context.Context, event *station.BizEventAssetChange) (err error) {
+	if event == nil {
+		return
+	}
 	records, err := m.userAssetRecordRepos.GetRecordsByUserChangeAssetEvent(ctx, event)
 	if err != nil {
 		return

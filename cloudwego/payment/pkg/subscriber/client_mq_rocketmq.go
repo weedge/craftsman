@@ -81,6 +81,7 @@ func InitPushConsumerSubscribes(opts map[string]*RmqPushConsumerOptions, mapSubs
 func initPushConsumerSubscribe(opt *RmqPushConsumerOptions, handler IRocketMQConsumerSubscribeHandler) (c rocketmq.PushConsumer, err error) {
 	//todo: add otel tracing
 
+	klog.CtxDebugf(context.TODO(), "opt %+v subscribeHandler %+v ", opt, handler)
 	traceCfg := &primitive.TraceConfig{
 		Access:    primitive.Local,
 		Resolver:  primitive.NewPassthroughResolver(opt.NameSrvs),
@@ -113,10 +114,10 @@ func initPushConsumerSubscribe(opt *RmqPushConsumerOptions, handler IRocketMQCon
 	// Note: start after subscribe
 	err = c.Start()
 	if err != nil {
-		klog.Errorf("consumer name:%s start error:%s", opt.Name, err.Error())
+		klog.Errorf("consumer %s start error:%s", opt.Name, err.Error())
 		return
 	}
-	klog.Infof("consumer name:%s start ok", opt.Name)
+	klog.Infof("consumer %s start ok", opt.Name)
 
 	return
 }
@@ -125,9 +126,9 @@ func Close() {
 	for name, consumer := range gMapPushConsumer {
 		err := consumer.Shutdown()
 		if err != nil {
-			klog.Errorf("consumer name:%s shutdown error:%s", name, err.Error())
+			klog.Errorf("consumer %s shutdown error:%s", name, err.Error())
 			return
 		}
-		klog.Errorf("consumer name:%s shutdown ok", name)
+		klog.Infof("consumer %s shutdown ok", name)
 	}
 }

@@ -1,6 +1,8 @@
 package da
 
 import (
+	"fmt"
+
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/configparser"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/injectors"
@@ -19,8 +21,18 @@ func DefaultOptions() *Options {
 	return &Options{
 		Server:        DefaultServerOptions(),
 		MysqlDBClient: injectors.DefaultMysqlDBClientOptions(),
-		//RmqConsumers:  []*subscriber.RmqPushConsumerOptions{},
+		RmqConsumers:  map[string]*subscriber.RmqPushConsumerOptions{},
 	}
+}
+
+func (m *Options) String() (str string) {
+	str += fmt.Sprintf(" Server:%+v ", m.Server)
+	str += fmt.Sprintf(" MysqlDBClient:%+v ", m.MysqlDBClient)
+	str += "RmqConsumer:"
+	for name, item := range m.RmqConsumers {
+		str += fmt.Sprintf("%s:%+v ", name, item)
+	}
+	return
 }
 
 // Configure inject config
@@ -36,7 +48,7 @@ func Configure(configProvider configparser.Provider) (*Options, error) {
 		return nil, err
 	}
 
-	klog.Infof("server: %+v, mysqlDBClient: %+v", opt.Server, opt.MysqlDBClient)
+	klog.Infof("config:%v", opt)
 
 	return opt, nil
 }

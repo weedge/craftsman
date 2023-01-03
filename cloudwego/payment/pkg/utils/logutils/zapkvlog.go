@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/cloudwego/kitex/pkg/klog"
+	kitexZap "github.com/kitex-contrib/obs-opentelemetry/logging/zap"
 	"github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm"
-	kitexZap "github.com/weedge/craftsman/cloudwego/kitex-contrib/obs-opentelemetry/logging/zap"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -60,6 +60,8 @@ func NewkitexZapKVLogger(level Level, meta map[string]interface{}) (logger IKite
 		kitexZap.WithCoreWs(ZapWriteSyncer()),
 		kitexZap.WithCoreLevel(ZapLogLevel(level)),
 		kitexZap.WithZapOptions(ZapOptions(meta)...),
+		kitexZap.WithTraceErrorSpanLevel(zap.ErrorLevel), //default err
+		kitexZap.WithRecordStackTraceInSpan(true),        // default true
 	)
 
 	return

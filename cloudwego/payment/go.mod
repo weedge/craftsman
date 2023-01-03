@@ -14,6 +14,7 @@ require (
 	github.com/hertz-contrib/obs-opentelemetry/provider v0.1.1
 	github.com/hertz-contrib/obs-opentelemetry/tracing v0.1.1
 	github.com/kitex-contrib/obs-opentelemetry v0.1.0
+	github.com/kitex-contrib/obs-opentelemetry/logging/zap v0.0.0-00010101000000-000000000000
 	github.com/kitex-contrib/xds v0.1.0
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/pflag v1.0.5
@@ -21,7 +22,6 @@ require (
 	github.com/stretchr/testify v1.8.1
 	github.com/weedge/craftsman/cloudwego/common v0.0.0-20230102161201-f9ed41a0d94c
 	github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm v0.0.0-20221220110835-524bfda8e0e3
-	github.com/weedge/craftsman/cloudwego/kitex-contrib/obs-opentelemetry/logging/zap v0.0.0-20221223095825-c813970f6b4f
 	go.opentelemetry.io/otel v1.11.2
 	go.opentelemetry.io/otel/trace v1.11.2
 	go.uber.org/zap v1.24.0
@@ -133,10 +133,8 @@ replace go.opentelemetry.io/otel => go.opentelemetry.io/otel v1.11.1
 
 replace github.com/apache/rocketmq-client-go/v2 => github.com/weedge/rocketmq-client-go/v2 v2.1.1-rc2.0.20221231031917-a5a28b2a124e
 
-//replace github.com/apache/rocketmq-client-go/v2 => github.com/weedge/rocketmq-client-go v1.2.4
+replace github.com/kitex-contrib/obs-opentelemetry/logging/zap => github.com/weedge/obs-opentelemetry/logging/zap v0.0.0-20230103104022-559f3d50b5d3
 
 //replace github.com/weedge/craftsman/cloudwego/common => ../common
-
-//replace github.com/weedge/craftsman/cloudwego/kitex-contrib/obs-opentelemetry/logging/zap => ../kitex-contrib/obs-opentelemetry/logging/zap
 
 //replace github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm => ../kitex-contrib/gorm

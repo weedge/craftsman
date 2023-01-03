@@ -23,6 +23,10 @@ func NewUserAssetEventRepository(db *gorm.DB) domain.IUserAssetEventRepository {
 }
 
 func (m *UserAssetEventRepository) ChangeUsersAssetTx(ctx context.Context, event *station.BizEventAssetChange) (err error) {
+	if event == nil || event.OpUserAssetChange == nil {
+		return domain.ErrInnerNilPointer
+	}
+
 	err = dao.Use(m.db).Transaction(func(tx *dao.Query) error {
 		qTx := &dao.QueryTx{Query: tx}
 		err := m.changeUserAssetTx(ctx, qTx, event.OpUserAssetChange, func(oldAssetCn int64) (newAssetCn int64) {
@@ -39,7 +43,7 @@ func (m *UserAssetEventRepository) ChangeUsersAssetTx(ctx context.Context, event
 			return err
 		}
 
-		err = m.addUserAssetRecordTx(ctx, qTx, []*model.UserAssetRecord{
+		records := []*model.UserAssetRecord{
 			{
 				UserID:     event.OpUserAssetChange.UserId,
 				OpUserType: constants.OpUserTypeActive,
@@ -50,7 +54,9 @@ func (m *UserAssetEventRepository) ChangeUsersAssetTx(ctx context.Context, event
 				EventType:  event.EventType.String(),
 				CreatedAt:  time.Now(),
 			},
-			{
+		}
+		if event.ToUserAssetChange != nil {
+			records = append(records, &model.UserAssetRecord{
 				UserID:     event.ToUserAssetChange.UserId,
 				OpUserType: constants.OpUserTypePassive,
 				BizID:      event.BizId,
@@ -59,8 +65,10 @@ func (m *UserAssetEventRepository) ChangeUsersAssetTx(ctx context.Context, event
 				EventID:    event.EventId,
 				EventType:  event.EventType.String(),
 				CreatedAt:  time.Now(),
-			},
-		})
+			})
+		}
+
+		err = m.addUserAssetRecordTx(ctx, qTx, records)
 		if err != nil {
 			return err
 		}

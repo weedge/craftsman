@@ -25,6 +25,14 @@ func (m *UserAssetRecordRepository) GetRecordsByUserId(ctx context.Context, user
 }
 
 func (m *UserAssetRecordRepository) GetRecordsByUserChangeAssetEvent(ctx context.Context, event *station.BizEventAssetChange) (res []*model.UserAssetRecord, err error) {
+	if event == nil || event.OpUserAssetChange == nil {
+		err = domain.ErrInnerNilPointer
+		return
+	}
+	if event.ToUserAssetChange == nil {
+		event.ToUserAssetChange = &station.UserAssetChangeInfo{}
+	}
+
 	userAssetRecordDao := dao.Use(m.db).UserAssetRecord
 	userAssetRecordDao.WithContext(ctx).Where(
 		userAssetRecordDao.UserID.Eq(event.OpUserAssetChange.UserId),
