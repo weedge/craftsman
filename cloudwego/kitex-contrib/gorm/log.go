@@ -75,10 +75,11 @@ func (m *gormLogger) Trace(ctx context.Context, begin time.Time, fc func() (sql 
 	traceMeta["sql"], traceMeta["rowsAffected"] = fc()
 	traceMeta["fileLine"] = utils.FileWithLineNum()
 
+	traceLogLevel := m.traceLogLevel
 	if m.slowThreshold != 0 && m.slowThreshold.Milliseconds() < latency.Milliseconds() {
-		m.traceLogLevel = klog.LevelWarn
+		traceLogLevel = klog.LevelWarn
 		msg = "slow sql, please check sql wheather using index"
 	}
 
-	m.kvLogger.CtxKVLog(ctx, m.traceLogLevel, fmt.Sprint(levelName[Sqltrace], msg), Map2KvPairs(traceMeta)...)
+	m.kvLogger.CtxKVLog(ctx, traceLogLevel, fmt.Sprint(levelName[Sqltrace], msg), Map2KvPairs(traceMeta)...)
 }
