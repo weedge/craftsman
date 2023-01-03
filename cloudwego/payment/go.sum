@@ -512,8 +512,8 @@ github.com/twitchyliquid64/golang-asm v0.15.1 h1:SU5vSMR7hnwNxj24w34ZyCi/FmDZTkS
 github.com/twitchyliquid64/golang-asm v0.15.1/go.mod h1:a1lVb/DtPvCB8fslRZhAngC2+aY1QWCk3Cedj/Gdt08=
 github.com/weedge/craftsman/cloudwego/common v0.0.0-20230102161201-f9ed41a0d94c h1:owXm9LvVv2TTrYc0LCV5aWd6k4/tBpNkfGxz4BPnA+c=
 github.com/weedge/craftsman/cloudwego/common v0.0.0-20230102161201-f9ed41a0d94c/go.mod h1:BWVSTzgHhIxKLDw5bjdw+5BoIf0awVcxTzz0ImtxyRE=
-github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm v0.0.0-20221220110835-524bfda8e0e3 h1:acff6Mk0U1HvsWH5erTzjAz2appljAZpbtqtjWgxTU8=
-github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm v0.0.0-20221220110835-524bfda8e0e3/go.mod h1:xXv/Xr4tar1HFLknOzXU/oJdWGHm2iIHtE88IrCPilg=
+github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm v0.0.0-20230103155229-a3f178db9c28 h1:6oxm/9C8iA1vBW18TJSpJxVdM/Py5zUW0yqsA6pbZHw=
+github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm v0.0.0-20230103155229-a3f178db9c28/go.mod h1:xXv/Xr4tar1HFLknOzXU/oJdWGHm2iIHtE88IrCPilg=
 github.com/weedge/obs-opentelemetry/logging/zap v0.0.0-20230103132641-adc417fa319c h1:NSzu7Z3lMB43safTsCPiLPyIAI0c23sHMt6XtxYJ4s8=
 github.com/weedge/obs-opentelemetry/logging/zap v0.0.0-20230103132641-adc417fa319c/go.mod h1:a/Ui0T3Gp68UxkShcgT6KHV/IuO3Xuva0keie4w2eg4=
 github.com/weedge/rocketmq-client-go/v2 v2.1.1-rc2.0.20221231031917-a5a28b2a124e h1:IjkKS+Wne40bP9wQUGz3l3t4/oUZxL7LoW9vWBzlJiU=

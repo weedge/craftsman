@@ -12,7 +12,7 @@ mysqlDBClient:
   maxOpenConns: 1000
   connMaxLifeTime: 3600000000000
   slowSqlTimeThreshold: 200000000
-  traceLogLevel: debug
+  traceLogLevel: info
 
 rmqConsumers:
   sendGiftAssetChange:
@@ -24,7 +24,59 @@ rmqConsumers:
     tag: interactGift
     pullRetryCn: 2
     logicMaxRetryCn: 0
-    maxReconsumeTimes: 20
     pullBatchSize: 1
     consumeMessageBatchMaxSize: 1
-    delayLevel: -1
+    maxReconsumeTimes: -1 #-1 is default 16, 0 or <-1 don't retry
+    delayLevel: 0 #out delay range [1,18] or <0 don't retry, 0 default retryCn 16
+  orderAppleAssetChange:
+    name: orderAppleAssetChange
+    nameSrvs:
+      - 127.0.0.1:9876
+    groupName: C_GID_ORDER_APPLE_CHANGE
+    topicName: TOPIC_ASSET_CHANGE_EVENT
+    tag: orderApple
+    pullRetryCn: 2
+    logicMaxRetryCn: 0
+    pullBatchSize: 1
+    consumeMessageBatchMaxSize: 1
+    maxReconsumeTimes: -1 #-1 is default 16, 0 or <-1 don't retry
+    delayLevel: 0 #out delay range [1,18] or <0 don't retry, 0 default retryCn 16
+  orderWXAssetChange:
+    name: orderWXAssetChange
+    nameSrvs:
+      - 127.0.0.1:9876
+    groupName: C_GID_ORDER_WX_CHANGE
+    topicName: TOPIC_ASSET_CHANGE_EVENT
+    tag: orderWX
+    pullRetryCn: 2
+    logicMaxRetryCn: 0
+    pullBatchSize: 1
+    consumeMessageBatchMaxSize: 1
+    maxReconsumeTimes: -1 #-1 is default 16, 0 or <-1 don't retry
+    delayLevel: 0 #out delay range [1,18] or <0 don't retry, 0 default retryCn 16
+  orderAlipayAssetChange:
+    name: orderAlipayAssetChange
+    nameSrvs:
+      - 127.0.0.1:9876
+    groupName: C_GID_ORDER_ALIPAY_CHANGE
+    topicName: TOPIC_ASSET_CHANGE_EVENT
+    tag: orderAlipay
+    pullRetryCn: 2
+    logicMaxRetryCn: 0
+    pullBatchSize: 1
+    consumeMessageBatchMaxSize: 1
+    maxReconsumeTimes: -1 #-1 is default 16, 0 or <-1 don't retry
+    delayLevel: 0 #out delay range [1,18] or <0 don't retry, 0 default retryCn 16
+  orderDouyinAssetChange:
+    name: orderDouyinAssetChange
+    nameSrvs:
+      - 127.0.0.1:9876
+    groupName: C_GID_ORDER_DOUYIN_CHANGE
+    topicName: TOPIC_ASSET_CHANGE_EVENT
+    tag: orderDouyin
+    pullRetryCn: 2
+    logicMaxRetryCn: 0
+    pullBatchSize: 1
+    consumeMessageBatchMaxSize: 1
+    maxReconsumeTimes: -1 #-1 is default 16, 0 or <-1 don't retry
+    delayLevel: 0 #out delay range [1,18] or <0 don't retry, 0 default retryCn 16

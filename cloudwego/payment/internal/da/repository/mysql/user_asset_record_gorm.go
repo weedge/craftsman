@@ -29,18 +29,25 @@ func (m *UserAssetRecordRepository) GetRecordsByUserChangeAssetEvent(ctx context
 		err = domain.ErrInnerNilPointer
 		return
 	}
-	if event.ToUserAssetChange == nil {
-		event.ToUserAssetChange = &station.UserAssetChangeInfo{}
-	}
 
 	userAssetRecordDao := dao.Use(m.db).UserAssetRecord
-	userAssetRecordDao.WithContext(ctx).Where(
+
+	if event.ToUserAssetChange != nil {
+		res, err = userAssetRecordDao.WithContext(ctx).Where(
+			userAssetRecordDao.UserID.Eq(event.OpUserAssetChange.UserId),
+			userAssetRecordDao.OpUserType.Eq(constants.OpUserTypeActive),
+			userAssetRecordDao.EventID.Eq(event.EventId),
+		).Or(
+			userAssetRecordDao.UserID.Eq(event.ToUserAssetChange.UserId),
+			userAssetRecordDao.OpUserType.Eq(constants.OpUserTypePassive),
+			userAssetRecordDao.EventID.Eq(event.EventId),
+		).Find()
+		return
+	}
+
+	res, err = userAssetRecordDao.WithContext(ctx).Where(
 		userAssetRecordDao.UserID.Eq(event.OpUserAssetChange.UserId),
 		userAssetRecordDao.OpUserType.Eq(constants.OpUserTypeActive),
-		userAssetRecordDao.EventID.Eq(event.EventId),
-	).Or(
-		userAssetRecordDao.UserID.Eq(event.ToUserAssetChange.UserId),
-		userAssetRecordDao.OpUserType.Eq(constants.OpUserTypePassive),
 		userAssetRecordDao.EventID.Eq(event.EventId),
 	).Find()
 

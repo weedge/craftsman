@@ -52,7 +52,7 @@ func (m *UserAssetChangeEvent) SubMsgsHandle(ctx context.Context, msgs ...*primi
 
 	if mapTxErr.Len() > 0 {
 		klog.CtxErrorf(ctx, "userAssetEventUseCase.ChangeUsersAssetTx err: %s", mapTxErr.String())
-		return consumer.ConsumeRetryLater, err
+		return consumer.ConsumeRetryLater, nil
 	}
 
 	klog.CtxDebugf(ctx, "userAssetEventUseCase.ChangeUsersAssetTx msgs:%+v ok", msgs)

@@ -21,7 +21,7 @@ require (
 	github.com/spf13/viper v1.14.0
 	github.com/stretchr/testify v1.8.1
 	github.com/weedge/craftsman/cloudwego/common v0.0.0-20230102161201-f9ed41a0d94c
-	github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm v0.0.0-20221220110835-524bfda8e0e3
+	github.com/weedge/craftsman/cloudwego/kitex-contrib/gorm v0.0.0-20230103155229-a3f178db9c28
 	go.opentelemetry.io/otel v1.11.2
 	go.opentelemetry.io/otel/trace v1.11.2
 	go.uber.org/zap v1.24.0

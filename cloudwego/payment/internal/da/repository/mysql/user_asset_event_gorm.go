@@ -84,11 +84,18 @@ func (m *UserAssetEventRepository) ChangeUsersAssetTx(ctx context.Context, event
 }
 
 func (m *UserAssetEventRepository) changeUserAssetTx(ctx context.Context, tx *dao.QueryTx, changeInfo *station.UserAssetChangeInfo, handle domain.AssetChangeHandler) (err error) {
+	if changeInfo == nil {
+		return
+	}
+
 	userAssetModle, err := tx.UserAsset.WithContext(ctx).Select(tx.UserAsset.ALL).Clauses(clause.Locking{
 		Strength: "UPDATE",
 	}).Where(tx.UserAsset.UserID.Eq(changeInfo.UserId), tx.UserAsset.AssetType.Eq(int32(changeInfo.AssetType))).Take()
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return err
+	}
+	if err == gorm.ErrRecordNotFound {
+		userAssetModle = &model.UserAsset{}
 	}
 
 	newAssetCn := handle(userAssetModle.AssetCn)

@@ -30,7 +30,7 @@ type RmqPushConsumerOptions struct {
 	// The time of each level is the value of indexing of {level-1} in
 	// [1s, 5s, 10s, 30s, 1m, 2m, 3m, 4m, 5m, 6m, 7m, 8m, 9m, 10m, 20m, 30m, 1h, 2h]
 	//delayLevel := 2
-	// out delay level range, use default retry, retry cn: maxReconsumeTimes default 16
+	// out delay level range, <0 don't retry, retry cn: maxReconsumeTimes default 16
 	// [10s, 30s, 1m, 2m, 3m, 4m, 5m, 6m, 7m, 8m, 9m, 10m, 20m, 30m, 1h, 2h]
 	DelayLevel int `mapstructure:"delayLevel"`
 }
@@ -40,10 +40,10 @@ func DefaultRmqPushConsumerOptions() *RmqPushConsumerOptions {
 		NameSrvs:                   []string{"127.0.0.1:9876"},
 		PullRetryCn:                2,
 		LogicMaxRetryCn:            0,
-		MaxReconsumeTimes:          20,
+		MaxReconsumeTimes:          -1,
 		PullBatchSize:              32,
 		ConsumeMessageBatchMaxSize: 1,
-		DelayLevel:                 -1,
+		DelayLevel:                 0,
 	}
 }
 
