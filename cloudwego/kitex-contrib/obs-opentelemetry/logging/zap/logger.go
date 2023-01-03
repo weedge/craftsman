@@ -108,6 +108,11 @@ func (l *Logger) CtxLogf(level klog.Level, ctx context.Context, format string, k
 
 	span := trace.SpanFromContext(ctx)
 
+	if !span.IsRecording() {
+		l.Logf(level, format, kvs...)
+		return
+	}
+
 	sl := l.With(
 		traceIDKey, span.SpanContext().TraceID(), spanIDKey, span.SpanContext().SpanID(), traceFlagsKey, span.SpanContext().TraceFlags())
 	switch level {
@@ -133,10 +138,6 @@ func (l *Logger) CtxLogf(level klog.Level, ctx context.Context, format string, k
 
 	msg := getMessage(format, kvs)
 
-	if !span.IsRecording() {
-		l.Logf(level, format, kvs...)
-		return
-	}
 	attrs := []attribute.KeyValue{
 		logMessageKey.String(msg),
 		logSeverityTextKey.String(OtelSeverityText(zlevel)),
@@ -269,9 +270,13 @@ func (l *Logger) CtxKVLog(ctx context.Context, level klog.Level, format string, 
 		return
 	}
 
-	var zlevel zapcore.Level
-
 	span := trace.SpanFromContext(ctx)
+	if !span.IsRecording() {
+		l.Logf(level, format, kvs...)
+		return
+	}
+
+	var zlevel zapcore.Level
 	zl := l.l.With(
 		zap.Any(traceIDKey, span.SpanContext().TraceID()),
 		zap.Any(spanIDKey, span.SpanContext().SpanID()),
@@ -304,11 +309,6 @@ func (l *Logger) CtxKVLog(ctx context.Context, level klog.Level, format string, 
 	}
 
 	msg := getMessage(format, kvs)
-
-	if !span.IsRecording() {
-		l.Logf(level, format, kvs...)
-		return
-	}
 	attrs := []attribute.KeyValue{
 		logMessageKey.String(msg),
 		logSeverityTextKey.String(OtelSeverityText(zlevel)),
