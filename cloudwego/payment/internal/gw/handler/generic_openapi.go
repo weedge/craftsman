@@ -78,6 +78,7 @@ func OpenApiHandle(ctx context.Context, c *app.RequestContext) {
 		})
 		return
 	}
+
 	realResp, ok := resp.(*generic.HTTPResponse)
 	if !ok {
 		klog.CtxWarnf(ctx, "resp:%+v not generic.HTTPResponse ", resp)

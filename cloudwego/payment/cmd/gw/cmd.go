@@ -9,8 +9,8 @@ import (
 
 func NewCommand() *cobra.Command {
 	return &cobra.Command{
-		Use:   "station",
-		Short: "start station server",
+		Use:   "gw",
+		Short: "start gateway server",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx, cancel := context.WithCancel(context.Background())
 			defer cancel()
