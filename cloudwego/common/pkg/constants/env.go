@@ -10,3 +10,7 @@ const (
 	EnvGray   = "gray"
 	EnvProd   = "prod"
 )
+
+const (
+	IdlDirPathEnv = "IDL_DIR_PATH_ENV"
+)
