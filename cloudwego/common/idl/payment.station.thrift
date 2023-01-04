@@ -36,5 +36,5 @@ struct BizEventAssetChangerRes{
 }
 
 service PaymentService{
-    BizAssetChangesResp ChangeAsset(1: BizAssetChangesReq req)(api.post = '/payment/changeassets', api.param = 'true', api.serializer = 'json')
+    BizAssetChangesResp ChangeAsset(1: BizAssetChangesReq req)(api.post = '/payment/station/v1/changeassets', api.param = 'true', api.serializer = 'json')
 }

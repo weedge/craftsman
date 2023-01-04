@@ -12,5 +12,5 @@ struct GetAssetsResp{
 }
 
 service PaymentService{
-    GetAssetsResp GetAssets(1: GetAssetsReq req)(api.get = '/payment/getassets', api.param = 'true') 
+    GetAssetsResp GetAssets(1: GetAssetsReq req)(api.get = '/payment/da/v1/getassets', api.param = 'true')
 }

@@ -10,6 +10,6 @@ const (
 )
 
 const (
-	IdlFileSuffixThrift   = "thirft"
+	IdlFileSuffixThrift   = "thrift"
 	IdlFileSuffixProtobuf = "pb"
 )
