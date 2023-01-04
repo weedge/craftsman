@@ -32,5 +32,5 @@ func SetupProbeRoutes(h *server.Hertz) {
 // SetupHttpThriftGenericRoutes
 func SetupHttpThriftGenericRoutes(h *server.Hertz) {
 	passGroup := h.Group("/openapi").Use(middleware.OpenApiAuth())
-	passGroup.POST("/:svc", handler.OpenApiHandle)
+	passGroup.Any("/:project/:svc/:version/:method", handler.OpenApiHandle)
 }

@@ -26,6 +26,7 @@ func NewServer(ctx context.Context) (*Server, error) {
 		logutils.NewkitexZapKVLogger,
 
 		injectors.InitHttpThriftGenericClients,
+		injectors.InitHttpThriftGenericEndpointsOpts,
 
 		wire.Struct(new(Server), "*"),
 	))

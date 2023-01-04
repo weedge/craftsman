@@ -42,9 +42,10 @@ func (m *UserAssetChangeEvent) SubMsgsHandle(ctx context.Context, msgs ...*primi
 		// change user asset
 		err = m.userAssetEventUseCase.ChangeUsersAssetTx(ctx, event)
 		if err != nil {
-			klog.CtxErrorf(ctx, "userAssetEventUseCase.ChangeUsersAssetTx err: %s", err.Error())
 			if err != domain.ErrInnerNilPointer {
 				mapTxErr.Add(msg.MsgId, err)
+			} else {
+				klog.CtxErrorf(ctx, "userAssetEventUseCase.ChangeUsersAssetTx err: %s", err.Error())
 			}
 			continue
 		}

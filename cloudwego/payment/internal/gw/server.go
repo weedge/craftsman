@@ -13,13 +13,15 @@ import (
 	"github.com/weedge/craftsman/cloudwego/payment/internal/gw/handler"
 	"github.com/weedge/craftsman/cloudwego/payment/internal/gw/router"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/constants"
+	"github.com/weedge/craftsman/cloudwego/payment/pkg/injectors"
 	"github.com/weedge/craftsman/cloudwego/payment/pkg/utils/logutils"
 )
 
 type Server struct {
-	opts          *ServerOptions
-	kitexKVLogger logutils.IKitexZapKVLogger
-	mpCli         map[string]genericclient.Client
+	opts                 *ServerOptions
+	kitexKVLogger        logutils.IKitexZapKVLogger
+	mapCli               map[string]genericclient.Client
+	mapGenericClientOpts map[string]*injectors.GenericEndpointsOpts
 }
 
 // ServerOptions server options
@@ -46,7 +48,7 @@ func DefaultServerOptions() *ServerOptions {
 func (s *Server) Run(ctx context.Context) error {
 	klog.SetLogger(s.kitexKVLogger)
 	klog.SetLevel(s.opts.LogLevel.KitexLogLevel())
-	handler.InitSvcGenericClientMap(s.mpCli)
+	handler.InitSvcGenericClientMap(s.mapCli, s.mapGenericClientOpts)
 
 	p := provider.NewOpenTelemetryProvider(
 		provider.WithExportEndpoint(s.opts.OltpGrpcCollectorEndpoint),

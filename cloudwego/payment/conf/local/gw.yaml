@@ -1,0 +1,29 @@
+server:
+  addr: 0.0.0.0:8001
+  logLevel: debug
+  projectName: payment
+  oltpCollectorGrpcEndpoint: 0.0.0.0:4317
+
+httpThriftGenericClient:
+  #idlDirPath: ../common/idl/ # default use env IDL_DIR_PATH_ENV
+  endpoints: # upstream endpoints
+    - projectName: payment
+      svcName: station
+      version: v1
+      hostPorts:
+        - 0.0.0.0:8002
+      closedMethods:
+    - projectName: payment
+      svcName: da
+      version: v1
+      headerKeys:
+        - x-access-token
+        - x-secsdk-csrf-token
+      hostPorts:
+        - 0.0.0.0:8003
+      closedMethods:
+        #- svcMethod: getassets
+        #  httpMethod: get
+      enableXDS: false
+      xdsAddr: 0.0.0.0:15010
+      endpoint: payment.da:8003

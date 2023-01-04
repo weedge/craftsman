@@ -9,6 +9,7 @@ import (
 	base0 "github.com/weedge/craftsman/cloudwego/common/kitex_gen/payment/base"
 	"github.com/weedge/craftsman/cloudwego/common/kitex_gen/payment/da"
 	"github.com/weedge/craftsman/cloudwego/payment/internal/da/domain"
+	"github.com/weedge/craftsman/cloudwego/payment/pkg/constants"
 	"go.opentelemetry.io/otel/baggage"
 	"gorm.io/gorm"
 )
@@ -26,6 +27,17 @@ func (i *impl) GetAssets(ctx context.Context, req *da.GetAssetsReq) (resp *da.Ge
 	klog.CtxDebugf(ctx, "otel tracing baggage: %s", baggage.FromContext(ctx).String())
 
 	resp = &da.GetAssetsResp{UserAssets: []*base0.UserAsset{}, BaseResp: &base.BaseResp{}}
+
+	if len(req.UserIds) == 0 {
+		klog.CtxWarnf(ctx, "GetAssets len(UserIds) = 0 ")
+		return
+	}
+	if len(req.UserIds) > constants.DaGetAssetsMaxUserIdCn {
+		klog.CtxWarnf(ctx, "GetAssets len(UserIds) > %d ", constants.DaGetAssetsMaxUserIdCn)
+		resp.BaseResp.SetErrCode(int64(common.Err_PaymentBadRequest))
+		resp.BaseResp.SetErrMsg(common.Err_PaymentBadRequest.String())
+		return
+	}
 
 	items, err := i.userAssetRepos.GetUserAssets(ctx, req.UserIds)
 	if err != nil && gorm.ErrRecordNotFound != err {

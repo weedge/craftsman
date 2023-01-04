@@ -28,10 +28,12 @@ func NewServer(ctx context.Context) (*Server, error) {
 	iKitexZapKVLogger := logutils.NewkitexZapKVLogger(level, v)
 	httpThriftGenericClientOpts := options.HttpThriftGenericClient
 	v2 := injectors.InitHttpThriftGenericClients(httpThriftGenericClientOpts)
+	v3 := injectors.InitHttpThriftGenericEndpointsOpts(httpThriftGenericClientOpts)
 	server := &Server{
-		opts:          serverOptions,
-		kitexKVLogger: iKitexZapKVLogger,
-		mpCli:         v2,
+		opts:                 serverOptions,
+		kitexKVLogger:        iKitexZapKVLogger,
+		mapCli:               v2,
+		mapGenericClientOpts: v3,
 	}
 	return server, nil
 }
