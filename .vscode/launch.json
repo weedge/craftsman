@@ -5,6 +5,26 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "cloudwego-payment-gw-local",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${cwd}/cloudwego/payment/cmd/main.go",
+            "buildFlags": "",
+            "env": {"IDL_DIR_PATH_ENV":"${cwd}/cloudwego/common/idl/"},
+            "args": ["gw","--config","${cwd}/cloudwego/payment/conf/local/gw.yaml"]
+        },
+        {
+            "name": "cloudwego-payment-station-local",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${cwd}/cloudwego/payment/cmd/main.go",
+            "buildFlags": "",
+            "env": {},
+            "args": ["station","--config","${cwd}/cloudwego/payment/conf/local/station.yaml"]
+        },
+        {
             "name": "cloudwego-payment-da-local",
             "type": "go",
             "request": "launch",
