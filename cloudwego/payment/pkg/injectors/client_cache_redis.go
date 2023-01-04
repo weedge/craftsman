@@ -15,7 +15,7 @@ type RedisClusterClientOptions struct {
 	RedisClientCommonOptions
 
 	// To route commands by latency or randomly, enable one of the following.
-	Route string `mapstructure:"addrs"`
+	Route string `mapstructure:"route"`
 }
 
 type RedisClientCommonOptions struct {

@@ -9,5 +9,6 @@ const (
 )
 
 const (
-	TopicUserAssetChange = "TOPIC_ASSET_CHANGE_EVENT"
+	TopicUserAssetChange      = "TOPIC_ASSET_CHANGE_EVENT"
+	TopicCacheUserAssetChange = "TOPIC_CACHE_ASSET_CHANGE_EVENT"
 )

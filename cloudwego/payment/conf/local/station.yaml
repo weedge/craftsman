@@ -1,0 +1,57 @@
+server:
+  addr: 0.0.0.0:8002
+  logLevel: debug
+  projectName: payment
+  oltpCollectorGrpcEndpoint: 0.0.0.0:4317
+
+redisClusterClient:
+  addrs:
+    - :26379
+    - :26380
+    - :26381
+    - :26382
+    - :26383
+    - :26384
+  route: randomly
+  password:
+  username:
+  maxRetries:
+  minRetryBackoff:
+  maxRetryBackoff:
+  dialTimeout:
+  readTimeout:
+  writeTimeout:
+  poolSize:
+  minIdleConns:
+  poolTimeout:
+  idleTimeout:
+  idleCheckFrequency:
+
+assetChangeEventProducer:
+  name: userAssetChangeEventTxProducer
+  nameSrvs:
+    - 127.0.0.1:9876
+  groupName: P_GID_ASSET_CHANGE
+  retryCn: 2
+
+paymentDaClient:
+  enableXDS: false
+  xdsAddr: 0.0.0.0:15010
+  endpoint: payment.da:8003
+
+userAssetTxMethod: lua
+
+rmqConsumers:
+  sendGiftAssetChange:
+    name: sendGiftAssetChange
+    nameSrvs:
+      - 127.0.0.1:9876
+    groupName: C_STATION_GID_GIFT_ASSET_CHANGE
+    topicName: TOPIC_CACHE_ASSET_CHANGE_EVENT
+    tag: interactGift
+    pullRetryCn: 2
+    logicMaxRetryCn: 0
+    pullBatchSize: 1
+    consumeMessageBatchMaxSize: 1
+    maxReconsumeTimes: -1 #-1 is default 16, 0 or <-1 don't retry
+    delayLevel: 0 #out delay range [1,18] or <0 don't retry, 0 default retryCn 16
