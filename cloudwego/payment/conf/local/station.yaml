@@ -38,6 +38,8 @@ paymentDaClient:
   enableXDS: false
   xdsAddr: 0.0.0.0:15010
   endpoint: payment.da:8003
+  hostPorts:
+    - 0.0.0.0:8003
 
 userAssetTxMethod: lua
 

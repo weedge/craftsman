@@ -13,16 +13,18 @@ import (
 )
 
 type PaymentStationClientOptions struct {
-	Endpoint  string `mapstructure:"endpoint"`
-	EnableXDS bool   `mapstructure:"enableXDS"`
-	XDSAddr   string `mapstructure:"xdsAddr"`
+	Endpoint  string   `mapstructure:"endpoint"`
+	EnableXDS bool     `mapstructure:"enableXDS"`
+	XDSAddr   string   `mapstructure:"xdsAddr"`
+	HostPorts []string `mapstructure:"hostPorts"`
 }
 
 func DefaultPaymentStationClientOptions() *PaymentStationClientOptions {
 	return &PaymentStationClientOptions{
-		Endpoint:  "payment.station:8004",
+		Endpoint:  "payment.station:8002",
 		EnableXDS: false,
 		XDSAddr:   "istiod.istio-system.svc:15010",
+		HostPorts: []string{":8002"},
 	}
 }
 
@@ -46,7 +48,7 @@ func InitPaymentStationClient(opts *PaymentStationClientOptions) (paymentservice
 
 	return paymentservice.NewClient(
 		constants.StationServiceName,
-		client.WithHostPorts(opts.Endpoint),
+		client.WithHostPorts(opts.HostPorts...),
 		client.WithSuite(tracing.NewClientSuite()),
 	)
 }

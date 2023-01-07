@@ -30,7 +30,7 @@ func (m *UserAssetChangeEvent) SubMsgsHandle(ctx context.Context, msgs ...*primi
 			continue
 		}
 
-		klog.CtxDebugf(ctx, "subscribe callback: %+v ", msg)
+		klog.CtxDebugf(ctx, "subscribe msg: %s ", msg.Body)
 
 		// decode msg body get event
 		event := &station.BizEventAssetChange{}
@@ -46,7 +46,11 @@ func (m *UserAssetChangeEvent) SubMsgsHandle(ctx context.Context, msgs ...*primi
 			return
 		})
 		if err != nil {
-			mapTxErr.Add(msg.MsgId, err)
+			if err != domain.ErrorEventDone && err != domain.ErrorNoEnoughAsset {
+				mapTxErr.Add(msg.MsgId, err)
+			} else {
+				klog.CtxWarnf(ctx, "pass userAssetEventUseCase.ChangeUsersAssetTx err: %s", err.Error())
+			}
 			continue
 		}
 	}
@@ -55,6 +59,8 @@ func (m *UserAssetChangeEvent) SubMsgsHandle(ctx context.Context, msgs ...*primi
 		klog.CtxErrorf(ctx, "userAssetEventUseCase.ChangeUsersAssetTx err: %s", mapTxErr.String())
 		return consumer.ConsumeRetryLater, err
 	}
+
+	klog.CtxDebugf(ctx, "userAssetEventUseCase.ChangeUsersAssetTx msgs:%+v ok", msgs)
 
 	return consumer.ConsumeSuccess, nil
 }

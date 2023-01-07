@@ -8,6 +8,7 @@ import (
 	"github.com/apache/rocketmq-client-go/v2/primitive"
 	"github.com/apache/rocketmq-client-go/v2/rlog"
 	"github.com/cloudwego/kitex/pkg/klog"
+	"go.opentelemetry.io/otel/trace"
 )
 
 type RmqPushConsumerOptions struct {
@@ -105,7 +106,13 @@ func initPushConsumerSubscribe(opt *RmqPushConsumerOptions, handler IRocketMQCon
 	err = c.Subscribe(opt.TopicName, consumer.MessageSelector{
 		Type:       consumer.TAG,
 		Expression: opt.Tag,
-	}, handler.SubMsgsHandle)
+	}, func(ctx context.Context, me ...*primitive.MessageExt) (consumer.ConsumeResult, error) {
+		span := trace.SpanFromContext(ctx)
+		if !span.IsRecording() {
+		}
+
+		return handler.SubMsgsHandle(ctx, me...)
+	})
 	if err != nil {
 		klog.Errorf("sub error: %s", err.Error())
 		return

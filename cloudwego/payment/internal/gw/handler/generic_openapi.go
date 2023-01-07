@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"net/http"
@@ -52,7 +53,7 @@ func OpenApiHandle(ctx context.Context, c *app.RequestContext) {
 		}
 	}
 
-	req, err := http.NewRequest(httpMethodName, "", c.Request.BodyStream())
+	req, err := http.NewRequest(httpMethodName, "", bytes.NewBuffer(c.Request.BodyBytes()))
 	if err != nil {
 		klog.CtxWarnf(ctx, "svcName:%s http.NewRequest err:%s", svcName, err.Error())
 		c.JSON(http.StatusOK, &base.BaseResp{

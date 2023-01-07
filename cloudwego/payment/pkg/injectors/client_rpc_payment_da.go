@@ -13,9 +13,10 @@ import (
 )
 
 type PaymentDaClientOptions struct {
-	Endpoint  string `mapstructure:"endpoint"`
-	EnableXDS bool   `mapstructure:"enableXDS"`
-	XDSAddr   string `mapstructure:"xdsAddr"`
+	Endpoint  string   `mapstructure:"endpoint"`
+	EnableXDS bool     `mapstructure:"enableXDS"`
+	XDSAddr   string   `mapstructure:"xdsAddr"`
+	HostPorts []string `mapstructure:"hostPorts"`
 }
 
 func DefaultPaymentDaClientOptions() *PaymentDaClientOptions {
@@ -23,6 +24,7 @@ func DefaultPaymentDaClientOptions() *PaymentDaClientOptions {
 		Endpoint:  "payment.da:8003",
 		EnableXDS: false,
 		XDSAddr:   "istiod.istio-system.svc:15010",
+		HostPorts: []string{":8002"},
 	}
 }
 
@@ -46,7 +48,7 @@ func InitPaymentDaClient(opts *PaymentDaClientOptions) (paymentservice.Client, e
 
 	return paymentservice.NewClient(
 		constants.MisDaServiceName,
-		client.WithHostPorts(opts.Endpoint),
+		client.WithHostPorts(opts.HostPorts...),
 		client.WithSuite(tracing.NewClientSuite()),
 	)
 }

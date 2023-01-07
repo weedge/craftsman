@@ -45,14 +45,14 @@ func InitRmqTransactionProducerClient(opts *RmqProducerClientOptions, listener p
 	)
 	if err != nil {
 		klog.Fatalf("NewTransactionProducer error: %s", err.Error())
-		return
 	}
 
 	err = p.Start()
 	if err != nil {
 		klog.Fatalf("start producer error: %s", err.Error())
-		return
 	}
+
+	klog.Infof("%s start produce ok", opts.Name)
 
 	return
 }

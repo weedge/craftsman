@@ -38,14 +38,14 @@ func (m *UserAssetEventMsg) SendUserAssetChangeMsgTx(ctx context.Context, topicN
 	span := trace.SpanFromContext(ctx)
 	spanBytes, _ := span.SpanContext().MarshalJSON()
 	msg := primitive.NewMessage(topicName, rawMsg)
-	msg.WithTag(tagName)
-	msg.WithKeys([]string{event.EventId})
 	msg.WithProperties(map[string]string{
 		"eventId":                event.EventId,
 		"userId":                 strconv.FormatInt(userId, 10),
 		"eventType":              event.EventType.String(),
 		constants.MqTraceSpanKey: utils.SliceByteToString(spanBytes),
 	})
+	msg.WithTag(tagName)
+	msg.WithKeys([]string{event.EventId})
 	msg.WithTxHandler(handler)
 
 	res, err := m.txRmqProducerClient.SendMessageInTransaction(ctx, msg)
@@ -53,7 +53,12 @@ func (m *UserAssetEventMsg) SendUserAssetChangeMsgTx(ctx context.Context, topicN
 		klog.CtxErrorf(ctx, "SendMessageInTransactionErr msg:%s err:%s", msg.String(), err.Error())
 		return domain.ErrorSendAssetChangeEventMsg
 	}
-	klog.CtxInfof(ctx, "SendMessageInTransaction msg:%s ok, res:%s", msg.String(), res.String())
+
+	if res.State != primitive.CommitMessageState {
+		klog.CtxWarnf(ctx, "SendMessageInTransaction msg:%s ok, res:%s, localTxState:%d; but txMsg don't RC", msg.String(), res.String(), res.State)
+	} else {
+		klog.CtxInfof(ctx, "SendMessageInTransaction msg:%s ok, res:%s, localTxState:%d; txMsg RC", msg.String(), res.String(), res.State)
+	}
 
 	return
 }

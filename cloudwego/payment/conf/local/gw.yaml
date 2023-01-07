@@ -5,7 +5,7 @@ server:
   oltpCollectorGrpcEndpoint: 0.0.0.0:4317
 
 httpThriftGenericClient:
-  #idlDirPath: ../common/idl/ # default use env IDL_DIR_PATH_ENV
+  idlDirPath: ../common/idl/ # default use env IDL_DIR_PATH_ENV
   endpoints: # upstream endpoints
     - projectName: payment
       svcName: station
@@ -13,6 +13,11 @@ httpThriftGenericClient:
       hostPorts:
         - 0.0.0.0:8002
       closedMethods:
+        #- svcMethod: changeassets
+        #  httpMethod: post
+      enableXDS: false
+      xdsAddr: 0.0.0.0:15010
+      endpoint: payment.station:8002
     - projectName: payment
       svcName: da
       version: v1

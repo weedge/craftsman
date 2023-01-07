@@ -29,7 +29,7 @@ func (m *UserAssetChangeEvent) SubMsgsHandle(ctx context.Context, msgs ...*primi
 			continue
 		}
 
-		klog.CtxInfof(ctx, "subscribe callback: %s ", msg.Body)
+		klog.CtxInfof(ctx, "subscribe msg: %s ", msg.Body)
 
 		// decode msg body get event
 		event := &station.BizEventAssetChange{}
@@ -42,10 +42,10 @@ func (m *UserAssetChangeEvent) SubMsgsHandle(ctx context.Context, msgs ...*primi
 		// change user asset
 		err = m.userAssetEventUseCase.ChangeUsersAssetTx(ctx, event)
 		if err != nil {
-			if err != domain.ErrInnerNilPointer {
+			if err != domain.ErrInnerNilPointer && err != domain.ErrNoEnoughAsset {
 				mapTxErr.Add(msg.MsgId, err)
 			} else {
-				klog.CtxErrorf(ctx, "userAssetEventUseCase.ChangeUsersAssetTx err: %s", err.Error())
+				klog.CtxWarnf(ctx, "pass userAssetEventUseCase.ChangeUsersAssetTx err: %s", err.Error())
 			}
 			continue
 		}

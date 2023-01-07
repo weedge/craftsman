@@ -66,14 +66,15 @@ func (i *impl) ChangeAsset(ctx context.Context, req *station.BizAssetChangesReq)
 		})
 	}
 
-	err = eg.Wait()
-	if err != nil {
-		klog.CtxErrorf(ctx, "ChangeAssets err:%s", err.Error())
+	gErr := eg.Wait()
+	if gErr != nil {
+		//klog.CtxErrorf(ctx, "ChangeAssets err:%s", gErr.Error())
 		resp.BaseResp.SetErrCode(int64(common.Err_PaymentStationInteralError))
-		resp.BaseResp.SetErrMsg(common.Err_PaymentBadRequest.String())
-		resp.BaseResp.SetExtra(map[string]string{"err": err.Error()})
+		resp.BaseResp.SetErrMsg(common.Err_PaymentStationInteralError.String())
+		resp.BaseResp.SetExtra(map[string]string{"err": gErr.Error()})
 		return
 	}
+	klog.CtxDebugf(ctx, "ChangeAssets ok, resp:%s", resp.String())
 
 	return
 }

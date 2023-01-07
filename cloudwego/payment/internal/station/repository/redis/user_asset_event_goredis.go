@@ -35,7 +35,7 @@ func (m *UserAssetEventRepository) UserAssetChangeTx(ctx context.Context, eventI
 		assetCn, err = m.userAssetChangeLuaAtomicTx(ctx, eventId, changeInfo, handle)
 	}
 	if err != nil {
-		klog.CtxErrorf(ctx, "%s UserAssetChangeTx err:%s", m.changeAssetTxMethod, err.Error())
+		//klog.CtxErrorf(ctx, "%s UserAssetChangeTx err:%s", m.changeAssetTxMethod, err.Error())
 		return
 	}
 
@@ -129,11 +129,11 @@ func (m *UserAssetEventRepository) userAssetChangeLuaAtomicTx(ctx context.Contex
 	if val.(int64) >= constants.RedisLuaAssetChangeResCodeSuccess {
 		return val.(int64), nil
 	}
-	if val == constants.RedisLuaAssetChangeResCodeNoEnough {
+	if val.(int64) == constants.RedisLuaAssetChangeResCodeNoEnough {
 		return 0, domain.ErrorNoEnoughAsset
 	}
 
-	if val == constants.RedisLuaAssetChangeResCodeNoExists {
+	if val.(int64) == constants.RedisLuaAssetChangeResCodeNoExists {
 		err = m.cb.SetAsset(ctx, changeInfo.UserId, changeInfo.AssetType)
 		if err != nil {
 			return 0, err
@@ -147,7 +147,7 @@ func (m *UserAssetEventRepository) userAssetChangeLuaAtomicTx(ctx context.Contex
 		if val.(int64) >= constants.RedisLuaAssetChangeResCodeSuccess {
 			return val.(int64), nil
 		}
-		if val == constants.RedisLuaAssetChangeResCodeNoEnough {
+		if val.(int64) == constants.RedisLuaAssetChangeResCodeNoEnough {
 			return 0, domain.ErrorNoEnoughAsset
 		}
 	}
@@ -164,7 +164,7 @@ func (m *UserAssetEventRepository) GetUserAssetEventMsg(ctx context.Context, use
 		err = domain.ErrorInternalRedis
 		return
 	}
-	klog.CtxInfof(ctx, "GetUserAssetEventMsg key:%s res:%s ok", eventMsgKey, res)
+	klog.CtxInfof(ctx, "GetUserAssetEventMsg key:%s res:%d ok", eventMsgKey, res)
 
 	return
 }

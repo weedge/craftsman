@@ -1,4 +1,4 @@
 github.com/cespare/xxhash v1.1.0 h1:a6HrQnmkObjyL+Gs60czilIUGqrzKutQD6XZog3p+ko=
 github.com/grpc-ecosystem/grpc-gateway v1.16.0 h1:gmcG1KaJ57LophUzW0Hy8NmPhnMZb4M0+kPpLofRdBo=
-github.com/weedge/obs-opentelemetry/logging/zap v0.0.0-20230103132641-adc417fa319c h1:NSzu7Z3lMB43safTsCPiLPyIAI0c23sHMt6XtxYJ4s8=
-github.com/weedge/obs-opentelemetry/logging/zap v0.0.0-20230103132641-adc417fa319c/go.mod h1:a/Ui0T3Gp68UxkShcgT6KHV/IuO3Xuva0keie4w2eg4=
+github.com/weedge/obs-opentelemetry/logging/zap v0.0.0-20230105022719-fda244939ab8 h1:VAhtDFAbFwGRQVPmNlQ1h1ls9pS/D72VZ2qmKcNy4QM=
+github.com/weedge/obs-opentelemetry/logging/zap v0.0.0-20230105022719-fda244939ab8/go.mod h1:a/Ui0T3Gp68UxkShcgT6KHV/IuO3Xuva0keie4w2eg4=
