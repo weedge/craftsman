@@ -32,7 +32,7 @@ struct BizEventAssetChangerRes{
     1: required string eventId,
     2: required bool changeRes,
     3: required string failMsg,
-    4: required payment.base.UserAsset opUserAsset,
+    4: optional payment.base.UserAsset opUserAsset,
 }
 
 service PaymentService{

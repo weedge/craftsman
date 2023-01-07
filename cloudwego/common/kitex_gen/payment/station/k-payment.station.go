@@ -1175,7 +1175,6 @@ func (p *BizEventAssetChangerRes) FastRead(buf []byte) (int, error) {
 	var issetEventId bool = false
 	var issetChangeRes bool = false
 	var issetFailMsg bool = false
-	var issetOpUserAsset bool = false
 	_, l, err = bthrift.Binary.ReadStructBegin(buf)
 	offset += l
 	if err != nil {
@@ -1244,7 +1243,6 @@ func (p *BizEventAssetChangerRes) FastRead(buf []byte) (int, error) {
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetOpUserAsset = true
 			} else {
 				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -1284,11 +1282,6 @@ func (p *BizEventAssetChangerRes) FastRead(buf []byte) (int, error) {
 
 	if !issetFailMsg {
 		fieldId = 3
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetOpUserAsset {
-		fieldId = 4
 		goto RequiredFieldNotSetError
 	}
 	return offset, nil
@@ -1425,9 +1418,11 @@ func (p *BizEventAssetChangerRes) fastWriteField3(buf []byte, binaryWriter bthri
 
 func (p *BizEventAssetChangerRes) fastWriteField4(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "opUserAsset", thrift.STRUCT, 4)
-	offset += p.OpUserAsset.FastWriteNocopy(buf[offset:], binaryWriter)
-	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	if p.IsSetOpUserAsset() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "opUserAsset", thrift.STRUCT, 4)
+		offset += p.OpUserAsset.FastWriteNocopy(buf[offset:], binaryWriter)
+		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	}
 	return offset
 }
 
@@ -1460,9 +1455,11 @@ func (p *BizEventAssetChangerRes) field3Length() int {
 
 func (p *BizEventAssetChangerRes) field4Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("opUserAsset", thrift.STRUCT, 4)
-	l += p.OpUserAsset.BLength()
-	l += bthrift.Binary.FieldEndLength()
+	if p.IsSetOpUserAsset() {
+		l += bthrift.Binary.FieldBeginLength("opUserAsset", thrift.STRUCT, 4)
+		l += p.OpUserAsset.BLength()
+		l += bthrift.Binary.FieldEndLength()
+	}
 	return l
 }
 

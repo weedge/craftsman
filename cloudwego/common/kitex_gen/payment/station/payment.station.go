@@ -1421,7 +1421,7 @@ type BizEventAssetChangerRes struct {
 	EventId     string           `thrift:"eventId,1,required" json:"eventId"`
 	ChangeRes   bool             `thrift:"changeRes,2,required" json:"changeRes"`
 	FailMsg     string           `thrift:"failMsg,3,required" json:"failMsg"`
-	OpUserAsset *base0.UserAsset `thrift:"opUserAsset,4,required" json:"opUserAsset"`
+	OpUserAsset *base0.UserAsset `thrift:"opUserAsset,4,optional" json:"opUserAsset,omitempty"`
 }
 
 func NewBizEventAssetChangerRes() *BizEventAssetChangerRes {
@@ -1479,7 +1479,6 @@ func (p *BizEventAssetChangerRes) Read(iprot thrift.TProtocol) (err error) {
 	var issetEventId bool = false
 	var issetChangeRes bool = false
 	var issetFailMsg bool = false
-	var issetOpUserAsset bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -1533,7 +1532,6 @@ func (p *BizEventAssetChangerRes) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField4(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetOpUserAsset = true
 			} else {
 				if err = iprot.Skip(fieldTypeId); err != nil {
 					goto SkipFieldError
@@ -1565,11 +1563,6 @@ func (p *BizEventAssetChangerRes) Read(iprot thrift.TProtocol) (err error) {
 
 	if !issetFailMsg {
 		fieldId = 3
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetOpUserAsset {
-		fieldId = 4
 		goto RequiredFieldNotSetError
 	}
 	return nil
@@ -1718,14 +1711,16 @@ WriteFieldEndError:
 }
 
 func (p *BizEventAssetChangerRes) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("opUserAsset", thrift.STRUCT, 4); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := p.OpUserAsset.Write(oprot); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+	if p.IsSetOpUserAsset() {
+		if err = oprot.WriteFieldBegin("opUserAsset", thrift.STRUCT, 4); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.OpUserAsset.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
