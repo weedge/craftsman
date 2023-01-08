@@ -5,12 +5,9 @@ import (
 	"strconv"
 
 	"github.com/apache/rocketmq-client-go/v2/primitive"
-	"github.com/bytedance/sonic"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/cloudwego/kitex/pkg/utils"
-	"github.com/weedge/craftsman/cloudwego/common/pkg/constants"
 	"github.com/weedge/craftsman/cloudwego/payment/internal/station/domain"
-	"go.opentelemetry.io/otel/trace"
+	"github.com/weedge/craftsman/cloudwego/payment/pkg/tracer"
 )
 
 type UserAssetEventMsgLister struct {
@@ -27,27 +24,12 @@ func (m *UserAssetEventMsgLister) ExecuteLocalTransaction(msg *primitive.Message
 	return primitive.CommitMessageState
 }
 
-var MsgTracePayload struct {
-	TraceID trace.TraceID    `json:"ID"`
-	SpanID  trace.SpanID     `json:"SpanID"`
-	Flags   trace.TraceFlags `json:"TraceFlags"`
-}
-
 // CheckLocalTransaction check user asset event msg is ok
 func (m *UserAssetEventMsgLister) CheckLocalTransaction(msg *primitive.MessageExt) primitive.LocalTransactionState {
 	eventId := msg.GetProperty("eventId")
 	userId, _ := strconv.ParseInt(msg.GetProperty("userId"), 10, 64)
-	spanStr := msg.GetProperty(constants.MqTraceSpanKey)
 
-	ctx := context.Background()
-	if len(spanStr) > 0 {
-		spanConf := trace.SpanContextConfig{}
-		err := sonic.Unmarshal(utils.StringToSliceByte(spanStr), &spanConf)
-		if err != nil {
-			klog.CtxErrorf(ctx, "sonic.Unmarshal err:%s", err.Error())
-		}
-		ctx = trace.ContextWithSpanContext(ctx, trace.NewSpanContext(spanConf))
-	}
+	ctx := tracer.ContextWithOtelTraceSpanContextFromMsg(context.Background(), msg)
 
 	res, err := m.userAssetEventRepository.GetUserAssetEventMsg(ctx, userId, eventId)
 	if err != nil {

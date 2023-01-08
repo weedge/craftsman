@@ -41,7 +41,6 @@ func (i *impl) ChangeAsset(ctx context.Context, req *station.BizAssetChangesReq)
 				return
 			})
 			if txErr != nil {
-				klog.CtxErrorf(ctx, "UserAssetChangeTx item:%+v err:%s", item, txErr.Error())
 				mutex.Lock()
 				resp.BizAssetChangeResList[index] = &station.BizEventAssetChangerRes{
 					EventId:     req.BizAssetChanges[index].EventId,
@@ -50,6 +49,11 @@ func (i *impl) ChangeAsset(ctx context.Context, req *station.BizAssetChangesReq)
 					OpUserAsset: nil,
 				}
 				mutex.Unlock()
+				if txErr == domain.ErrorNoEnoughAsset {
+					klog.CtxWarnf(ctx, "UserAssetChangeTx item:%+v err:%s", item, txErr.Error())
+					return nil
+				}
+				klog.CtxErrorf(ctx, "UserAssetChangeTx item:%+v err:%s", item, txErr.Error())
 
 				return txErr
 			}
@@ -74,7 +78,6 @@ func (i *impl) ChangeAsset(ctx context.Context, req *station.BizAssetChangesReq)
 		resp.BaseResp.SetExtra(map[string]string{"err": gErr.Error()})
 		return
 	}
-	klog.CtxDebugf(ctx, "ChangeAssets ok, resp:%s", resp.String())
 
 	return
 }
