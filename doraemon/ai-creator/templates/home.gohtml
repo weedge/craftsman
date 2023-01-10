@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="this is a simple ai creator by 3th AI api">
+        <meta name="author" content="weedge">
+        <title>AI creator</title>
+        <!-- loads bootstrap js and css -->
+        {{template "bootstrap_links"}}
+    </head>
+    <body>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">AI-Creator-Text2Img</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="text" id="keyword" name="keyword"  placeholder="please input keywork" aria-label="keyword">
+                    <button class="btn btn-primary my-2 my-sm-0" id="genImgBtn" type="button" style="cursor: pointer;">create</button>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="container">
+            <div id="alertMsg" class="mt-2"></div>
+            <div id="genPic" class="mt-5"></div>
+        </div> 
+
+        <script>
+            $(document).ready(function() {
+                var conn = new WebSocket("ws://{{.Host}}/ws");
+                conn.onclose = function(evt) {
+                    console.log('Connection closed');
+                }
+                conn.onmessage = function(evt) {
+                    console.log('onMsg:',evt.data);
+                    document.getElementById('genPic').innerHTML = "<div id='pic' style ='height: 1024px'>"+evt.data+"</div>";
+                }
+            });
+
+            $('[id^=genImgBtn]').on('click', function(e){
+                e.preventDefault();
+                var keyword =$("#keyword").val();
+
+                if(!keyword){
+                    alert('enter an keyword !!');
+                    return
+                }
+
+                sendRequest(keyword) 
+            });
+ 
+            function sendRequest(keyword){
+                 $.ajax({
+                    url:"/text2img",
+                    type: "POST",
+                    data:{"keyword":keyword},
+                    success: function(result){
+                        result= JSON.parse(result);
+
+                        if(result.error){
+                            displayError(result.error)
+                        }
+                    },
+
+                    error: function (request, status, error) {    
+                        alert(request.responseText);
+                    }
+                });
+            }
+
+            function displayError(error){
+                $("#alertMsg").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"> \
+                    <strong>Holy guacamole!</strong>&nbsp;' + error +' \
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"> \
+                    <span aria-hidden="true">&times;</span></button> \
+                    </div>')
+            }
+        </script>
+   </body>
+</html>

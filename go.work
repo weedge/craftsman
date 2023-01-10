@@ -5,4 +5,5 @@ use (
 	cloudwego/payment
 	cloudwego/kitex-contrib/obs-opentelemetry/logging/zap
 	cloudwego/kitex-contrib/gorm
+	doraemon/ai-creator
 )

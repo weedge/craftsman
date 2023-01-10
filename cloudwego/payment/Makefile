@@ -46,6 +46,8 @@ gorm-gen:
 .PHONY: wire-gen
 wire-gen:
 	@go install github.com/google/wire/cmd/wire@latest
+	@cd ./internal/da && wire && cd -
+	@cd ./internal/station && wire && cd -
 	@cd ./internal/gw && wire && cd -
 
 
