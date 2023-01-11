@@ -35,7 +35,7 @@ var (
 		"draftTaskStatusCh": PullDraftTaskStatus,
 	}
 
-	templates = template.Must(template.New("").Funcs(createFuncMap()).ParseGlob("../templates/*.gohtml"))
+	templates = template.Must(template.New("").Funcs(createFuncMap()).ParseGlob(os.Getenv("TEMPLATE_DIR") + "*.gohtml"))
 
 	upgrader = websocket.Upgrader{
 		ReadBufferSize:  1024,
@@ -295,7 +295,7 @@ func closeSub(ctx context.Context) {
 		if err != nil {
 			log.Println("sub", name, "err", err.Error())
 		}
-		log.Println("sub", name, "ok")
+		log.Println("sub", name, "close ok")
 	}
 }
 

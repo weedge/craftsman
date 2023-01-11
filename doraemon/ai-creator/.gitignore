@@ -21,3 +21,6 @@
 vendor
 bin
 log
+
+# docker Compose env
+.env
