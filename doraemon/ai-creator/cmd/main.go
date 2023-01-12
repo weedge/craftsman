@@ -202,7 +202,7 @@ func text2ImgHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func connectToRedis(ctx context.Context, redisType string) {
-	log.Println(os.Getenv("REDIS_URL"), os.Getenv("REDIS_PASSWORD"))
+	log.Println(os.Getenv("REDIS_URL"), os.Getenv("REDIS_PASSWORD"), os.Getenv("REDIS_USERNAME"))
 
 	switch redisType {
 	case "cluster":

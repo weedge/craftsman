@@ -1,0 +1,131 @@
+version: "2"
+name: "extral-multi-redis-cluster"
+services:
+  redis-cluster_1:
+    image: docker.io/bitnami/redis-cluster:7.0
+    ports:
+      - 6379:6379
+      - 16379:16379
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_NODES=redis-cluster_1 redis-cluster_2 redis-cluster_3 redis-cluster_4 redis-cluster_5 redis-cluster_6
+      - REDIS_CLUSTER_ANNOUNCE_PORT=6379
+      - REDIS_CLUSTER_ANNOUNCE_IP=${MY_EXTERNAL_IP}
+      - REDIS_CLUSTER_ANNOUNCE_BUS_PORT=16379
+      - REDIS_CLUSTER_DYNAMIC_IPS=no
+    networks:
+      cluster-redis:
+        ipv4_address: 172.27.0.100
+
+  redis-cluster_2:
+    image: docker.io/bitnami/redis-cluster:7.0
+    ports:
+      - 6380:6380
+      - 16380:16380
+    environment:
+      - REDIS_PORT_NUMBER=6380
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_NODES=redis-cluster_1 redis-cluster_2 redis-cluster_3 redis-cluster_4 redis-cluster_5 redis-cluster_6
+      - REDIS_CLUSTER_ANNOUNCE_PORT=6380
+      - REDIS_CLUSTER_ANNOUNCE_IP=${MY_EXTERNAL_IP}
+      - REDIS_CLUSTER_ANNOUNCE_BUS_PORT=16380
+      - REDIS_CLUSTER_DYNAMIC_IPS=no
+    networks:
+      cluster-redis:
+        ipv4_address: 172.27.0.101
+
+  redis-cluster_3:
+    image: docker.io/bitnami/redis-cluster:7.0
+    ports:
+      - 6381:6381
+      - 16381:16381
+    environment:
+      - REDIS_PORT_NUMBER=6381
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_NODES=redis-cluster_1 redis-cluster_2 redis-cluster_3 redis-cluster_4 redis-cluster_5 redis-cluster_6
+      - REDIS_CLUSTER_ANNOUNCE_PORT=6381
+      - REDIS_CLUSTER_ANNOUNCE_IP=${MY_EXTERNAL_IP}
+      - REDIS_CLUSTER_ANNOUNCE_BUS_PORT=16381
+      - REDIS_CLUSTER_DYNAMIC_IPS=no
+    networks:
+      cluster-redis:
+        ipv4_address: 172.27.0.102
+
+  redis-cluster_4:
+    image: docker.io/bitnami/redis-cluster:7.0
+    ports:
+      - 6382:6382
+      - 16382:16382
+    environment:
+      - REDIS_PORT_NUMBER=6382
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_NODES=redis-cluster_1 redis-cluster_2 redis-cluster_3 redis-cluster_4 redis-cluster_5 redis-cluster_6
+      - REDIS_CLUSTER_ANNOUNCE_PORT=6382
+      - REDIS_CLUSTER_ANNOUNCE_IP=${MY_EXTERNAL_IP}
+      - REDIS_CLUSTER_ANNOUNCE_BUS_PORT=16382
+      - REDIS_CLUSTER_DYNAMIC_IPS=no
+    networks:
+      cluster-redis:
+        ipv4_address: 172.27.0.103
+
+  redis-cluster_5:
+    image: docker.io/bitnami/redis-cluster:7.0
+    ports:
+      - 6383:6383
+      - 16383:16383
+    environment:
+      - REDIS_PORT_NUMBER=6383
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_NODES=redis-cluster_1 redis-cluster_2 redis-cluster_3 redis-cluster_4 redis-cluster_5 redis-cluster_6
+      - REDIS_CLUSTER_ANNOUNCE_PORT=6383
+      - REDIS_CLUSTER_ANNOUNCE_IP=${MY_EXTERNAL_IP}
+      - REDIS_CLUSTER_ANNOUNCE_BUS_PORT=16383
+      - REDIS_CLUSTER_DYNAMIC_IPS=no 
+    networks:
+      cluster-redis:
+        ipv4_address: 172.27.0.104
+
+  redis-cluster_6:
+    image: docker.io/bitnami/redis-cluster:7.0
+    ports:
+      - 6384:6384
+      - 16384:16384      
+    environment:
+      - REDIS_PORT_NUMBER=6384
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_NODES=redis-cluster_1 redis-cluster_2 redis-cluster_3 redis-cluster_4 redis-cluster_5 redis-cluster_6
+      - REDIS_CLUSTER_ANNOUNCE_PORT=6384
+      - REDIS_CLUSTER_ANNOUNCE_IP=${MY_EXTERNAL_IP}
+      - REDIS_CLUSTER_ANNOUNCE_BUS_PORT=16384
+      - REDIS_CLUSTER_DYNAMIC_IPS=no 
+    networks:
+      cluster-redis:
+        ipv4_address: 172.27.0.105
+
+  redis-cluster-init:
+    image: redis:7.0
+    container_name: redis-cluster-init
+    restart: 'no'
+    depends_on:
+      - redis-cluster_1
+      - redis-cluster_2
+      - redis-cluster_3
+      - redis-cluster_4
+      - redis-cluster_5
+      - redis-cluster_6
+    entrypoint: []
+    command:
+      - /bin/bash
+      - -c
+      - redis-cli -a ${REDIS_PASSWORD} --cluster create ${MY_EXTERNAL_IP}:6379 ${MY_EXTERNAL_IP}:6380 ${MY_EXTERNAL_IP}:6381 ${MY_EXTERNAL_IP}:6382 ${MY_EXTERNAL_IP}:6383 ${MY_EXTERNAL_IP}:6384 --cluster-replicas 1 --cluster-yes
+    networks:
+      cluster-redis:
+        ipv4_address: 172.27.0.106      
+  
+networks: 
+  cluster-redis:
+    driver: bridge
+    ipam:
+        driver: default
+        config:
+            - subnet: 172.27.0.0/16 
