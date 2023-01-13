@@ -12,7 +12,7 @@ import (
 	"text/template"
 	"time"
 
-	redis "github.com/go-redis/redis/v8"
+	redis "github.com/go-redis/redis/v9"
 	"github.com/gorilla/websocket"
 	"github.com/weedge/craftsman/doraemon/ai-creator/internal/api"
 )
@@ -219,12 +219,12 @@ func connectToRedis(ctx context.Context, redisType string) {
 			WriteTimeout:    3 * time.Second,
 
 			// connect pool
-			PoolSize:           100,
-			MinIdleConns:       10,
-			MaxConnAge:         60 * time.Second,
-			PoolTimeout:        5 * time.Second,
-			IdleTimeout:        30 * time.Second,
-			IdleCheckFrequency: 3 * time.Second,
+			PoolSize:        100,
+			MinIdleConns:    10,
+			PoolTimeout:     5 * time.Second,
+			MaxIdleConns:    50,
+			ConnMaxIdleTime: 30 * time.Second,
+			ConnMaxLifetime: 60 * time.Second,
 
 			// To route commands by latency or randomly, enable one of the following.
 			//RouteByLatency: true,
@@ -245,15 +245,16 @@ func connectToRedis(ctx context.Context, redisType string) {
 			WriteTimeout:    3 * time.Second,
 
 			// connect pool
-			PoolSize:           100,
-			MinIdleConns:       10,
-			MaxConnAge:         60 * time.Second,
-			PoolTimeout:        5 * time.Second,
-			IdleTimeout:        30 * time.Second,
-			IdleCheckFrequency: 3 * time.Second,
+			PoolSize:        100,
+			MinIdleConns:    10,
+			PoolTimeout:     5 * time.Second,
+			MaxIdleConns:    50,
+			ConnMaxIdleTime: 30 * time.Second,
+			ConnMaxLifetime: 60 * time.Second,
 		})
 	}
 
+	// https://github.com/go-redis/redis/issues/2085
 	pong, err := rdb.Ping(ctx).Result()
 	if err == nil {
 		log.Println(pong, "ok")

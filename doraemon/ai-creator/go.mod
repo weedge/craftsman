@@ -3,7 +3,7 @@ module github.com/weedge/craftsman/doraemon/ai-creator
 go 1.19
 
 require (
-	github.com/go-redis/redis/v8 v8.11.5
+	github.com/go-redis/redis/v9 v9.0.0-rc.2
 	github.com/gorilla/websocket v1.5.0
 )
 
