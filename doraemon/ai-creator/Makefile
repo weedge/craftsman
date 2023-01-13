@@ -30,6 +30,6 @@ docker-run: docker-build
 
 .PHONY: docker-compose-run
 docker-compose-run: docker-build
-#	@docker-compose -f build/docker-compose.yaml --env-file ./build/.env config
-	@docker-compose -f build/docker-compose.yaml up
+#	@docker-compose -f build/docker-compose-redis-cluster.yaml -f build/docker-compose.yaml --env-file ./build/.env config
+	@docker-compose -f build/docker-compose-redis-cluster.yaml -f build/docker-compose.yaml up
 
