@@ -1,21 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment # mentions this is a Deployment
 metadata:
-  name: go-app # name of Deployment
+  name: ai-creator-deployment # name of Deployment
+  namespace: doraemon
 spec:
   replicas: 2 # creates 2 replicated Pods
   selector:
     matchLabels:
-      app: go-app # defines how the Deployment finds which Pods to manage
+      app: ai-creator # defines how the Deployment finds which Pods to manage
   template:
     metadata:
       labels:
-        app: go-app # specifies that the Pods are to be named as go-app
-    spec: # specification for each Pod .This block indicates that the Pods run one container 'go-app-container', which runs the weedge/ai-creator dockerhub image .
+        app: ai-creator # specifies that the Pods are to be named as ai-creator
+    spec: # specification for each Pod .This block indicates that the Pods run one container 'ai-creator-container', which runs the weedge/ai-creator dockerhub image .
       containers:
-        - name: go-app-container # name of the container running inside the Pod
+        - name: ai-creator-container # name of the container running inside the Pod
           image: weedge/ai-creator # image to deployed in the container
           imagePullPolicy: Always # pull image from the repository (dockerhub) always
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
           ports:
             - containerPort: 8123 # run on port 8123
           livenessProbe: # To check the health of the Pod
@@ -34,22 +39,42 @@ spec:
             initialDelaySeconds: 5
             timeoutSeconds: 1
           env: # list of env variables passed to the app
-            - name: REDIS_URL # REDIS_URL is the hostname for the redis cluster
+            - name: REDIS_TYPE
               valueFrom:
                 configMapKeyRef:
-                  name: app-configmap # name of the config-map
-                  key: redis-service # import the value of 'redis-service' from app-configmap
+                  name: ai-creator-configmap
+                  key: redis-type
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: ai-creator-configmap
+                  key: redis-service
+            - name: TEMPLATE_DIR
+              valueFrom:
+                configMapKeyRef:
+                  name: ai-creator-configmap
+                  key: template-dir
 
-            - name: REDIS_PASSWORD # REDIS_PASSWORD is used by the app to authenticate with the redis host
+            - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: app-secret # name of the secret
-                  key: redis-password # import the value of 'redis-password' from app-secret
+                  name: ai-creator-secret
+                  key: redis-password
+            - name: NOLIBOX_API_SK
+              valueFrom:
+                secretKeyRef:
+                  name: ai-creator-secret
+                  key: nolibox-api-sk
+            - name: NOLIBOX_API_AK
+              valueFrom:
+                secretKeyRef:
+                  name: ai-creator-secret
+                  key: nolibox-api-ak
 ---
 kind: Service # mentions this is a service
 apiVersion: v1
 metadata:
-  name: go-app-service # name of service
+  name: ai-creator-service # name of service
 spec:
   type: NodePort # service type to be NodePort
   ports:
@@ -59,5 +84,5 @@ spec:
       nodePort: 30000 # use port 30000 as nodePort
 
   selector:
-    app: go-app # The set of Pods with name'go-app' is targeted by this Service
+    app: ai-creator # The set of Pods with name'ai-creator' is targeted by this Service
 

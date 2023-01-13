@@ -1,6 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: app-configmap
+  name: ai-creator-configmap
+  namespace: doraemon
 data:
-  redis-service: my-release-redis-cluster:6379
+  #redis-type: cluster
+  #redis-service: ai-creator-redis-cluster:6379
+  redis-type: default
+  redis-service: ai-creator-redis-master:6379
+  template-dir: ./templates/
