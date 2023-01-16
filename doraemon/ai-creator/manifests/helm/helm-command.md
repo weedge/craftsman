@@ -42,6 +42,26 @@ kubectl get all --namespace doraemon
 kubectl get pods -o wide -w --namespace doraemon
 kubectl get svc -w -o wide --namespace doraemon
 
+#kubectl logs -n doraemon -f -c ai-creator-container ai-creator-deployment-77d9d85dd-wl4rx
+#kubectl logs -n doraemon -f -c ai-creator-container ai-creator-deployment-77d9d85dd-rxgjf
+# SLS or E(C)LK
+```
+
+
+### minikube service
+```shell
+minikube service list
+minikube service -n doraemon ai-creator-service
+```
+
+### scaling
+```
+kubectl scale -n doraemon --replicas 2 deployment/ai-creator-deployment
+```
+
+
+### balancing
 
 ### reference
 1. https://cloud.google.com/blog/products/containers-kubernetes/your-guide-kubernetes-best-practices
+2. https://learnk8s.io/kubernetes-long-lived-connections

@@ -75,6 +75,7 @@ kind: Service # mentions this is a service
 apiVersion: v1
 metadata:
   name: ai-creator-service # name of service
+  namespace: doraemon
 spec:
   type: NodePort # service type to be NodePort
   ports:
