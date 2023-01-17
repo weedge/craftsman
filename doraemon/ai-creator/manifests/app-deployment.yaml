@@ -16,7 +16,9 @@ spec:
       containers:
         - name: ai-creator-container # name of the container running inside the Pod
           image: weedge/ai-creator # image to deployed in the container
-          imagePullPolicy: Always # pull image from the repository (dockerhub) always
+          #imagePullPolicy: Always # pull image from the repository (dockerhub) always
+          imagePullPolicy: Never
+          #imagePullPolicy: IfNotPresent
           resources:
             limits:
               memory: "128Mi"

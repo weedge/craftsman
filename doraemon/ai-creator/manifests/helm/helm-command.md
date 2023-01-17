@@ -33,6 +33,8 @@ helm delete --namespace doraemon ai-creator
 
 ### k8s kind
 ```shell
+#minikube image load weedge/ai-creator:latest  
+
 kubectl apply -f manifests/app-configmap.yaml 
 #kubectl delete -f manifests/app-configmap.yaml 
 kubectl apply -f manifests/app-deployment.yaml
@@ -65,3 +67,4 @@ kubectl scale -n doraemon --replicas 2 deployment/ai-creator-deployment
 ### reference
 1. https://cloud.google.com/blog/products/containers-kubernetes/your-guide-kubernetes-best-practices
 2. https://learnk8s.io/kubernetes-long-lived-connections
+3. https://octopus.com/blog/local-images-minikube

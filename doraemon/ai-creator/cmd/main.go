@@ -301,6 +301,7 @@ func closeSub(ctx context.Context) {
 }
 
 func pullDraftTaskStatus(ctx context.Context, uid string) error {
+	// todo: lock a task to run
 	authVal := api.GetAuth(os.Getenv("NOLIBOX_API_AK"), os.Getenv("NOLIBOX_API_SK"))
 	ticker := time.NewTicker(1000 * time.Millisecond)
 	defer ticker.Stop()

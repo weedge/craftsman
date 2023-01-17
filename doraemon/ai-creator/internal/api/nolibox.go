@@ -3,7 +3,8 @@ package api
 import (
 	"encoding/base64"
 	"fmt"
-	"io/ioutil"
+	"io"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -41,27 +42,27 @@ func Img2acg(authVal string, imgUrl string) {
 	req, err := http.NewRequest(method, url, payload)
 
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 	req.Header.Add("Authorization", fmt.Sprintf("Basic %s", authVal))
 	req.Header.Add("User-Agent", "Apifox/1.0.0 (https://www.apifox.cn)")
 	req.Header.Add("Content-Type", "application/json")
 
-	fmt.Printf("%+v", req)
+	log.Printf("%+v", req)
 	res, err := client.Do(req)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 	defer res.Body.Close()
 
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
-	fmt.Println(string(body))
+	log.Println(string(body))
 }
 
 type StatusResp struct {
@@ -130,7 +131,7 @@ func Status(authVal string, uid string) (body []byte, err error) {
 	client := &http.Client{}
 	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 
@@ -139,17 +140,17 @@ func Status(authVal string, uid string) (body []byte, err error) {
 
 	res, err := client.Do(req)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 
 	defer res.Body.Close()
-	body, err = ioutil.ReadAll(res.Body)
+	body, err = io.ReadAll(res.Body)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
-	fmt.Println(string(body))
+	log.Println(string(body))
 	return
 }
 
@@ -185,7 +186,7 @@ func Draft(authVal string, task, text, imgUrl string) (body []byte, err error) {
 	client := &http.Client{}
 	req, err := http.NewRequest(method, url, payload)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 
@@ -195,17 +196,17 @@ func Draft(authVal string, task, text, imgUrl string) (body []byte, err error) {
 
 	res, err := client.Do(req)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 
 	defer res.Body.Close()
-	body, err = ioutil.ReadAll(res.Body)
+	body, err = io.ReadAll(res.Body)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
-	fmt.Println(string(body))
+	log.Println(string(body))
 
 	return
 }
