@@ -51,7 +51,10 @@ func (i *impl) ChangeAsset(ctx context.Context, req *station.BizAssetChangesReq)
 				}
 				klog.CtxErrorf(ctx, "UserAssetChangeTx item:%+v err:%s", item, txErr.Error())
 
-				return txErr
+				//return txErr
+
+				// notice: don't need to return err, err save to BizEventAssetChangerRes, eventId transaction :)
+				return nil
 			}
 			resp.BizAssetChangeResList[index] = &station.BizEventAssetChangerRes{
 				EventId:     req.BizAssetChanges[index].EventId,
