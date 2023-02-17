@@ -2,6 +2,8 @@ package station
 
 import (
 	"context"
+	"fmt"
+	"time"
 
 	"github.com/cloudwego/kitex/pkg/klog"
 	commonBase "github.com/weedge/craftsman/cloudwego/common/kitex_gen/base"
@@ -25,45 +27,67 @@ func (i *impl) ChangeAsset(ctx context.Context, req *station.BizAssetChangesReq)
 	klog.CtxInfof(ctx, "req: %+v", req)
 	klog.CtxDebugf(ctx, "otel tracing baggage: %s", baggage.FromContext(ctx).String())
 
+	if len(req.BizAssetChanges) > constants.StationChangeMaxAssetsCn {
+		klog.CtxWarnf(ctx, "ChangeAsset len(BizAssetChanges) > %d ", constants.StationChangeMaxAssetsCn)
+		resp.BaseResp.SetErrCode(int64(common.Err_PaymentBadRequest))
+		resp.BaseResp.SetErrMsg(common.Err_PaymentBadRequest.String())
+		return
+	}
+
 	resp = &station.BizAssetChangesResp{
 		BizAssetChangeResList: make([]*station.BizEventAssetChangerRes, len(req.BizAssetChanges)),
 		BaseResp:              &commonBase.BaseResp{},
 	}
 
+	ctx, cancel := context.WithTimeout(ctx, constants.StationChangeAssetExeTimeoutS*time.Second)
+	defer cancel()
 	eg, ctx := errgroup.WithContext(ctx)
 	for index, item := range req.BizAssetChanges {
 		index, item := index, item
 		eg.Go(func() error {
-			userAsset, txErr := i.user.UserAssetChangeTx(ctx, constants.OpUserTypeActive, item, func(ctx context.Context) (incrAssetCn int64) {
-				incrAssetCn = int64(item.OpUserAssetChange.Incr)
-				return
-			})
-			if txErr != nil {
+			select {
+			case <-ctx.Done():
+				timeOutExeErr := fmt.Errorf("%ds timeOutExeErr", constants.StationChangeAssetExeTimeoutS)
 				resp.BizAssetChangeResList[index] = &station.BizEventAssetChangerRes{
 					EventId:     req.BizAssetChanges[index].EventId,
 					ChangeRes:   false,
-					FailMsg:     txErr.Error(),
+					FailMsg:     timeOutExeErr.Error(),
 					OpUserAsset: nil,
 				}
-				if txErr == domain.ErrorNoEnoughAsset {
-					klog.CtxWarnf(ctx, "UserAssetChangeTx item:%+v err:%s", item, txErr.Error())
+				klog.CtxErrorf(ctx, "UserAssetChangeTx item:%+v err:%s", item, timeOutExeErr.Error())
+				return nil
+			default:
+				userAsset, txErr := i.user.UserAssetChangeTx(ctx, constants.OpUserTypeActive, item, func(ctx context.Context) (incrAssetCn int64) {
+					incrAssetCn = int64(item.OpUserAssetChange.Incr)
+					return
+				})
+				if txErr != nil {
+					resp.BizAssetChangeResList[index] = &station.BizEventAssetChangerRes{
+						EventId:     req.BizAssetChanges[index].EventId,
+						ChangeRes:   false,
+						FailMsg:     txErr.Error(),
+						OpUserAsset: nil,
+					}
+					if txErr == domain.ErrorNoEnoughAsset {
+						klog.CtxWarnf(ctx, "UserAssetChangeTx item:%+v err:%s", item, txErr.Error())
+						return nil
+					}
+					klog.CtxErrorf(ctx, "UserAssetChangeTx item:%+v err:%s", item, txErr.Error())
+
+					//return txErr
+
+					// notice: don't need to return err, err save to BizEventAssetChangerRes, eventId transaction :)
 					return nil
 				}
-				klog.CtxErrorf(ctx, "UserAssetChangeTx item:%+v err:%s", item, txErr.Error())
+				resp.BizAssetChangeResList[index] = &station.BizEventAssetChangerRes{
+					EventId:     req.BizAssetChanges[index].EventId,
+					ChangeRes:   true,
+					FailMsg:     "",
+					OpUserAsset: userAsset,
+				}
 
-				//return txErr
-
-				// notice: don't need to return err, err save to BizEventAssetChangerRes, eventId transaction :)
 				return nil
 			}
-			resp.BizAssetChangeResList[index] = &station.BizEventAssetChangerRes{
-				EventId:     req.BizAssetChanges[index].EventId,
-				ChangeRes:   true,
-				FailMsg:     "",
-				OpUserAsset: userAsset,
-			}
-
-			return nil
 		})
 	}
 
