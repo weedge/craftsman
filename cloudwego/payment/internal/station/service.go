@@ -2,7 +2,6 @@ package station
 
 import (
 	"context"
-	"sync"
 
 	"github.com/cloudwego/kitex/pkg/klog"
 	commonBase "github.com/weedge/craftsman/cloudwego/common/kitex_gen/base"
@@ -31,7 +30,6 @@ func (i *impl) ChangeAsset(ctx context.Context, req *station.BizAssetChangesReq)
 		BaseResp:              &commonBase.BaseResp{},
 	}
 
-	var mutex sync.RWMutex
 	eg, ctx := errgroup.WithContext(ctx)
 	for index, item := range req.BizAssetChanges {
 		index, item := index, item
@@ -41,14 +39,12 @@ func (i *impl) ChangeAsset(ctx context.Context, req *station.BizAssetChangesReq)
 				return
 			})
 			if txErr != nil {
-				mutex.Lock()
 				resp.BizAssetChangeResList[index] = &station.BizEventAssetChangerRes{
 					EventId:     req.BizAssetChanges[index].EventId,
 					ChangeRes:   false,
 					FailMsg:     txErr.Error(),
 					OpUserAsset: nil,
 				}
-				mutex.Unlock()
 				if txErr == domain.ErrorNoEnoughAsset {
 					klog.CtxWarnf(ctx, "UserAssetChangeTx item:%+v err:%s", item, txErr.Error())
 					return nil
@@ -57,14 +53,12 @@ func (i *impl) ChangeAsset(ctx context.Context, req *station.BizAssetChangesReq)
 
 				return txErr
 			}
-			mutex.Lock()
 			resp.BizAssetChangeResList[index] = &station.BizEventAssetChangerRes{
 				EventId:     req.BizAssetChanges[index].EventId,
 				ChangeRes:   true,
 				FailMsg:     "",
 				OpUserAsset: userAsset,
 			}
-			mutex.Unlock()
 
 			return nil
 		})
