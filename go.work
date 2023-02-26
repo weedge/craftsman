@@ -6,4 +6,5 @@ use (
 	cloudwego/kitex-contrib/obs-opentelemetry/logging/zap
 	cloudwego/kitex-contrib/gorm
 	doraemon/ai-creator
+	doraemon/openai
 )

@@ -1,4 +1,5 @@
 github.com/cespare/xxhash v1.1.0 h1:a6HrQnmkObjyL+Gs60czilIUGqrzKutQD6XZog3p+ko=
 github.com/grpc-ecosystem/grpc-gateway v1.16.0 h1:gmcG1KaJ57LophUzW0Hy8NmPhnMZb4M0+kPpLofRdBo=
-github.com/weedge/obs-opentelemetry/logging/zap v0.0.0-20230108102627-eb60805c4d53 h1:ojEaRCxbIOPtqEGqu70xi5RGxANH/rlaBhw+MZ5O0Xg=
-github.com/weedge/obs-opentelemetry/logging/zap v0.0.0-20230108102627-eb60805c4d53/go.mod h1:a/Ui0T3Gp68UxkShcgT6KHV/IuO3Xuva0keie4w2eg4=
+golang.org/x/net v0.2.0/go.mod h1:KqCZLdyyvdV855qA2rE3GC2aiw5xGR5TEjj8smXukLY=
+golang.org/x/sys v0.2.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/term v0.2.0/go.mod h1:TVmDHMZPmdnySmBfhjOoOdhjzdE1h4u1VwSiw2l1Nuc=
