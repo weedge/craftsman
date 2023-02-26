@@ -17,6 +17,7 @@
 # IDE config
 # .vscode
 .idea
+.env
 
 */vendor
 */bin
