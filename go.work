@@ -7,4 +7,5 @@ use (
 	cloudwego/kitex-contrib/gorm
 	doraemon/ai-creator
 	doraemon/openai
+	cloud/aws/cdk/serverless-openai-chatbot
 )
