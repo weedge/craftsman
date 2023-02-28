@@ -8,4 +8,5 @@ use (
 	doraemon/ai-creator
 	doraemon/openai
 	cloud/aws/cdk/serverless-openai-chatbot
+	cloud/aws/cdk/serverless-openai-chatbot/server/lambda/golang/push
 )

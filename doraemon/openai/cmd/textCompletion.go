@@ -23,6 +23,10 @@ var textCompletionCmd = &cobra.Command{
 		model := cmd.Flag("model").Value.String()
 		stream := cmd.Flag("stream").Value.String()
 		chat := cmd.Flag("chat").Value.String()
+		if os.Getenv("OPENAI_API_SK") == "" {
+			println("please export OPENAI_API_SK")
+			return
+		}
 		api.InitClient(os.Getenv("OPENAI_API_SK"), model)
 		if chat == "open" {
 			CmdChat(context.TODO(), stream, model)
