@@ -22,6 +22,8 @@ TABLE_NAME = "chat_user_info"
 
 def create_token(user_name):
     return jwt.encode(payload={
+        "aud": "chatbot-user",
+        "sub": "chatbot-openai",
         "username": user_name,
         "exp": datetime.utcnow() + timedelta(days=1)
     }, key=os.getenv("TOKEN_KEY"))
