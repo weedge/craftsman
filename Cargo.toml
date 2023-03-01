@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "cloud/aws/cdk/serverless-openai-chatbot/server/lambda/rust/connect",
+    "cloud/aws/cdk/serverless-openai-chatbot/server/lambda/rust/rustrocket",
+]
