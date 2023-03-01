@@ -46,6 +46,7 @@ cargo lambda build --release --target x86_64-unknown-linux-musl --output-format 
 4. https://aws.amazon.com/cn/blogs/china/rust-runtime-for-aws-lambda/
 5. https://github.com/awslabs/aws-lambda-rust-runtime 
 6. https://blog.logrocket.com/deploy-lambda-functions-rust/
+7. https://medium.com/techhappily/rust-based-aws-lambda-with-aws-cdk-deployment-14a9a8652d62
 
 
 **<u>rust so cool~ learn by good example, axiba, rust lifetime<u>**

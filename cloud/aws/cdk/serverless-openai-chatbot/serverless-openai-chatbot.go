@@ -1,44 +1,21 @@
 package main
 
 import (
+	"serverless-openai-chatbot/infra"
+
 	"github.com/aws/aws-cdk-go/awscdk/v2"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awssns"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awssnssubscriptions"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awssqs"
-	"github.com/aws/constructs-go/constructs/v10"
 	"github.com/aws/jsii-runtime-go"
 )
-
-type ServerlessOpenaiChatbotStackProps struct {
-	awscdk.StackProps
-}
-
-func NewServerlessOpenaiChatbotStack(scope constructs.Construct, id string, props *ServerlessOpenaiChatbotStackProps) awscdk.Stack {
-	var sprops awscdk.StackProps
-	if props != nil {
-		sprops = props.StackProps
-	}
-	stack := awscdk.NewStack(scope, &id, &sprops)
-
-
-	queue := awssqs.NewQueue(stack, jsii.String("ServerlessOpenaiChatbotQueue"), &awssqs.QueueProps{
-		VisibilityTimeout: awscdk.Duration_Seconds(jsii.Number(300)),
-	})
-
-	topic := awssns.NewTopic(stack, jsii.String("ServerlessOpenaiChatbotTopic"), &awssns.TopicProps{})
-	topic.AddSubscription(awssnssubscriptions.NewSqsSubscription(queue, &awssnssubscriptions.SqsSubscriptionProps{}))
-
-	return stack
-}
 
 func main() {
 	defer jsii.Close()
 
 	app := awscdk.NewApp(nil)
-
-	NewServerlessOpenaiChatbotStack(app, "ServerlessOpenaiChatbotStack", &ServerlessOpenaiChatbotStackProps{
-		awscdk.StackProps{
-			Env: env(),
+	infra.NewHttpLoginApiStack(app, "http-api-gateway-login", &infra.HttpLoginApiStackProps{
+		StackProps: awscdk.StackProps{
+			Env:         env(),
+			StackName:   jsii.String("HttpLoginApi"),
+			Description: jsii.String("http api gateway /login,"),
 		},
 	})
 

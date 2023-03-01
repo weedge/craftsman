@@ -1,4 +1,4 @@
-module github.com/weedge/craftsman/cloud/aws/cdk/serverless-openai-chatbot/server/lambda/golang/push
+module push
 
 go 1.19
 

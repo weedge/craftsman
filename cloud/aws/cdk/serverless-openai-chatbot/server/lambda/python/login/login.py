@@ -10,6 +10,7 @@ import boto3
 import json
 import jwt
 import os
+import base64
 from datetime import datetime, timedelta
 
 
@@ -42,7 +43,7 @@ def format_response(code, err_msg, token):
 def query_dynamodb(key):
     try:
         res = dynamodbClient.get_item(
-            TableName=TABLE_NAME,
+            TableName=os.getenv("USER_TABLE_NAME"),
             Key={'username': {'S': key}}
         )
         logger.info("res", res)
@@ -57,9 +58,8 @@ def query_dynamodb(key):
 
 def handler(event, context):
     logger.info("Request: %s", event)
-    response_code = 200
-
-    body = json.loads(event.get('body'))
+    bodyStr = base64.b64decode(event.get('body')).decode('utf-8')
+    body = json.loads(bodyStr)
     logger.info("body: %s", body)
     pwd = query_dynamodb(body.username)
     if pwd is None:

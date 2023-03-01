@@ -13,3 +13,11 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
  * `cdk diff`        compare deployed stack with current state
  * `cdk synth`       emits the synthesized CloudFormation template
  * `go test`         run unit tests
+
+### update aws-cdk
+This CDK CLI is not compatible with the CDK library used by your application. Please upgrade the CLI to the latest version.
+please do this 
+```shell
+npm uninstall -g aws-cdk
+npm install -g aws-cdk
+```

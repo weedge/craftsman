@@ -50,3 +50,6 @@ target/
 
 # env
 .env
+
+# cdk deploy
+cdk.out

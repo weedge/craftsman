@@ -9,13 +9,14 @@ import (
 	"strings"
 	"unsafe"
 
+	"push/api/openai"
+
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	apigw "github.com/aws/aws-sdk-go-v2/service/apigatewaymanagementapi"
 	gogpt "github.com/sashabaranov/go-gpt3"
-	"github.com/weedge/craftsman/cloud/aws/cdk/serverless-openai-chatbot/server/lambda/golang/push/api/openai"
 )
 
 var gogptClient *gogpt.Client
