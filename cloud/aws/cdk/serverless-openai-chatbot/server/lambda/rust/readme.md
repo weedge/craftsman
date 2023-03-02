@@ -1,10 +1,11 @@
 ### Develop (cargo new)
 ```shell
+git clone github.com/weedge/craftsman 
 cd craftsman/cloud/aws/cdk/serverless-openai-chatbot/server/lambda/rust
 # change {my_lambda_function} to your handler
 cargo new {my_lambda_function} --bin
 ```
-### Use Aws Lambda Rust Runtime On MacOs (cargo lambda)
+### Develop by Aws Lambda Rust Runtime On MacOs (cargo lambda)
 ```shell
 # see more: https://github.com/awslabs/aws-lambda-rust-runtime
 brew tap cargo-lambda/cargo-lambda
@@ -39,6 +40,9 @@ cargo lambda deploy \
 # docker deploy use lambci/lambda:provided container https://github.com/awslabs/aws-lambda-rust-runtime#24-serverless-framework
 cargo lambda build --release --target x86_64-unknown-linux-musl --output-format zip
 # or u can use CDK deploy release bootstrap zip like aws-cli 
+
+# Tips:if want to build  the c++ with lambda c++ runtime; like this to deploy, 
+# see this: https://aws.amazon.com/cn/blogs/compute/introducing-the-c-lambda-runtime/
 ```
 
 ### Reference

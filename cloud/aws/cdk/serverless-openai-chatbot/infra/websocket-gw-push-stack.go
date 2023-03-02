@@ -25,7 +25,7 @@ func NewWsGwPushStack(scope constructs.Construct, id string, props *WsGwPushStac
 	openai_api_key := stack.Node().TryGetContext(jsii.String("openai_api_key")).(string)
 
 	pushHandler := awscdklambdago.NewGoFunction(stack, jsii.String("pushHandler"), &awscdklambdago.GoFunctionProps{
-		FunctionName: jsii.String("pushHandlerFunc"),
+		FunctionName: jsii.String("chatbot-push"),
 		Description:  jsii.String("sub SNS topic get prompt, request openai API resp stream, then send resp text by connectId"),
 		Entry:        jsii.String("server/lambda/golang/push"),
 		Environment: &map[string]*string{
@@ -37,6 +37,14 @@ func NewWsGwPushStack(scope constructs.Construct, id string, props *WsGwPushStac
 	props.Topic.AddSubscription(awssnssubscriptions.NewLambdaSubscription(pushHandler, &awssnssubscriptions.LambdaSubscriptionProps{}))
 
 	pushHandler.Role().AddManagedPolicy(awsiam.ManagedPolicy_FromAwsManagedPolicyName(jsii.String("AmazonAPIGatewayInvokeFullAccess")))
+
+	fnUrl := pushHandler.AddFunctionUrl(&awslambda.FunctionUrlOptions{
+		AuthType: awslambda.FunctionUrlAuthType_NONE,
+	})
+
+	awscdk.NewCfnOutput(stack, jsii.String("pushHandlerUrl"), &awscdk.CfnOutputProps{
+		Value: fnUrl.Url(),
+	})
 
 	return stack, pushHandler
 }

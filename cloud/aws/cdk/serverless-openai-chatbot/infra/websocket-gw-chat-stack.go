@@ -31,9 +31,18 @@ func NewWsGwChatStack(scope constructs.Construct, id string, props *WsGwChatStac
 		Environment: &map[string]*string{
 			"SNS_TOPIC_ARN": sendPromptNoticationTopic.TopicArn(),
 		},
+		FunctionName: jsii.String("chatbot-chat"),
 	})
 
 	sendPromptNoticationTopic.GrantPublish(chatHandler)
+
+	fnUrl := chatHandler.AddFunctionUrl(&awslambda.FunctionUrlOptions{
+		AuthType: awslambda.FunctionUrlAuthType_NONE,
+	})
+
+	awscdk.NewCfnOutput(stack, jsii.String("chatHandlerUrl"), &awscdk.CfnOutputProps{
+		Value: fnUrl.Url(),
+	})
 
 	return stack, sendPromptNoticationTopic, chatHandler
 }

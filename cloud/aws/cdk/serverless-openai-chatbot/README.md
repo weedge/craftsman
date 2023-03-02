@@ -82,6 +82,15 @@ this dynamodb table is just a demo, if want have unique key, u can see this:
 
 u need change database model for your biz application
 
+### Project specifics
+1. Lambda function name: {OrgName}-{projectName}-{modelName/actionName}-{stageName}; eg: niubi-chatbot-login-dev
+2. Database name: {OrgName}_{projectName}_{modelName/actionName}_{stageName}; eg: niubi_chatbot_user_info_dev
+
 happy coding~ :)
+
+### Reference:
+1. https://github.com/aws-samples/aws-serverless-openai-chatbot-demo 
+
+
 
 
