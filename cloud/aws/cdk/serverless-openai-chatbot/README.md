@@ -31,7 +31,8 @@ config [cdk.context.json](./cdk.context.json) like this:
   "jwt_secret": "123",
   "stage": "dev",//dev,test,pre,production
   "openai_api_key": "",
-  "sns_chat_openai_topic": "chatbot_openai_msg"
+  "sns_chat_openai_topic": "chatbot_openai_msg",
+  "cargo_target_lambda_absolute_dir": ""
 }
 ```
 ### Deploy

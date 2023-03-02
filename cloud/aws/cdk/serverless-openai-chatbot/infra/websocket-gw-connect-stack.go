@@ -19,9 +19,10 @@ func NewWsGwConnectStack(scope constructs.Construct, id string, props *WsGwConne
 	stack := awscdk.NewStack(scope, &id, &sprops)
 	jwt_secret := stack.Node().TryGetContext(jsii.String("jwt_secret")).(string)
 	stage := stack.Node().TryGetContext(jsii.String("stage")).(string)
+	cargo_target_lambda_dir := stack.Node().TryGetContext(jsii.String("cargo_target_lambda_absolute_dir")).(string)
 
 	connectHandler := awslambda.NewFunction(stack, jsii.String("connectHandler"), &awslambda.FunctionProps{
-		Code: awslambda.Code_FromAsset(jsii.String("server/lambda/rust/connect/target/lambda/connect"), nil),
+		Code: awslambda.Code_FromAsset(jsii.String(cargo_target_lambda_dir+"connect"), nil),
 		// The runtime environment for the Lambda function that you are uploading.
 		// For valid values, see the Runtime property in the AWS Lambda Developer Guide.
 		// Use Runtime.FROM_IMAGE when defining a function from a Docker image.

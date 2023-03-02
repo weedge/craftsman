@@ -3,5 +3,6 @@
   "jwt_secret": "123",
   "stage": "dev",
   "openai_api_key": "",
-  "sns_chat_openai_topic": "chatbot_openai_msg"
+  "sns_chat_openai_topic": "chatbot_openai_msg",
+  "cargo_target_lambda_absolute_dir": "/Users/wuyong/go/src/github.com/weedge/craftsman/target/lambda/"
 }
