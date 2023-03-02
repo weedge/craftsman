@@ -38,7 +38,7 @@ async fn function_handler(event: Request) -> Result<Response<Body>, Error> {
             let mut status = 200;
             let mut err_msg = "success";
 
-            let token = token_str.split(" ").take(1).next().unwrap_or_default();
+            let token = token_str.trim_start().split(" ").nth(1).unwrap_or_default();
             info!("request token: {:?}", token);
 
             let token_key = get_env_token_key();
