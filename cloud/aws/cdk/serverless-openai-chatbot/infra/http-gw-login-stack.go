@@ -89,7 +89,7 @@ func NewHttpLoginApiStack(scope constructs.Construct, id string, props *HttpLogi
 				jsii.String("*"),
 			},
 		},
-		CreateDefaultStage: jsii.Bool(false),
+		CreateDefaultStage: jsii.Bool(true),
 		Description:        jsii.String("htttp api gateway"),
 	})
 	httpApi.AddRoutes(&awscdkapigatewayv2alpha.AddRoutesOptions{

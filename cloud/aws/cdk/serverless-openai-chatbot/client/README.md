@@ -2,9 +2,9 @@
  change [src/commons/apigw.js](src/commons/apigw.js) for dev/test/pre/production. 
  ```js
 // Change to your own WebSocket API Gateway endpoint
-export const API_socket = 'wss://{apiid}.execute-api.{region}.amazonaws.com/dev';
+export const API_socket = 'wss://{apiid}.execute-api.{region}.amazonaws.com/{stage}';
 // Change to your own HTTP API Gateway endpoint
-export const API_http = 'https://{apiid}.execute-api.{region}.amazonaws.com';
+export const API_http = 'https://{apiid}.execute-api.{region}.amazonaws.com/{stage}';
  ```
 
 ### Build

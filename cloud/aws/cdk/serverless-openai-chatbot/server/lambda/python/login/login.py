@@ -47,27 +47,34 @@ def query_dynamodb(key):
             Key={'user_name': {'S': key}}
         )
         logger.info("res %s", res)
-        if res["Item"]["password"]:
+        if res.__contains__("Item") and res["Item"]["password"]:
             return res["Item"]["password"]["S"]
     except Exception as e:
-        logger.error("except %s", e)
+        logger.warning("except %s", e)
         return None
 
     return None
 
 
+# simple do, return http code; u should define biz error codes
 def handler(event, context):
-    logger.info("Request: %s", event)
-    bodyStr = base64.b64decode(event.get('body')).decode('utf-8')
-    body = json.loads(bodyStr)
-    logger.info("body: %s", body)
-    pwd = query_dynamodb(body['username'])
-    if pwd is None:
-        return format_response(403, "user not found", "")
+    try:
+        logger.info("Request: %s", event)
+        bodyStr = event.get('body')
+        #bodyStr = base64.b64decode(event.get('body')).decode('utf-8')
+        body = json.loads(bodyStr)
+        logger.info("body: %s", body)
+        pwd = query_dynamodb(body['username'])
+        if pwd is None:
+            return format_response(403, "user not found", "")
 
-    if pwd != body['password']:
-        return format_response(403, "Invalid password, please check it", "")
+        if pwd != body['password']:
+            return format_response(403, "Invalid password, please check it", "")
 
-    token = create_token(body['username'])
-    logger.info("create token: %s", token)
+        token = create_token(body['username'])
+        logger.info("create token: %s", token)
+    except Exception as e:
+        logger.error("except %s", e)
+        return format_response(503, "service exception", "")
+
     return format_response(200, "success", token)

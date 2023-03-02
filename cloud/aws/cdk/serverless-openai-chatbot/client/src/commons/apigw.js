@@ -1,8 +1,7 @@
 //Change to your own WebSocket API Gateway endpoint
 //Change to your own HTTP API Gateway endpoint
-export const API_socket = 'wss://{apiid}.execute-api.{region}.amazonaws.com/dev';
-export const API_http = 'https://{apiid}.execute-api.{region}.amazonaws.com';
-
+export const API_socket = 'wss://{apiid}.execute-api.{region}.amazonaws.com/{stage}';
+export const API_http = 'https://{apiid}.execute-api.{region}.amazonaws.com/{stage}';
 
 export const getAnswer = async(respid,text,model_params,headers) =>{
     const options ={

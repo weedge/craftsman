@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"serverless-openai-chatbot/infra"
 	"time"
 
@@ -12,6 +13,12 @@ func main() {
 	defer jsii.Close()
 
 	app := awscdk.NewApp(nil)
+
+	stage := app.Node().TryGetContext(jsii.String("stage")).(string)
+	if _, ok := infra.StageAutoDeploy[stage]; !ok {
+		fmt.Printf("%s un support, need those stage: %+v", stage, infra.StageAutoDeploy)
+		return
+	}
 
 	infra.NewHttpLoginApiStack(app, "http-api-gateway-login", &infra.HttpLoginApiStackProps{
 		StackProps: awscdk.StackProps{

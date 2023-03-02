@@ -17,6 +17,7 @@ func NewWsGwConnectStack(scope constructs.Construct, id string, props *WsGwConne
 		sprops = props.StackProps
 	}
 	stack := awscdk.NewStack(scope, &id, &sprops)
+	jwt_secret := stack.Node().TryGetContext(jsii.String("jwt_secret")).(string)
 	stage := stack.Node().TryGetContext(jsii.String("stage")).(string)
 
 	connectHandler := awslambda.NewFunction(stack, jsii.String("connectHandler"), &awslambda.FunctionProps{
@@ -26,16 +27,21 @@ func NewWsGwConnectStack(scope constructs.Construct, id string, props *WsGwConne
 		// Use Runtime.FROM_IMAGE when defining a function from a Docker image.
 		Runtime: awslambda.Runtime_PROVIDED_AL2(),
 		//handler: — This name does not matter in case of custom runtime for rust lambda functions
-		Handler:      jsii.String("does_not_matter"),
-		Environment:  &map[string]*string{},
+		Handler: jsii.String("does_not_matter"),
+		Environment: &map[string]*string{
+			"TOKEN_KEY": jsii.String(jwt_secret),
+		},
 		FunctionName: jsii.String("chatbot-connect-" + stage),
 		Description:  jsii.String("On connect event, check jwt authorization"),
 	})
 
+	if _, ok := StageAutoDeploy[stage]; !ok {
+		return stack, connectHandler
+	}
+
 	fnUrl := connectHandler.AddFunctionUrl(&awslambda.FunctionUrlOptions{
 		AuthType: awslambda.FunctionUrlAuthType_NONE,
 	})
-
 	awscdk.NewCfnOutput(stack, jsii.String("connectHandlerUrl"), &awscdk.CfnOutputProps{
 		Value: fnUrl.Url(),
 	})
