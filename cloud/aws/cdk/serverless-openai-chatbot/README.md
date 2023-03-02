@@ -44,7 +44,7 @@ cdk list
 # websocket-api-gateway
 
 # choose one to deploy or cdk deploy all
-cdk deploy all
+cdk deploy --all
 ```
 
 ### Test
