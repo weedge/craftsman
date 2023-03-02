@@ -100,6 +100,7 @@ func Handler(ctx context.Context, snsEvent events.SNSEvent) (err error) {
 
 		reqCtx := msg.RequestContext
 		postData, _ := json.Marshal(map[string]any{"msgid": reqCtx.MessageID, "text": res})
+		log.Printf("postData: %s\n", postData)
 		apiGwUrl := &url.URL{
 			Scheme: "https",
 			Host:   reqCtx.DomainName,
