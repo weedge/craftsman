@@ -5,7 +5,10 @@ maybe u need learn this: https://learn.microsoft.com/en-us/training/modules/crea
 mkdir <new lambda js handler func name> && cd {name}
 npx npm init
 # install aws sdk for js on node, just for develop, don't upload those package
-npx npm install aws-sdk 
+npx npm install -g aws-sdk 
+npx npm install -g @aws-sdk/client-sns
+# notice CommonJS type(.js) and ECMAScript type (.mjs)
+# eslint to check js error, see https://www.npmjs.com/package/eslint
 ```
 
 

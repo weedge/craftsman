@@ -8,7 +8,9 @@
       "go.mod",
       "go.sum",
       "**/*test.go",
-      ".venv"
+      ".venv",
+      "node_modules",
+      "*.zip"
     ]
   },
   "context": {

@@ -3,7 +3,6 @@ package openai
 import (
 	"context"
 	"errors"
-	"fmt"
 	"io"
 	"log"
 	"strings"
@@ -38,7 +37,7 @@ func GetTextCompletion(ctx context.Context, client *gogpt.Client, req gogpt.Comp
 
 	resp, err := client.CreateCompletion(ctx, req)
 	if err != nil {
-		log.Println(err.Error())
+		log.Println("CreateCompletion err", err.Error())
 		return
 	}
 
@@ -52,7 +51,7 @@ func GetTextCompletionStream(ctx context.Context, client *gogpt.Client, req gogp
 
 	stream, err := client.CreateCompletionStream(ctx, req)
 	if err != nil {
-		fmt.Println("Stream err", err.Error())
+		log.Println("Stream err", err.Error())
 		return "", err
 	}
 	defer stream.Close()

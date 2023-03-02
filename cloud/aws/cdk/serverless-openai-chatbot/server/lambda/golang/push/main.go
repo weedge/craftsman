@@ -23,6 +23,7 @@ var gogptClient *gogpt.Client
 var apiWsGwClient *apigw.Client
 
 func Init() {
+	log.Println("openai_api_key", os.Getenv("OPENAI_API_KEY"))
 	gogptClient = gogpt.NewClient(os.Getenv("OPENAI_API_KEY"))
 
 	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("us-east-1"))
@@ -64,6 +65,7 @@ type Message struct {
 }
 
 func Handler(ctx context.Context, snsEvent events.SNSEvent) (err error) {
+	log.Printf("Event = %s \n", snsEvent)
 	for _, record := range snsEvent.Records {
 		snsRecord := record.SNS
 		log.Printf("[%s %s] Message = %s \n", record.EventSource, snsRecord.Timestamp, snsRecord.Message)
@@ -92,6 +94,7 @@ func Handler(ctx context.Context, snsEvent events.SNSEvent) (err error) {
 			FrequencyPenalty: params.FrequencyPenalty,
 		})
 		if err != nil {
+			log.Printf("openai.GetTextCompletionStream error: %v", err)
 			res = err.Error()
 		}
 
@@ -106,6 +109,7 @@ func Handler(ctx context.Context, snsEvent events.SNSEvent) (err error) {
 			ConnectionId: aws.String(reqCtx.ConnectionID),
 			Data:         postData,
 		}, func(o *apigw.Options) {
+			log.Printf("apiGwUrl:%s\n", apiGwUrl.String())
 			o.EndpointResolver = apigw.EndpointResolverFromURL(apiGwUrl.String())
 		})
 		if err1 != nil {
