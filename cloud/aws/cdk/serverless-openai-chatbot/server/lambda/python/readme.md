@@ -1,6 +1,10 @@
 ### Develop
 ```shell
+
 mkdir <new lambda python handler func name> && cd {name}
+# notice: 
+# if u want dev in cur env dir, u could do this, but need to rm .venv when deploy 
+# or dev in global env dir
 python3 -m venv .venv
 source .venv/bin/activate
 pip install boto3

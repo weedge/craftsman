@@ -44,11 +44,11 @@ def query_dynamodb(key):
     try:
         res = dynamodbClient.get_item(
             TableName=os.getenv("USER_TABLE_NAME"),
-            Key={'username': {'S': key}}
+            Key={'user_name': {'S': key}}
         )
-        logger.info("res", res)
-        if res.Item:
-            return res.Item.password.S
+        logger.info("res %s", res)
+        if res["Item"]["password"]:
+            return res["Item"]["password"]["S"]
     except Exception as e:
         logger.error("except %s", e)
         return None
@@ -61,13 +61,13 @@ def handler(event, context):
     bodyStr = base64.b64decode(event.get('body')).decode('utf-8')
     body = json.loads(bodyStr)
     logger.info("body: %s", body)
-    pwd = query_dynamodb(body.username)
+    pwd = query_dynamodb(body['username'])
     if pwd is None:
         return format_response(403, "user not found", "")
 
-    if pwd != body.password:
+    if pwd != body['password']:
         return format_response(403, "Invalid password, please check it", "")
 
-    token = create_token(body.username)
+    token = create_token(body['username'])
     logger.info("create token: %s", token)
     return format_response(200, "success", token)

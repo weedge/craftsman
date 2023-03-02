@@ -6,6 +6,7 @@ require (
 	github.com/aws/aws-cdk-go/awscdk/v2 v2.66.1
 	github.com/aws/aws-cdk-go/awscdkapigatewayv2alpha/v2 v2.66.1-alpha.0
 	github.com/aws/aws-cdk-go/awscdkapigatewayv2integrationsalpha/v2 v2.66.1-alpha.0
+	github.com/aws/aws-cdk-go/awscdklambdagoalpha/v2 v2.66.1-alpha.0
 	github.com/aws/aws-cdk-go/awscdklambdapythonalpha/v2 v2.66.1-alpha.0
 	github.com/aws/constructs-go/constructs/v10 v10.1.264
 	github.com/aws/jsii-runtime-go v1.76.0
@@ -13,7 +14,6 @@ require (
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.0 // indirect
-	github.com/aws/aws-cdk-go/awscdklambdagoalpha/v2 v2.66.1-alpha.0 // indirect
 	github.com/cdklabs/awscdk-asset-awscli-go/awscliv1/v2 v2.2.85 // indirect
 	github.com/cdklabs/awscdk-asset-kubectl-go/kubectlv20/v2 v2.1.1 // indirect
 	github.com/cdklabs/awscdk-asset-node-proxy-agent-go/nodeproxyagentv5/v2 v2.0.71 // indirect

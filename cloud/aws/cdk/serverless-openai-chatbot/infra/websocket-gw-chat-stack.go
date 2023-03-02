@@ -18,9 +18,10 @@ func NewWsGwChatStack(scope constructs.Construct, id string, props *WsGwChatStac
 		sprops = props.StackProps
 	}
 	stack := awscdk.NewStack(scope, &id, &sprops)
+	sns_chat_openai_topic := stack.Node().TryGetContext(jsii.String("sns_chat_openai_topic")).(string)
 
 	sendPromptNoticationTopic := awssns.NewTopic(stack, jsii.String("sendPromptNotication"), &awssns.TopicProps{
-		DisplayName: jsii.String("sendPromptAlertNotication"),
+		DisplayName: jsii.String(sns_chat_openai_topic),
 	})
 
 	chatHandler := awslambda.NewFunction(stack, jsii.String("chatHandler"), &awslambda.FunctionProps{

@@ -11,12 +11,47 @@ func main() {
 	defer jsii.Close()
 
 	app := awscdk.NewApp(nil)
+
 	infra.NewHttpLoginApiStack(app, "http-api-gateway-login", &infra.HttpLoginApiStackProps{
 		StackProps: awscdk.StackProps{
 			Env:         env(),
 			StackName:   jsii.String("HttpLoginApi"),
 			Description: jsii.String("http api gateway /login,"),
 		},
+	})
+
+	wsConnectConstruct, connectHandler := infra.NewWsGwConnectStack(app, "websocket-api-gateway-connect", &infra.WsGwConnectStackProps{
+		StackProps: awscdk.StackProps{
+			Env:         env(),
+			StackName:   jsii.String("WsApiGwConnectStack"),
+			Description: jsii.String("websocket api gateway /$connect"),
+		},
+	})
+	_, _ = wsConnectConstruct, connectHandler
+
+	wsChatConstruct, chatMsgTopic, chatHandler := infra.NewWsGwChatStack(app, "websocket-api-gateway-chat", &infra.WsGwChatStackProps{
+		StackProps: awscdk.StackProps{
+			Env:         env(),
+			StackName:   jsii.String("WsApiGwChatStack"),
+			Description: jsii.String("websocket api gateway /$connect,"),
+		},
+	})
+	_, _, _ = wsChatConstruct, chatMsgTopic, chatHandler
+
+	wsPushConstruct, pushHandler := infra.NewWsGwPushStack(app, "async-ai-chat-push-ws-gw", &infra.WsGwPushStackProps{
+		StackProps: awscdk.StackProps{
+			Env:         env(),
+			StackName:   jsii.String("PushAIContent2WsStack"),
+			Description: jsii.String("Push AI content to websocket api gateway"),
+		},
+		Topic: chatMsgTopic,
+	})
+	_, _ = wsPushConstruct, pushHandler
+
+	infra.NewWsGwStack(app, "websocket-api-gateway", &infra.WsGwStackProps{
+		StackProps:     awscdk.StackProps{},
+		ConnectHandler: connectHandler,
+		ChatHandler:    chatHandler,
 	})
 
 	app.Synth(nil)

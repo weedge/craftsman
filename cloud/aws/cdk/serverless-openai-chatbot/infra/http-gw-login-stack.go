@@ -15,6 +15,13 @@ type HttpLoginApiStackProps struct {
 	awscdk.StackProps
 }
 
+var StageAutoDeploy map[string]bool = map[string]bool{
+	"dev":        true,
+	"test":       true,
+	"pre":        false,
+	"production": false,
+}
+
 func NewHttpLoginApiStack(scope constructs.Construct, id string, props *HttpLoginApiStackProps) constructs.Construct {
 	var sprops awscdk.StackProps
 	if props != nil {
@@ -27,9 +34,11 @@ func NewHttpLoginApiStack(scope constructs.Construct, id string, props *HttpLogi
 	stage := stack.Node().TryGetContext(jsii.String("stage")).(string)
 
 	loginTable := awsdynamodb.NewTable(stack, jsii.String(login_dynamodb_table), &awsdynamodb.TableProps{
-		PartitionKey:  &awsdynamodb.Attribute{Name: jsii.String("user_name"), Type: awsdynamodb.AttributeType_STRING},
+		PartitionKey: &awsdynamodb.Attribute{Name: jsii.String("user_name"), Type: awsdynamodb.AttributeType_STRING},
+		//SortKey:       &awsdynamodb.Attribute{Name: jsii.String("created_at"), Type: awsdynamodb.AttributeType_STRING},
 		RemovalPolicy: awscdk.RemovalPolicy_DESTROY,
 		Encryption:    awsdynamodb.TableEncryption_AWS_MANAGED,
+		TableName:     jsii.String(login_dynamodb_table),
 		//ReadCapacity:  jsii.Number(7),
 	})
 
@@ -88,8 +97,12 @@ func NewHttpLoginApiStack(scope constructs.Construct, id string, props *HttpLogi
 		Path:    jsii.String("/login"),
 		Methods: &[]awscdkapigatewayv2alpha.HttpMethod{awscdkapigatewayv2alpha.HttpMethod_POST},
 	})
+
+	if _, ok := StageAutoDeploy[stage]; !ok {
+		return stack
+	}
 	httpApi.AddStage(jsii.String(stage), &awscdkapigatewayv2alpha.HttpStageOptions{
-		AutoDeploy: jsii.Bool(false),
+		AutoDeploy: jsii.Bool(StageAutoDeploy[stage]),
 		StageName:  jsii.String(stage),
 	})
 

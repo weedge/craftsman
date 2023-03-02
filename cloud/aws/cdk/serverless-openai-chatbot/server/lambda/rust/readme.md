@@ -27,6 +27,7 @@ cd craftsman/cloud/aws/cdk/serverless-openai-chatbot/server/lambda/rust/connect
 
 ### Deploy
 ```shell
+# rust cargo build toolchain -t/--target  like golang build with GOARCH GOOS, but more details
 cargo lambda build --release --target x86_64-unknown-linux-musl
 cargo lambda deploy \
   --iam-role arn:aws:iam::XXXXXXXXXXXXX:role/your_lambda_execution_role \

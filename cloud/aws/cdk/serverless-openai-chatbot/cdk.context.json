@@ -1,5 +1,7 @@
 {
   "login_dynamodb_table": "chatbot_user_info",
   "jwt_secret": "123",
-  "stage": "dev"
+  "stage": "dev",
+  "openai_api_key": "",
+  "sns_chat_openai_topic": "chatbot_openai_msg"
 }

@@ -11,9 +11,9 @@ import (
 
 type WsGwStackProps struct {
 	awscdk.StackProps
-	connectHandler awslambda.Function
-	chatHandler    awslambda.Function
-	pushHandler    awslambda.Function
+	ConnectHandler awslambda.Function
+	ChatHandler    awslambda.Function
+	//pushHandler    awslambda.Function
 }
 
 func NewWsGwStack(scope constructs.Construct, id string, props *WsGwStackProps) constructs.Construct {
@@ -22,18 +22,22 @@ func NewWsGwStack(scope constructs.Construct, id string, props *WsGwStackProps) 
 		sprops = props.StackProps
 	}
 	stack := awscdk.NewStack(scope, &id, &sprops)
+	//stage := stack.Node().TryGetContext(jsii.String("stage")).(string)
 
 	wsApi := awscdkapigatewayv2alpha.NewWebSocketApi(stack, jsii.String("ws-gw-chatbot"), &awscdkapigatewayv2alpha.WebSocketApiProps{
 		ApiName: jsii.String("web-socket-gateway-chatbot"),
+		// /$connect
 		ConnectRouteOptions: &awscdkapigatewayv2alpha.WebSocketRouteOptions{
-			Integration:    awscdkapigatewayv2integrationsalpha.NewWebSocketLambdaIntegration(jsii.String("ws-gw-chatbot-connect"), props.connectHandler),
+			Integration:    awscdkapigatewayv2integrationsalpha.NewWebSocketLambdaIntegration(jsii.String("ws-gw-chatbot-connect"), props.ConnectHandler),
 			Authorizer:     nil,
 			ReturnResponse: jsii.Bool(true),
 		},
 		Description: jsii.String("websocket gateway chatbot"),
 	})
+
+	// sendprompt
 	wsApi.AddRoute(jsii.String("sendprompt"), &awscdkapigatewayv2alpha.WebSocketRouteOptions{
-		Integration:    awscdkapigatewayv2integrationsalpha.NewWebSocketLambdaIntegration(jsii.String("ws-gw-chatbot-sendprompt"), props.chatHandler),
+		Integration:    awscdkapigatewayv2integrationsalpha.NewWebSocketLambdaIntegration(jsii.String("ws-gw-chatbot-sendprompt"), props.ChatHandler),
 		ReturnResponse: jsii.Bool(false),
 	})
 

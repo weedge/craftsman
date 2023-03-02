@@ -2,6 +2,7 @@ package infra
 
 import (
 	"github.com/aws/aws-cdk-go/awscdk/v2"
+	"github.com/aws/aws-cdk-go/awscdk/v2/awsiam"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awssns"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awssnssubscriptions"
@@ -34,6 +35,8 @@ func NewWsGwPushStack(scope constructs.Construct, id string, props *WsGwPushStac
 	})
 
 	props.Topic.AddSubscription(awssnssubscriptions.NewLambdaSubscription(pushHandler, &awssnssubscriptions.LambdaSubscriptionProps{}))
+
+	pushHandler.Role().AddManagedPolicy(awsiam.ManagedPolicy_FromAwsManagedPolicyName(jsii.String("AmazonAPIGatewayInvokeFullAccess")))
 
 	return stack, pushHandler
 }
