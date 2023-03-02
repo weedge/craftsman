@@ -38,7 +38,7 @@ func NewHttpLoginApiStack(scope constructs.Construct, id string, props *HttpLogi
 		//SortKey:       &awsdynamodb.Attribute{Name: jsii.String("created_at"), Type: awsdynamodb.AttributeType_STRING},
 		RemovalPolicy: awscdk.RemovalPolicy_DESTROY,
 		Encryption:    awsdynamodb.TableEncryption_AWS_MANAGED,
-		TableName:     jsii.String(login_dynamodb_table),
+		TableName:     jsii.String(login_dynamodb_table + "_" + stage),
 		//ReadCapacity:  jsii.Number(7),
 	})
 
@@ -51,6 +51,8 @@ func NewHttpLoginApiStack(scope constructs.Construct, id string, props *HttpLogi
 			"TOKEN_KEY":       jsii.String(jwt_secret),
 			"USER_TABLE_NAME": loginTable.TableName(),
 		},
+		FunctionName: jsii.String("chatbot-login-" + stage),
+		Description:  jsii.String("user login and authentication user information from dynamodb, ok return jwt for authorization"),
 	})
 
 	/*
@@ -72,7 +74,7 @@ func NewHttpLoginApiStack(scope constructs.Construct, id string, props *HttpLogi
 	loginTable.GrantReadWriteData(loginHandler)
 
 	httpApi := awscdkapigatewayv2alpha.NewHttpApi(stack, jsii.String("http-gw-chatbot"), &awscdkapigatewayv2alpha.HttpApiProps{
-		ApiName: jsii.String("http-gateway-chatbot"),
+		ApiName: jsii.String("http-gateway-chatbot-" + stage),
 		CorsPreflight: &awscdkapigatewayv2alpha.CorsPreflightOptions{
 			AllowCredentials: jsii.Bool(false),
 			AllowHeaders: &[]*string{

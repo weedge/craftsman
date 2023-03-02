@@ -22,10 +22,10 @@ func NewWsGwStack(scope constructs.Construct, id string, props *WsGwStackProps) 
 		sprops = props.StackProps
 	}
 	stack := awscdk.NewStack(scope, &id, &sprops)
-	//stage := stack.Node().TryGetContext(jsii.String("stage")).(string)
+	stage := stack.Node().TryGetContext(jsii.String("stage")).(string)
 
 	wsApi := awscdkapigatewayv2alpha.NewWebSocketApi(stack, jsii.String("ws-gw-chatbot"), &awscdkapigatewayv2alpha.WebSocketApiProps{
-		ApiName: jsii.String("web-socket-gateway-chatbot"),
+		ApiName: jsii.String("web-socket-gateway-chatbot-" + stage),
 		// /$connect
 		ConnectRouteOptions: &awscdkapigatewayv2alpha.WebSocketRouteOptions{
 			Integration:    awscdkapigatewayv2integrationsalpha.NewWebSocketLambdaIntegration(jsii.String("ws-gw-chatbot-connect"), props.ConnectHandler),

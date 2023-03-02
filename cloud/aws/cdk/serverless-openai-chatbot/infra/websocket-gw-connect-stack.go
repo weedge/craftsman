@@ -17,6 +17,7 @@ func NewWsGwConnectStack(scope constructs.Construct, id string, props *WsGwConne
 		sprops = props.StackProps
 	}
 	stack := awscdk.NewStack(scope, &id, &sprops)
+	stage := stack.Node().TryGetContext(jsii.String("stage")).(string)
 
 	connectHandler := awslambda.NewFunction(stack, jsii.String("connectHandler"), &awslambda.FunctionProps{
 		Code: awslambda.Code_FromAsset(jsii.String("server/lambda/rust/connect/target/lambda/connect"), nil),
@@ -27,7 +28,8 @@ func NewWsGwConnectStack(scope constructs.Construct, id string, props *WsGwConne
 		//handler: — This name does not matter in case of custom runtime for rust lambda functions
 		Handler:      jsii.String("does_not_matter"),
 		Environment:  &map[string]*string{},
-		FunctionName: jsii.String("chatbot-connect"),
+		FunctionName: jsii.String("chatbot-connect-" + stage),
+		Description:  jsii.String("On connect event, check jwt authorization"),
 	})
 
 	fnUrl := connectHandler.AddFunctionUrl(&awslambda.FunctionUrlOptions{

@@ -23,9 +23,10 @@ func NewWsGwPushStack(scope constructs.Construct, id string, props *WsGwPushStac
 	}
 	stack := awscdk.NewStack(scope, &id, &sprops)
 	openai_api_key := stack.Node().TryGetContext(jsii.String("openai_api_key")).(string)
+	stage := stack.Node().TryGetContext(jsii.String("stage")).(string)
 
 	pushHandler := awscdklambdago.NewGoFunction(stack, jsii.String("pushHandler"), &awscdklambdago.GoFunctionProps{
-		FunctionName: jsii.String("chatbot-push"),
+		FunctionName: jsii.String("chatbot-push-" + stage),
 		Description:  jsii.String("sub SNS topic get prompt, request openai API resp stream, then send resp text by connectId"),
 		Entry:        jsii.String("server/lambda/golang/push"),
 		Environment: &map[string]*string{

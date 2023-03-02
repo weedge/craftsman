@@ -85,6 +85,9 @@ u need change database model for your biz application
 ### Project specifics
 1. Lambda function name: {OrgName}-{projectName}-{modelName/actionName}-{stageName}; eg: niubi-chatbot-login-dev
 2. Database name: {OrgName}_{projectName}_{modelName/actionName}_{stageName}; eg: niubi_chatbot_user_info_dev
+3. SNS TOPIC name: {OrgName}_{projectName}_{modelName/actionName}-{stageName}; eg: niubi_chatbot_msg-dev
+
+deploy env, for production, please use different admin/root role to deploy to the user region
 
 happy coding~ :)
 

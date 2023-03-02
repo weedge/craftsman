@@ -2,6 +2,7 @@ package main
 
 import (
 	"serverless-openai-chatbot/infra"
+	"time"
 
 	"github.com/aws/aws-cdk-go/awscdk/v2"
 	"github.com/aws/jsii-runtime-go"
@@ -57,6 +58,11 @@ func main() {
 		ConnectHandler: connectHandler,
 		ChatHandler:    chatHandler,
 	})
+
+	awscdk.Tags_Of(app).Add(jsii.String("version"), jsii.String("1.0.0"), nil)
+	awscdk.Tags_Of(app).Add(jsii.String("project"), jsii.String("serverless-openai-chatbot"), nil)
+	awscdk.Tags_Of(app).Add(jsii.String("role"), jsii.String("web developer"), nil)
+	awscdk.Tags_Of(app).Add(jsii.String("synthTime"), jsii.String(time.Now().Format("2006-01-02 15:04:05.999")), nil)
 
 	app.Synth(nil)
 }

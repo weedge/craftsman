@@ -19,9 +19,11 @@ func NewWsGwChatStack(scope constructs.Construct, id string, props *WsGwChatStac
 	}
 	stack := awscdk.NewStack(scope, &id, &sprops)
 	sns_chat_openai_topic := stack.Node().TryGetContext(jsii.String("sns_chat_openai_topic")).(string)
+	stage := stack.Node().TryGetContext(jsii.String("stage")).(string)
 
 	sendPromptNoticationTopic := awssns.NewTopic(stack, jsii.String("sendPromptNotication"), &awssns.TopicProps{
-		DisplayName: jsii.String(sns_chat_openai_topic),
+		DisplayName: jsii.String(sns_chat_openai_topic + "-" + stage),
+		TopicName:   jsii.String(sns_chat_openai_topic + "-" + stage),
 	})
 
 	chatHandler := awslambda.NewFunction(stack, jsii.String("chatHandler"), &awslambda.FunctionProps{
@@ -31,7 +33,8 @@ func NewWsGwChatStack(scope constructs.Construct, id string, props *WsGwChatStac
 		Environment: &map[string]*string{
 			"SNS_TOPIC_ARN": sendPromptNoticationTopic.TopicArn(),
 		},
-		FunctionName: jsii.String("chatbot-chat"),
+		FunctionName: jsii.String("chatbot-chat-" + stage),
+		Description:  jsii.String("get chat message from websocket connection; and send prompt to SNS"),
 	})
 
 	sendPromptNoticationTopic.GrantPublish(chatHandler)
