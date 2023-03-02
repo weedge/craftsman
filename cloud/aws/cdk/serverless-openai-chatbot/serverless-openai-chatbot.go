@@ -33,7 +33,7 @@ func main() {
 		StackProps: awscdk.StackProps{
 			Env:         env(),
 			StackName:   jsii.String("WsApiGwChatStack"),
-			Description: jsii.String("websocket api gateway /$connect,"),
+			Description: jsii.String("websocket api gateway sendprompt"),
 		},
 	})
 	_, _, _ = wsChatConstruct, chatMsgTopic, chatHandler
@@ -49,7 +49,11 @@ func main() {
 	_, _ = wsPushConstruct, pushHandler
 
 	infra.NewWsGwStack(app, "websocket-api-gateway", &infra.WsGwStackProps{
-		StackProps:     awscdk.StackProps{},
+		StackProps: awscdk.StackProps{
+			Env:         env(),
+			StackName:   jsii.String("WebSocketApiGateway"),
+			Description: jsii.String("websocket api gateway"),
+		},
 		ConnectHandler: connectHandler,
 		ChatHandler:    chatHandler,
 	})

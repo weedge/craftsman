@@ -4,7 +4,7 @@ cd craftsman/cloud/aws/cdk/serverless-openai-chatbot/server/lambda/rust
 # change {my_lambda_function} to your handler
 cargo new {my_lambda_function} --bin
 ```
-### Use Aws Rust Runtime On MacOs (cargo lambda)
+### Use Aws Lambda Rust Runtime On MacOs (cargo lambda)
 ```shell
 # see more: https://github.com/awslabs/aws-lambda-rust-runtime
 brew tap cargo-lambda/cargo-lambda
@@ -18,17 +18,18 @@ cargo lambda watch
 ```
 tips: u should use this `cargo lambda`
 
-### Install
+### Build
 ```shell
 git clone github.com/weedge/craftsman 
 cd craftsman/cloud/aws/cdk/serverless-openai-chatbot/server/lambda/rust/connect
+# rust cargo build toolchain -t/--target  like golang build with GOARCH GOOS, but more details
+# rustup show, use rustup check and select your target architecture to rustup toolchain/target
+cargo lambda build --release --target x86_64-unknown-linux-musl
 ```
 
 
 ### Deploy
 ```shell
-# rust cargo build toolchain -t/--target  like golang build with GOARCH GOOS, but more details
-cargo lambda build --release --target x86_64-unknown-linux-musl
 cargo lambda deploy \
   --iam-role arn:aws:iam::XXXXXXXXXXXXX:role/your_lambda_execution_role \
   YOUR_FUNCTION_NAME

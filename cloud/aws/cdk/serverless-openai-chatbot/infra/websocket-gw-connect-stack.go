@@ -25,8 +25,17 @@ func NewWsGwConnectStack(scope constructs.Construct, id string, props *WsGwConne
 		// Use Runtime.FROM_IMAGE when defining a function from a Docker image.
 		Runtime: awslambda.Runtime_PROVIDED_AL2(),
 		//handler: — This name does not matter in case of custom runtime for rust lambda functions
-		Handler:     jsii.String(""),
-		Environment: &map[string]*string{},
+		Handler:      jsii.String("does_not_matter"),
+		Environment:  &map[string]*string{},
+		FunctionName: jsii.String("chatbot-connect"),
+	})
+
+	fnUrl := connectHandler.AddFunctionUrl(&awslambda.FunctionUrlOptions{
+		AuthType: awslambda.FunctionUrlAuthType_NONE,
+	})
+
+	awscdk.NewCfnOutput(stack, jsii.String("connectHandlerUrl"), &awscdk.CfnOutputProps{
+		Value: fnUrl.Url(),
 	})
 
 	return stack, connectHandler
