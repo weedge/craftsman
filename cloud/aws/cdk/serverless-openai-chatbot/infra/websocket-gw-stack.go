@@ -41,5 +41,19 @@ func NewWsGwStack(scope constructs.Construct, id string, props *WsGwStackProps) 
 		ReturnResponse: jsii.Bool(false),
 	})
 
+	if _, ok := StageAutoDeploy[stage]; !ok {
+		return stack
+	}
+
+	wsApiStage := awscdkapigatewayv2alpha.NewWebSocketStage(stack, jsii.String("ws-gw-chatbot-stage"), &awscdkapigatewayv2alpha.WebSocketStageProps{
+		AutoDeploy:   jsii.Bool(StageAutoDeploy[stage]),
+		StageName:    jsii.String(stage),
+		WebSocketApi: wsApi,
+	})
+
+	awscdk.NewCfnOutput(stack, jsii.String("wsGwApiUrl"), &awscdk.CfnOutputProps{
+		Value: wsApiStage.Url(),
+	})
+
 	return stack
 }

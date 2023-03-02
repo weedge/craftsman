@@ -108,5 +108,9 @@ func NewHttpLoginApiStack(scope constructs.Construct, id string, props *HttpLogi
 		StageName:  jsii.String(stage),
 	})
 
+	awscdk.NewCfnOutput(stack, jsii.String("httpGwApiUrl"), &awscdk.CfnOutputProps{
+		Value: httpApi.Url(),
+	})
+
 	return stack
 }
