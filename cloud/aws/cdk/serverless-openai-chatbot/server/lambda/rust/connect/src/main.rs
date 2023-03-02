@@ -34,11 +34,14 @@ struct Payload {
 async fn function_handler(event: Request) -> Result<Response<Body>, Error> {
     // Extract some useful information from the request
     Ok(match event.query_string_parameters().first("token") {
-        Some(token) => {
-            info!("request token: {:?}", token);
-            let token_key = get_env_token_key();
+        Some(token_str) => {
             let mut status = 200;
             let mut err_msg = "success";
+
+            let token = token_str.split(" ").take(1).next().unwrap_or_default();
+            info!("request token: {:?}", token);
+
+            let token_key = get_env_token_key();
             if token_key == "" {
                 status = 400;
                 err_msg = "env arg TOKEN_KEY is empty";
