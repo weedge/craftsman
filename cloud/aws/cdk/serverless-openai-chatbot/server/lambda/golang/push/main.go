@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/url"
 	"os"
-	"strings"
 	"unsafe"
 
 	"push/api/openai"
@@ -21,6 +20,25 @@ import (
 
 var gogptClient *gogpt.Client
 var apiWsGwClient *apigw.Client
+
+type EventHandler func(ctx context.Context, msg Message) (res string, err error)
+
+var textModelHandlers = map[string]EventHandler{
+	gogpt.GPT3Dot5Turbo0301:       HandlerGPT3dot5,
+	gogpt.GPT3Dot5Turbo:           HandlerGPT3dot5,
+	gogpt.GPT3TextDavinci003:      HandlerGPT3,
+	gogpt.GPT3TextDavinci002:      HandlerGPT3,
+	gogpt.GPT3TextCurie001:        HandlerGPT3,
+	gogpt.GPT3TextBabbage001:      HandlerGPT3,
+	gogpt.GPT3TextAda001:          HandlerGPT3,
+	gogpt.GPT3TextDavinci001:      HandlerGPT3,
+	gogpt.GPT3DavinciInstructBeta: HandlerGPT3,
+	gogpt.GPT3Davinci:             HandlerGPT3,
+	gogpt.GPT3CurieInstructBeta:   HandlerGPT3,
+	gogpt.GPT3Curie:               HandlerGPT3,
+	gogpt.GPT3Ada:                 HandlerGPT3,
+	gogpt.GPT3Babbage:             HandlerGPT3,
+}
 
 func Init() {
 	log.Println("openai_api_key", os.Getenv("OPENAI_API_KEY"))
@@ -47,9 +65,10 @@ type WsEventMsg struct {
 	Payload Payload `json:"payload"`
 }
 type Payload struct {
-	Msgid  string `json:"msgid"`
-	Prompt string `json:"prompt"`
-	Params Params `json:"params"`
+	Msgid    string                        `json:"msgid"`
+	Prompt   string                        `json:"prompt"`
+	Params   Params                        `json:"params"`
+	Messages []gogpt.ChatCompletionMessage `json:"messages"`
 }
 type Params struct {
 	FrequencyPenalty float32 `json:"frequency_penalty"`
@@ -75,31 +94,21 @@ func Handler(ctx context.Context, snsEvent events.SNSEvent) (err error) {
 			log.Printf("error:%s\n", err.Error())
 			return
 		}
-		prompt := strings.Trim(msg.Payload.Prompt, " ")
-		if prompt == "" {
-			log.Println("empty prompt")
-			return
+
+		handler, ok := textModelHandlers[msg.Payload.Params.ModelName]
+		if !ok {
+			log.Printf("%s no handler\n", msg.Payload.Params.ModelName)
+			continue
 		}
 
-		params := msg.Payload.Params
-		res := ""
-		res, err = openai.GetTextCompletionStream(ctx, gogptClient, gogpt.CompletionRequest{
-			Model:            params.ModelName,
-			Prompt:           prompt,
-			MaxTokens:        params.MaxTokens,
-			Temperature:      float32(params.Temperature),
-			TopP:             float32(params.TopP),
-			Stream:           true,
-			PresencePenalty:  float32(params.PresencePenalty),
-			FrequencyPenalty: params.FrequencyPenalty,
-		})
-		if err != nil {
-			log.Printf("openai.GetTextCompletionStream error: %v", err)
-			res = err.Error()
+		res, handlerErr := handler(ctx, *msg)
+		if handlerErr != nil {
+			log.Printf("error:%s\n", handlerErr.Error())
+			res = handlerErr.Error()
 		}
 
 		reqCtx := msg.RequestContext
-		postData, _ := json.Marshal(map[string]any{"msgid": reqCtx.MessageID, "text": res})
+		postData, _ := json.Marshal(map[string]any{"msgid": msg.Payload.Msgid, "text": res})
 		log.Printf("postData: %s\n", postData)
 		apiGwUrl := &url.URL{
 			Scheme: "https",
@@ -119,6 +128,46 @@ func Handler(ctx context.Context, snsEvent events.SNSEvent) (err error) {
 			return
 		}
 		log.Printf("post res:%+v\n", *postRes)
+	}
+
+	return
+}
+
+func HandlerGPT3(ctx context.Context, msg Message) (res string, err error) {
+	params := msg.Payload.Params
+	res, err = openai.GetTextCompletionStream(ctx, gogptClient, gogpt.CompletionRequest{
+		Model:            params.ModelName,
+		Prompt:           msg.Payload.Prompt,
+		MaxTokens:        params.MaxTokens,
+		Temperature:      float32(params.Temperature),
+		TopP:             float32(params.TopP),
+		Stream:           true,
+		PresencePenalty:  float32(params.PresencePenalty),
+		FrequencyPenalty: params.FrequencyPenalty,
+	})
+	if err != nil {
+		log.Printf("openai.GetTextCompletionStream error: %v", err)
+		return
+	}
+
+	return
+}
+
+func HandlerGPT3dot5(ctx context.Context, msg Message) (res string, err error) {
+	params := msg.Payload.Params
+	res, err = openai.GetChatCompletionStream(ctx, gogptClient, gogpt.ChatCompletionRequest{
+		Stream:   true,
+		Model:    params.ModelName,
+		Messages: msg.Payload.Messages,
+		//MaxTokens:        params.MaxTokens,
+		//Temperature:      float32(params.Temperature),
+		//TopP:             float32(params.TopP),
+		//PresencePenalty:  float32(params.PresencePenalty),
+		//FrequencyPenalty: params.FrequencyPenalty,
+	})
+	if err != nil {
+		log.Printf("openai.GetChatCompletionStream error: %v", err)
+		return
 	}
 
 	return

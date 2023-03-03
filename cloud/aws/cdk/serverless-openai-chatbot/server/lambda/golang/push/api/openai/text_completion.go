@@ -10,26 +10,6 @@ import (
 	gogpt "github.com/sashabaranov/go-gpt3"
 )
 
-const (
-	MaxTokens   = 2000
-	Temperature = 0.7
-)
-
-var textModels = map[string]struct{}{
-	gogpt.GPT3TextDavinci003:      {},
-	gogpt.GPT3TextDavinci002:      {},
-	gogpt.GPT3TextCurie001:        {},
-	gogpt.GPT3TextBabbage001:      {},
-	gogpt.GPT3TextAda001:          {},
-	gogpt.GPT3TextDavinci001:      {},
-	gogpt.GPT3DavinciInstructBeta: {},
-	gogpt.GPT3Davinci:             {},
-	gogpt.GPT3CurieInstructBeta:   {},
-	gogpt.GPT3Curie:               {},
-	gogpt.GPT3Ada:                 {},
-	gogpt.GPT3Babbage:             {},
-}
-
 func GetTextCompletion(ctx context.Context, client *gogpt.Client, req gogpt.CompletionRequest) (res string, err error) {
 	if req.Stream {
 		return
@@ -49,9 +29,10 @@ func GetTextCompletionStream(ctx context.Context, client *gogpt.Client, req gogp
 		return "", nil
 	}
 
+	log.Printf("CreateCompletionStream req %+v \n", req)
 	stream, err := client.CreateCompletionStream(ctx, req)
 	if err != nil {
-		log.Println("Stream err", err.Error())
+		log.Printf("CreateCompletionStream req %+v err %s\n", req, err.Error())
 		return "", err
 	}
 	defer stream.Close()

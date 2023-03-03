@@ -32,7 +32,7 @@ config [cdk.context.json](./cdk.context.json) like this:
   "stage": "dev",//dev,test,pre,production
   "openai_api_key": "",
   "sns_chat_openai_topic": "chatbot_openai_msg",
-  "cargo_target_lambda_absolute_dir": ""
+  "cargo_target_lambda_absolute_dir": "/tmp/"
 }
 ```
 ### Deploy
@@ -66,14 +66,14 @@ add test data use by aws cli, change {default} `~/.aws/credentials` , {login_dyn
 # https://docs.aws.amazon.com/cli/latest/reference/dynamodb/put-item.html
 # --transact-items
 aws --profile {default} dynamodb put-item \
-    --table-name {login_dynamodb_table} \
+    --table-name {login_dynamodb_table}_{stage} \
     --item '{"user_name":{"S":"root"},"password":{"S":"12345678"}}'
 
 # https://docs.aws.amazon.com/cli/latest/reference/dynamodb/get-item.html
-aws --profile {default} dynamodb get-item --table-name {login_dynamodb_table}  --key '{"user_name": {"S": "root"}}'
+aws --profile {default} dynamodb get-item --table-name {login_dynamodb_table}_{stage}  --key '{"user_name": {"S": "root"}}'
 
-# change you deploy {region} and api gw id
-curl -XPOST "https://{id}.execute-api.{region}.amazonaws.com/dev/login" -d '{"username":"root","password":"12345678"}'
+# change you deploy {region},{stage} and api gw id
+curl -XPOST -H 'content-type: application/json' "https://{id}.execute-api.{region}.amazonaws.com/{stage}/login" -d '{"username":"root","password":"12345678"}'
 ```
 
 ### Notice
@@ -83,6 +83,9 @@ this dynamodb table is just a demo, if want have unique key, u can see this:
 
 u need change database model for your biz application
 
+### Client
+see client [./client/README.md](./client/README.md)
+
 ### Project specifics
 1. Lambda function name: {OrgName}-{projectName}-{modelName/actionName}-{stageName}; eg: niubi-chatbot-login-dev
 2. Database name: {OrgName}_{projectName}_{modelName/actionName}_{stageName}; eg: niubi_chatbot_user_info_dev
@@ -90,11 +93,6 @@ u need change database model for your biz application
 
 deploy env, for production, please use different admin/root role to deploy to the user region
 
-happy coding~ :)
-
-### Reference:
-1. https://github.com/aws-samples/aws-serverless-openai-chatbot-demo 
-
-
+Happy coding~ :)
 
 
