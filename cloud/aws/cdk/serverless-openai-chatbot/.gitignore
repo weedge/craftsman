@@ -17,3 +17,6 @@
 # CDK asset staging directory
 .cdk.staging
 cdk.out
+
+# client
+client/v2-websocket/
