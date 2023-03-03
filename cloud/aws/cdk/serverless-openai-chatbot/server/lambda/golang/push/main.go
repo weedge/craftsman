@@ -21,7 +21,7 @@ import (
 var gogptClient *gogpt.Client
 var apiWsGwClient *apigw.Client
 
-type EventHandler func(ctx context.Context, msg Message) (res string, err error)
+type EventHandler func(ctx context.Context, msg Message) (res gogpt.ChatCompletionMessage, err error)
 
 var textModelHandlers = map[string]EventHandler{
 	gogpt.GPT3Dot5Turbo0301:       HandlerGPT3dot5,
@@ -104,7 +104,7 @@ func Handler(ctx context.Context, snsEvent events.SNSEvent) (err error) {
 		res, handlerErr := handler(ctx, *msg)
 		if handlerErr != nil {
 			log.Printf("error:%s\n", handlerErr.Error())
-			res = handlerErr.Error()
+			res.Content = handlerErr.Error()
 		}
 
 		reqCtx := msg.RequestContext
@@ -133,9 +133,9 @@ func Handler(ctx context.Context, snsEvent events.SNSEvent) (err error) {
 	return
 }
 
-func HandlerGPT3(ctx context.Context, msg Message) (res string, err error) {
+func HandlerGPT3(ctx context.Context, msg Message) (res gogpt.ChatCompletionMessage, err error) {
 	params := msg.Payload.Params
-	res, err = openai.GetTextCompletionStream(ctx, gogptClient, gogpt.CompletionRequest{
+	text, err := openai.GetTextCompletionStream(ctx, gogptClient, gogpt.CompletionRequest{
 		Model:            params.ModelName,
 		Prompt:           msg.Payload.Prompt,
 		MaxTokens:        params.MaxTokens,
@@ -149,11 +149,12 @@ func HandlerGPT3(ctx context.Context, msg Message) (res string, err error) {
 		log.Printf("openai.GetTextCompletionStream error: %v", err)
 		return
 	}
+	res.Content = text
 
 	return
 }
 
-func HandlerGPT3dot5(ctx context.Context, msg Message) (res string, err error) {
+func HandlerGPT3dot5(ctx context.Context, msg Message) (res gogpt.ChatCompletionMessage, err error) {
 	params := msg.Payload.Params
 	res, err = openai.GetChatCompletionStream(ctx, gogptClient, gogpt.ChatCompletionRequest{
 		Stream:   true,

@@ -10,7 +10,7 @@ import (
 	gogpt "github.com/sashabaranov/go-gpt3"
 )
 
-func GetChatCompletion(ctx context.Context, client *gogpt.Client, req gogpt.ChatCompletionRequest) (res string, err error) {
+func GetChatCompletion(ctx context.Context, client *gogpt.Client, req gogpt.ChatCompletionRequest) (res gogpt.ChatCompletionMessage, err error) {
 	if req.Stream {
 		return
 	}
@@ -21,22 +21,22 @@ func GetChatCompletion(ctx context.Context, client *gogpt.Client, req gogpt.Chat
 		return
 	}
 
-	return strings.TrimPrefix(resp.Choices[0].Message.Content, "\n\n"), nil
+	return resp.Choices[0].Message, nil
 }
 
 // https://platform.openai.com/docs/api-reference/chat/create
 // stream events: https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format
 // u should use channel hash connectId to concurrently send msg to websocket
-func GetChatCompletionStream(ctx context.Context, client *gogpt.Client, req gogpt.ChatCompletionRequest) (string, error) {
+func GetChatCompletionStream(ctx context.Context, client *gogpt.Client, req gogpt.ChatCompletionRequest) (gogpt.ChatCompletionMessage, error) {
 	if !req.Stream {
-		return "", nil
+		return gogpt.ChatCompletionMessage{}, nil
 	}
 
 	log.Printf("CreateChatCompletionStream req %+v \n", req)
 	stream, err := client.CreateChatCompletionStream(ctx, req)
 	if err != nil {
 		log.Printf("CreateChatCompletionStream req %+v err:%s\n", req, err.Error())
-		return "", err
+		return gogpt.ChatCompletionMessage{}, err
 	}
 	defer stream.Close()
 
@@ -49,7 +49,7 @@ func GetChatCompletionStream(ctx context.Context, client *gogpt.Client, req gogp
 		}
 		if err != nil {
 			log.Printf("Stream error:%s\n", err.Error())
-			return "", err
+			return gogpt.ChatCompletionMessage{}, err
 		}
 
 		if index > 1 {
@@ -58,5 +58,5 @@ func GetChatCompletionStream(ctx context.Context, client *gogpt.Client, req gogp
 		}
 		index++
 	}
-	return res.String(), nil
+	return gogpt.ChatCompletionMessage{Content: res.String()}, err
 }

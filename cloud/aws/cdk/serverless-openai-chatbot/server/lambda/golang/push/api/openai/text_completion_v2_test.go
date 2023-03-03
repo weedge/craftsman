@@ -2,6 +2,7 @@ package openai
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	gogpt "github.com/sashabaranov/go-gpt3"
@@ -10,8 +11,7 @@ import (
 var gogptClient *gogpt.Client
 
 func TestMain(m *testing.M) {
-	//gogptClient = gogpt.NewClient(os.Getenv("OPENAI_API_KEY"))
-	gogptClient = gogpt.NewClient("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")
+	gogptClient = gogpt.NewClient(os.Getenv("OPENAI_API_KEY"))
 	m.Run()
 }
 
@@ -65,7 +65,7 @@ func TestGetChatCompletionStream(t *testing.T) {
 				t.Errorf("GetChatCompletionStream() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if got == tt.want {
+			if got.Content == tt.want {
 				t.Errorf("GetChatCompletionStream() = %v, want %v", got, tt.want)
 			}
 		})
