@@ -7,7 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.17.5
 	github.com/aws/aws-sdk-go-v2/config v1.18.15
 	github.com/aws/aws-sdk-go-v2/service/apigatewaymanagementapi v1.11.4
-	github.com/sashabaranov/go-gpt3 v1.2.1
+	github.com/sashabaranov/go-gpt3 v1.3.1
 )
 
 require (
