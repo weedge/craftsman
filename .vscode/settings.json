@@ -2,5 +2,11 @@
   "rust-analyzer.linkedProjects": [
     "cloud/aws/cdk/serverless-openai-chatbot/server/lambda/rust/connect/Cargo.toml",
     "cloud/aws/cdk/serverless-openai-chatbot/server/lambda/rust/rustrocket/Cargo.toml"
-  ]
+  ],
+  "go.buildFlags": [
+    //"-tags=wireinject"
+  ],
+  "go.testFlags": [
+    //"wireinject",
+  ],
 }
